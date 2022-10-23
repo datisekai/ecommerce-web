@@ -15,7 +15,7 @@ const searchHistory = [
 
 const Header = () => {
   return (
-    <div className="transform-[translateZ(0)] shadow-[rgba(0, 0, 0, 0.24)] fixed  top-0 left-0 right-0 z-[100] w-full bg-gradient-to-b from-primary to-secondary shadow-sm">
+    <div className="transform-[translateZ(0)] shadow-[rgba(0, 0, 0, 0.24)] fixed top-0 left-0  right-0 z-[100] hidden w-full bg-gradient-to-b from-primary to-secondary shadow-sm lg:block">
       <WidthLayout>
         <TopHeader />
         <div className="flex items-center pt-[16px] pb-[10px]">
@@ -42,7 +42,7 @@ const Header = () => {
               ))}
             </div>
           </div>
-          <div className="mx-[10px] mb-[12px] pl-[3.5rem]">
+          <div className="mx-[10px] mb-[12px] pl-[3.5rem] pr-[2.5rem]">
             <BsCart2 className="text-[28px]  text-white" />
           </div>
         </div>

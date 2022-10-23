@@ -86,3 +86,11 @@ body{
 }
 
 
+.swiper-pagination-bullet-active{
+    background-color: #f53d2d !important;
+}
+
+.parentProductSame:hover .productSame{
+    display: block;
+    z-index: 100;
+}
