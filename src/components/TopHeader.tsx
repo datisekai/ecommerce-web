@@ -4,6 +4,7 @@ import { AiOutlineInstagram } from "react-icons/ai";
 import { BsBell, BsChevronDown } from "react-icons/bs";
 import { IoIosHelpCircleOutline } from "react-icons/io";
 import { MdLanguage } from "react-icons/md";
+import Link from "next/link";
 
 const TopHeader = () => {
   return (
@@ -63,13 +64,17 @@ const TopHeader = () => {
           </div>
         </div>
         <div className="ml-3 flex items-center">
-          <button className="mr-2 capitalize text-white hover:opacity-80">
-            Đăng ký
-          </button>
-          <div className="divider relative ml-2">
-            <button className="ml-2 capitalize text-white hover:opacity-80">
-              Đăng nhập
+          <Link href={"/sign-up"}>
+            <button className="mr-2 capitalize text-white hover:opacity-80">
+              Đăng ký
             </button>
+          </Link>
+          <div className="divider relative ml-2">
+            <Link href={"/login"}>
+              <button className="ml-2 capitalize text-white hover:opacity-80">
+                Đăng nhập
+              </button>
+            </Link>
           </div>
         </div>
       </div>
