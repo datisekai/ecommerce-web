@@ -1,18 +1,243 @@
 generator client {
-    provider        = "prisma-client-js"
-    previewFeatures = ["referentialIntegrity"]
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
 }
 
 datasource db {
-    provider             = "mysql"
-    url                  = env("DATABASE_URL")
-    referentialIntegrity = "prisma"
+  provider             = "mysql"
+  url                  = env("DATABASE_URL")
+  referentialIntegrity = "prisma"
+}
+
+model Permission {
+  id      Int      @id @default(autoincrement())
+  name    String   @unique
+  actions Action[]
+  users   User[]
+}
+
+model PermissionList {
+  id      Int      @id @default(autoincrement())
+  name    String   @unique
+  actions Action[]
+}
+
+model Action {
+  id         Int            @id @default(autoincrement())
+  name       String         @unique
+  code       String         @unique
+  perListId  Int            @unique
+  perId      Int            @unique
+  perList    PermissionList @relation(fields: [perListId], references: [id])
+  permission Permission     @relation(fields: [perId], references: [id])
 }
 
 model User {
-    id    String  @id @default(cuid())
-    name  String?
-    email String?
-    image String?
+  id           Int           @id @default(autoincrement())
+  name         String?
+  email        String?
+  avatar       String?       @db.Text
+  isActive     Boolean       @default(true)
+  phone        String        @unique @db.VarChar(10)
+  password     String        @db.Text
+  nameShop     String?
+  gender       String?
+  date         DateTime?     @db.Timestamp()
+  perId        Int
+  permission   Permission    @relation(fields: [perId], references: [id])
+  contacts     ContactUser[]
+  supports     SupportUser[]
+  products     Product[]
+  comments     Comment[]
+  voucherUsers VoucherUser[]
 }
 
+model ContactUser {
+  id      Int    @id @default(autoincrement())
+  address String @db.Text
+  phone   String @db.VarChar(10)
+  name    String @db.Text
+  userId  Int
+  user    User   @relation(fields: [userId], references: [id])
+}
+
+model SupportUser {
+  id     Int  @id @default(autoincrement())
+  code   Int
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+}
+
+model Category {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  parentId Int?
+  sellerId Int?
+  image    String    @db.Text
+  products Product[]
+}
+
+model Product {
+  id             Int             @id @default(autoincrement())
+  slug           String          @unique
+  name           String
+  description    String?
+  categoryId     Int
+  sellerId       Int
+  category       Category        @relation(fields: [categoryId], references: [id])
+  seller         User            @relation(fields: [sellerId], references: [id])
+  variants       Variant[]
+  variantOptions VariantOption[]
+  skus           Sku[]
+  skuValues      SkuValue[]
+  comments       Comment[]
+}
+
+model Variant {
+  id             Int             @id @default(autoincrement())
+  name           String          @unique
+  productId      Int
+  product        Product         @relation(fields: [productId], references: [id])
+  variantOptions VariantOption[]
+  skuValues      SkuValue[]
+}
+
+model VariantOption {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
+  variantId Int
+  productId Int
+  variant   Variant    @relation(fields: [variantId], references: [id])
+  product   Product    @relation(fields: [productId], references: [id])
+  skuValues SkuValue[]
+}
+
+model Sku {
+  id           Int           @id @default(autoincrement())
+  price        BigInt
+  qty          Int           @default(0)
+  discount     Int           @default(0)
+  image        String
+  productId    Int
+  product      Product       @relation(fields: [productId], references: [id])
+  skuValues    SkuValue[]
+  cartDetails  CartDetail[]
+  orderDetails OrderDetail[]
+}
+
+model SkuValue {
+  id              Int           @id @default(autoincrement())
+  productId       Int
+  variantId       Int
+  variantOptionId Int
+  skuId           Int
+  product         Product       @relation(fields: [productId], references: [id])
+  variant         Variant       @relation(fields: [variantId], references: [id])
+  variantOption   VariantOption @relation(fields: [variantOptionId], references: [id])
+  sku             Sku           @relation(fields: [skuId], references: [id])
+}
+
+model Comment {
+  id            Int            @id @default(autoincrement())
+  content       String         @db.Text
+  pointStart    Int            @default(5)
+  userId        Int
+  productId     Int
+  user          User           @relation(fields: [userId], references: [id])
+  product       Product        @relation(fields: [productId], references: [id])
+  commentImages CommentImage[]
+}
+
+model CommentImage {
+  id        Int     @id @default(autoincrement())
+  image     String  @db.Text
+  commentId Int
+  comment   Comment @relation(fields: [commentId], references: [id])
+}
+
+model Slider {
+  id    Int     @id @default(autoincrement())
+  image String  @db.Text
+  url   String?
+}
+
+model Voucher {
+  id           Int           @id @default(autoincrement())
+  name         String        @unique
+  discount     Int           @default(0)
+  limitPrice   Int           @default(0)
+  sellerId     Int?
+  voucherUsers VoucherUser[]
+}
+
+model VoucherUser {
+  id        Int     @id @default(autoincrement())
+  userId    Int
+  voucherId Int
+  user      User    @relation(fields: [userId], references: [id])
+  voucher   Voucher @relation(fields: [voucherId], references: [id])
+}
+
+model Cart {
+  id          Int          @id @default(autoincrement())
+  sellerId    Int
+  userId      Int
+  cartDetails CartDetail[]
+}
+
+model CartDetail {
+  id     Int  @id @default(autoincrement())
+  skuId  Int
+  qty    Int  @default(0)
+  cartId Int
+  sku    Sku  @relation(fields: [skuId], references: [id])
+  cart   Cart @relation(fields: [cartId], references: [id])
+}
+
+model Status {
+  id     Int     @id @default(autoincrement())
+  name   String
+  orders Order[]
+}
+
+model Order {
+  id           Int           @id @default(autoincrement())
+  userId       Int
+  total        BigInt        @default(0)
+  sellerId     Int
+  statusId     Int
+  isPay        Boolean       @default(false)
+  createdAt    DateTime      @db.Timestamp()
+  updatedAt    DateTime      @db.Timestamp()
+  status       Status        @relation(fields: [statusId], references: [id])
+  orderDetails OrderDetail[]
+  orderReports OrderReport?
+}
+
+model OrderDetail {
+  id      Int    @id @default(autoincrement())
+  orderId Int
+  skuId   Int
+  price   BigInt
+  qty     Int    @default(0)
+  order   Order  @relation(fields: [orderId], references: [id])
+  sku     Sku    @relation(fields: [skuId], references: [id])
+}
+
+model OrderReport {
+  id                Int                @id @default(autoincrement())
+  isDone            Boolean            @default(false)
+  description       String             @db.Text
+  orderId           Int                @unique
+  order             Order              @relation(fields: [orderId], references: [id])
+  orderReportImages OrderReportImage[]
+}
+
+model OrderReportImage {
+  id            Int         @id @default(autoincrement())
+  image         String      @db.Text
+  orderReportId Int
+  orderReport   OrderReport @relation(fields: [orderReportId], references: [id])
+}
+
+//npx prisma db push
