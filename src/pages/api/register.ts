@@ -1,31 +1,8 @@
 // src/pages/api/examples.ts
 import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "../../server/db/client";
+import argon2 from "argon2";
 
-/**
- * @swagger
- * components:
- *   schemas:
- *     Book:
- *       type: object
- *       required:
- *         - title
- *         - author
- *       properties:
- *         id:
- *           type: string
- *           description: The auto-generated id of the book
- *         title:
- *           type: string
- *           description: The book title
- *         author:
- *           type: string
- *           description: The book author
- *       example:
- *         id: d5fE_asz
- *         title: The New Turing Omnibus
- *         author: Alexander K. Dewdney
- */
 const Register = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
     const { phone, password } = req.body;
@@ -49,10 +26,12 @@ const Register = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     try {
+      const hashPassword = await argon2.hash(password);
+
       const newUser = await prisma.user.create({
         data: {
           phone,
-          password,
+          password: hashPassword,
           isActive: true,
           perId: 1,
         },

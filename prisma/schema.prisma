@@ -26,8 +26,8 @@ model Action {
   id         Int            @id @default(autoincrement())
   name       String         @unique
   code       String         @unique
-  perListId  Int            @unique
-  perId      Int            @unique
+  perListId  Int
+  perId      Int
   perList    PermissionList @relation(fields: [perListId], references: [id])
   permission Permission     @relation(fields: [perId], references: [id])
 }
@@ -207,8 +207,8 @@ model Order {
   sellerId     Int
   statusId     Int
   isPay        Boolean       @default(false)
-  createdAt    DateTime      @db.Timestamp()
-  updatedAt    DateTime      @db.Timestamp()
+  createdAt    DateTime      @default(now()) @db.Timestamp()
+  updatedAt    DateTime      @default(now()) @db.Timestamp()
   status       Status        @relation(fields: [statusId], references: [id])
   orderDetails OrderDetail[]
   orderReports OrderReport?
