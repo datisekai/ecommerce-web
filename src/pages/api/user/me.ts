@@ -16,7 +16,7 @@ const userMe = async (req: NextApiRequest, res: NextApiResponse) => {
       );
 
       if (decode) {
-        const myUser = await prisma?.user.findFirst({
+        const myUser: any = await prisma?.user.findFirst({
           where: {
             id: decode.id,
           },

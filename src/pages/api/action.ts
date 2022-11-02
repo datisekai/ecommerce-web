@@ -7,21 +7,22 @@ import withProtected from "../../../middlewares/withProtected";
 
 const Actions = async (req: INextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
-    if (!req.actions?.some((item: any) => item.code === "admin:action:add")) {
+    if (
+      !req.actions?.some((item: any) => item.code === "admin:privilege:add")
+    ) {
       return res
         .status(401)
         .json({ success: false, message: "Not Authorized" });
     }
-    const { name, code, perListId, perId } = req.body;
+    const { name, code, perListId } = req.body;
 
-    if (!name || !code || !perListId || !perId) {
+    if (!name || !code || !perListId) {
       return res.status(404).json({ success: false, message: "Missing" });
     }
-    const newAction = await prisma.action.create({
+    const newAction = await prisma.privilege.create({
       data: {
         name,
         code,
-        perId: +perId,
         perListId: +perListId,
       },
     });
@@ -29,7 +30,7 @@ const Actions = async (req: INextApiRequest, res: NextApiResponse) => {
     return res.status(200).json(newAction);
   } else if (req.method === "PUT") {
     if (
-      !req.actions?.some((item: any) => item.code === "admin:action:update")
+      !req.actions?.some((item: any) => item.code === "admin:privilege:update")
     ) {
       return res
         .status(401)
@@ -38,16 +39,16 @@ const Actions = async (req: INextApiRequest, res: NextApiResponse) => {
 
     const data = req.body;
 
-    if (!data.id) {
-      return res.status(404).json({ success: false, message: "Missing id" });
+    if (!data.code) {
+      return res.status(404).json({ success: false, message: "Missing code" });
     }
 
     try {
-      const updateAction = await prisma.action.update({
+      const updateAction = await prisma.privilege.update({
         where: {
-          id: Number(data.id),
+          code: data.code,
         },
-        data: { ...data, id: undefined },
+        data: { ...data, code: undefined },
       });
       return res.json(updateAction);
     } catch (error) {
@@ -55,24 +56,24 @@ const Actions = async (req: INextApiRequest, res: NextApiResponse) => {
     }
   } else if (req.method === "DELETE") {
     if (
-      !req.actions?.some((item: any) => item.code === "admin:action:delete")
+      !req.actions?.some((item: any) => item.code === "admin:privilege:delete")
     ) {
       return res
         .status(401)
         .json({ success: false, message: "Not Authorized" });
     }
 
-    const { id } = req.query;
-    if (!id) {
+    const { code } = req.query;
+    if (!code) {
       return res
         .status(404)
         .json({ success: false, message: "Internal server" });
     }
 
     try {
-      const deleteAction = await prisma.action.delete({
+      const deleteAction = await prisma.privilege.delete({
         where: {
-          id: Number(id),
+          code: code as string,
         },
       });
       return res.json(deleteAction);
@@ -80,14 +81,16 @@ const Actions = async (req: INextApiRequest, res: NextApiResponse) => {
       return logError(res, error);
     }
   } else if (req.method === "GET") {
-    if (!req.actions?.some((item: any) => item.code === "admin:action:read")) {
+    if (
+      !req.actions?.some((item: any) => item.code === "admin:privilege:read")
+    ) {
       return res
         .status(401)
         .json({ success: false, message: "Not Authorized" });
     }
 
     try {
-      const actions = await prisma.action.findMany();
+      const actions = await prisma.privilege.findMany();
       return res.json(actions);
     } catch (error) {
       return logError(res, error);

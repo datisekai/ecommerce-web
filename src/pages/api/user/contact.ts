@@ -15,7 +15,7 @@ const contactUser = async (req: any, res: NextApiResponse) => {
           address,
           name,
           phone,
-          userId: req.id,
+          userId: req.userId,
         },
       });
       return res.json(newContact);

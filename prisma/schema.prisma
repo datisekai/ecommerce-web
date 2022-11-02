@@ -17,39 +17,51 @@ model Permission {
 }
 
 model PermissionList {
-  id      Int      @id @default(autoincrement())
-  name    String   @unique
-  actions Action[]
+  id         Int         @id @default(autoincrement())
+  name       String      @unique
+  actions    Action[]
+  privileges Privilege[]
+}
+
+model Privilege {
+  code      String         @id
+  name      String
+  perListId Int
+  perList   PermissionList @relation(fields: [perListId], references: [id])
+  actions   Action[]
 }
 
 model Action {
   id         Int            @id @default(autoincrement())
-  name       String         @unique
-  code       String         @unique
+  code       String
   perListId  Int
   perId      Int
   perList    PermissionList @relation(fields: [perListId], references: [id])
   permission Permission     @relation(fields: [perId], references: [id])
+  privilege  Privilege      @relation(fields: [code], references: [code])
 }
 
 model User {
-  id           Int           @id @default(autoincrement())
-  name         String?
-  email        String?
-  avatar       String?       @db.Text
-  isActive     Boolean       @default(true)
-  phone        String        @unique @db.VarChar(10)
-  password     String        @db.Text
-  nameShop     String?
-  gender       String?
-  date         DateTime?     @db.Timestamp()
-  perId        Int
-  permission   Permission    @relation(fields: [perId], references: [id])
-  contacts     ContactUser[]
-  supports     SupportUser[]
-  products     Product[]
-  comments     Comment[]
-  voucherUsers VoucherUser[]
+  id            String        @id @default(cuid())
+  name          String?
+  email         String?       @unique
+  isActive      Boolean       @default(true)
+  phone         String?       @unique @db.VarChar(10)
+  password      String?       @db.Text
+  nameShop      String?
+  gender        String?
+  date          DateTime?     @db.Timestamp()
+  perId         Int?          @default(1)
+  permission    Permission?   @relation(fields: [perId], references: [id])
+  contacts      ContactUser[]
+  supports      SupportUser[]
+  products      Product[]
+  comments      Comment[]
+  voucherUsers  VoucherUser[]
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
 }
 
 model ContactUser {
@@ -57,40 +69,52 @@ model ContactUser {
   address String @db.Text
   phone   String @db.VarChar(10)
   name    String @db.Text
-  userId  Int
+  userId  String
   user    User   @relation(fields: [userId], references: [id])
 }
 
 model SupportUser {
-  id     Int  @id @default(autoincrement())
+  id     Int    @id @default(autoincrement())
   code   Int
-  userId Int
-  user   User @relation(fields: [userId], references: [id])
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
 }
 
 model Category {
-  id       Int       @id @default(autoincrement())
-  name     String    @unique
-  parentId Int?
-  sellerId Int?
-  image    String    @db.Text
-  products Product[]
+  id               Int               @id @default(autoincrement())
+  name             String            @unique
+  parentId         Int?
+  sellerId         String?
+  image            String            @db.Text
+  products         Product[]
+  categoryProducts CategoryProduct[]
+}
+
+model CategoryProduct {
+  id         Int      @id @default(autoincrement())
+  categoryId Int
+  productId  Int
+  categorys  Category @relation(fields: [categoryId], references: [id])
+  products   Product  @relation(fields: [productId], references: [id])
 }
 
 model Product {
-  id             Int             @id @default(autoincrement())
-  slug           String          @unique
-  name           String
-  description    String?
-  categoryId     Int
-  sellerId       Int
-  category       Category        @relation(fields: [categoryId], references: [id])
-  seller         User            @relation(fields: [sellerId], references: [id])
-  variants       Variant[]
-  variantOptions VariantOption[]
-  skus           Sku[]
-  skuValues      SkuValue[]
-  comments       Comment[]
+  id               Int               @id @default(autoincrement())
+  slug             String            @unique
+  name             String
+  description      String?
+  categoryId       Int
+  sellerId         String
+  category         Category          @relation(fields: [categoryId], references: [id])
+  seller           User              @relation(fields: [sellerId], references: [id])
+  variants         Variant[]
+  variantOptions   VariantOption[]
+  skus             Sku[]
+  skuValues        SkuValue[]
+  comments         Comment[]
+  createdAt        DateTime          @default(now()) @db.Timestamp
+  image            String
+  categoryProducts CategoryProduct[]
 }
 
 model Variant {
@@ -114,12 +138,12 @@ model VariantOption {
 
 model Sku {
   id           Int           @id @default(autoincrement())
-  price        BigInt
+  price        Int
   qty          Int           @default(0)
   discount     Int           @default(0)
   image        String
   productId    Int
-  product      Product       @relation(fields: [productId], references: [id])
+  product      Product       @relation(fields: [productId], references: [id], onDelete: Cascade)
   skuValues    SkuValue[]
   cartDetails  CartDetail[]
   orderDetails OrderDetail[]
@@ -132,16 +156,16 @@ model SkuValue {
   variantOptionId Int
   skuId           Int
   product         Product       @relation(fields: [productId], references: [id])
-  variant         Variant       @relation(fields: [variantId], references: [id])
-  variantOption   VariantOption @relation(fields: [variantOptionId], references: [id])
-  sku             Sku           @relation(fields: [skuId], references: [id])
+  variant         Variant       @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  variantOption   VariantOption @relation(fields: [variantOptionId], references: [id], onDelete: Cascade)
+  sku             Sku           @relation(fields: [skuId], references: [id], onDelete: Cascade)
 }
 
 model Comment {
   id            Int            @id @default(autoincrement())
   content       String         @db.Text
-  pointStart    Int            @default(5)
-  userId        Int
+  pointStar     Int            @default(5)
+  userId        String
   productId     Int
   user          User           @relation(fields: [userId], references: [id])
   product       Product        @relation(fields: [productId], references: [id])
@@ -166,13 +190,13 @@ model Voucher {
   name         String        @unique
   discount     Int           @default(0)
   limitPrice   Int           @default(0)
-  sellerId     Int?
+  sellerId     String?
   voucherUsers VoucherUser[]
 }
 
 model VoucherUser {
   id        Int     @id @default(autoincrement())
-  userId    Int
+  userId    String
   voucherId Int
   user      User    @relation(fields: [userId], references: [id])
   voucher   Voucher @relation(fields: [voucherId], references: [id])
@@ -180,8 +204,8 @@ model VoucherUser {
 
 model Cart {
   id          Int          @id @default(autoincrement())
-  sellerId    Int
-  userId      Int
+  sellerId    String
+  userId      String
   cartDetails CartDetail[]
 }
 
@@ -202,9 +226,9 @@ model Status {
 
 model Order {
   id           Int           @id @default(autoincrement())
-  userId       Int
+  userId       String
   total        BigInt        @default(0)
-  sellerId     Int
+  sellerId     String
   statusId     Int
   isPay        Boolean       @default(false)
   createdAt    DateTime      @default(now()) @db.Timestamp()
@@ -241,3 +265,37 @@ model OrderReportImage {
 }
 
 //npx prisma db push
+model Account {
+  id                Int     @id @default(autoincrement())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           Int      @id @default(autoincrement())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}

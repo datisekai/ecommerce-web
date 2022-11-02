@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC, useState } from "react";
 import LoginLayout from "../components/Layouts/LoginLayout";
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
@@ -6,8 +6,17 @@ import Link from "next/link";
 import { SlUser } from "react-icons/sl";
 import { AiOutlineLock } from "react-icons/ai";
 import Meta from "../components/Meta";
+import { useSession, signIn, getProviders, getSession } from "next-auth/react";
+import { AppProps } from "next/app";
+import { NextPage } from "next";
 
-const Login = () => {
+interface LoginProps {}
+
+const Login: FC<LoginProps> = () => {
+  const data = useSession();
+
+  console.log(data);
+
   return (
     <>
       <Meta
@@ -45,7 +54,10 @@ const Login = () => {
               <FaFacebook className="text-[28px] text-blue-600" />
               <span className="ml-2 text-[16px] text-gray-900">Facebook</span>
             </div>
-            <div className="ml-2 flex w-full items-center justify-center rounded-sm border border-gray-300 bg-white py-2 px-4 transition-all hover:cursor-pointer hover:bg-gray-200">
+            <div
+              onClick={() => signIn()}
+              className="ml-2 flex w-full items-center justify-center rounded-sm border border-gray-300 bg-white py-2 px-4 transition-all hover:cursor-pointer hover:bg-gray-200"
+            >
               <FcGoogle className="text-[28px] " />
               <span className="ml-2 text-[16px] text-gray-900">Google</span>
             </div>

@@ -14,7 +14,7 @@ const LoginLayout: FC<LoginLayoutProps> = ({ children, title }) => {
       <HeaderLogin title={title} />
       <div className="relative bg-white lg:bg-[#EE4D2D]">
         <img
-          src="https://cf.shopee.vn/file/5569eb9dc7e09e2dbed5315b8f2ea8ba"
+          src="/bg-login.png"
           className="mx-auto hidden lg:inline-block"
           alt=""
         />

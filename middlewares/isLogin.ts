@@ -27,7 +27,7 @@ const isLogin = (handler: any) => {
       });
 
       if (myUser) {
-        req.id = myUser.id;
+        req.userId = myUser.id;
         return handler(req, res);
       }
     }

@@ -9,6 +9,6 @@ export default interface INextApiRequest extends NextApiRequest {
         perListId: number;
         perId: number;
       }[]
-    | undefined;
-  userId?: number;
+    | any;
+  userId?: string;
 }

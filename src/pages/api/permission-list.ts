@@ -45,7 +45,7 @@ const PermissionList = async (req: INextApiRequest, res: NextApiResponse) => {
     try {
       const permissionLists = await prisma.permissionList.findMany({
         include: {
-          actions: true,
+          privileges: true,
         },
       });
 

@@ -197,6 +197,24 @@ export const getStaticProps: GetStaticProps = async () => {
               },
             },
           },
+          Privilege: {
+            type: "object",
+            properties: {
+              code: {
+                type: "string",
+                example: "admin:user:update",
+              },
+              name: {
+                type: "string",
+                example: "Cập nhật người dùng",
+              },
+
+              perListId: {
+                type: "integer",
+                example: 1,
+              },
+            },
+          },
           Contact: {
             type: "object",
             properties: {
@@ -219,6 +237,34 @@ export const getStaticProps: GetStaticProps = async () => {
               userId: {
                 type: "integer",
                 example: 1,
+              },
+            },
+          },
+          Category: {
+            type: "object",
+            properties: {
+              id: {
+                type: "integer",
+                example: 1,
+              },
+              name: {
+                type: "string",
+                example: "Thời Trang Nam",
+                required: true,
+              },
+              parentId: {
+                type: "integer",
+                example: null,
+              },
+              sellerId: {
+                type: "string",
+                example: "cl9uz6mbg00027k2k2m8m5azm",
+              },
+              image: {
+                type: "string",
+                required: true,
+                example:
+                  "https://cf.shopee.vn/file/687f3967b7c2fe6a134a2c11894eea4b_tn",
               },
             },
           },
@@ -498,28 +544,24 @@ export const getStaticProps: GetStaticProps = async () => {
                     name: "Cập nhật danh mục quyền",
                     code: "admin:permission-list:update",
                     perListId: 7,
-                    perId: 3,
                   },
                   {
                     id: 13,
                     name: "Thêm danh mục quyền",
                     code: "admin:permission-list:add",
                     perListId: 7,
-                    perId: 3,
                   },
                   {
                     id: 14,
                     name: "Xóa danh mục quyền",
                     code: "admin:permission-list:delete",
                     perListId: 7,
-                    perId: 3,
                   },
                   {
                     id: 16,
                     name: "Xem danh mục quyền",
                     code: "admin:permission-list:read",
                     perListId: 7,
-                    perId: 3,
                   },
                 ],
               },
@@ -541,6 +583,34 @@ export const getStaticProps: GetStaticProps = async () => {
                 code: "admin:user:update",
                 perListId: 1,
                 perId: 3,
+              },
+            ],
+          },
+          Privilege: {
+            type: "array",
+            example: [
+              {
+                code: "admin:user:read",
+                name: "Danh sách người dùng",
+                perListId: 1,
+              },
+              {
+                code: "admin:user:update",
+                name: "Cập nhật người dùng",
+                perListId: 1,
+              },
+            ],
+          },
+          Category: {
+            type: "array",
+            example: [
+              {
+                id: 1,
+                name: "Thời Trang Nam",
+                parentId: null,
+                sellerId: null,
+                image:
+                  "https://cf.shopee.vn/file/687f3967b7c2fe6a134a2c11894eea4b_tn",
               },
             ],
           },
@@ -842,21 +912,21 @@ export const getStaticProps: GetStaticProps = async () => {
             ],
           },
         },
-        "/api/action": {
+        "/api/privilege": {
           get: {
-            tags: ["Action"],
+            tags: ["Privilege"],
             summary: "Lấy các chức năng",
             security,
-            responses: responses("#/components/responses/Action"),
+            responses: responses("#/components/responses/Privilege"),
           },
           post: {
-            tags: ["Action"],
+            tags: ["Privilege"],
             summary: "Thêm chức năng",
             security,
-            responses: responses("#/components/schemas/Action"),
+            responses: responses("#/components/schemas/Privilege"),
             parameters: [
-              generateParam("name", "body", "Tên chức năng", true, "string"),
               generateParam("code", "body", "Code chức năng", true, "string"),
+              generateParam("name", "body", "Tên chức năng", true, "string"),
               generateParam(
                 "perListId",
                 "body",
@@ -864,17 +934,15 @@ export const getStaticProps: GetStaticProps = async () => {
                 true,
                 "integer"
               ),
-              generateParam("perId", "body", "Mã loại quyền", true, "integer"),
             ],
-            requestBody: requestBody("#/components/schemas/Action"),
+            requestBody: requestBody("#/components/schemas/Privilege"),
           },
           put: {
-            tags: ["Action"],
+            tags: ["Privilege"],
             summary: "Cập nhật chức năng",
             security,
-            responses: responses("#/components/schemas/Action"),
+            responses: responses("#/components/schemas/Privilege"),
             parameters: [
-              generateParam("id", "query", "id chức năng", true, "integer"),
               generateParam("name", "body", "Tên chức năng", false, "string"),
               generateParam("code", "body", "Code chức năng", false, "string"),
               generateParam(
@@ -884,17 +952,16 @@ export const getStaticProps: GetStaticProps = async () => {
                 false,
                 "integer"
               ),
-              generateParam("perId", "body", "Mã loại quyền", false, "integer"),
             ],
-            requestBody: requestBody("#/components/schemas/Action"),
+            requestBody: requestBody("#/components/schemas/Privilege"),
           },
           delete: {
-            tags: ["Action"],
+            tags: ["Privilege"],
             summary: "Xóa chức năng",
             security,
-            responses: responses("#/components/schemas/Action"),
+            responses: responses("#/components/schemas/Privilege"),
             parameters: [
-              generateParam("id", "query", "id chức năng", true, "integer"),
+              generateParam("code", "query", "code chức năng", true, "integer"),
             ],
           },
         },
@@ -931,6 +998,128 @@ export const getStaticProps: GetStaticProps = async () => {
             ],
             requestBody: requestBody("#/components/schemas/Contact"),
             responses: responses("#/components/schemas/Contact"),
+          },
+          delete: {
+            tags: ["User"],
+            security,
+            summary: "Xóa thông tin giao hàng",
+            parameters: [
+              generateParam("id", "query", "id người dùng", true, "integer"),
+            ],
+            responses: responses("#/components/schemas/Contact"),
+          },
+        },
+        "/api/category/view": {
+          get: {
+            tags: ["Category"],
+            summary: "Lấy danh mục sản phẩm (cả người bán và admin)",
+            responses: responses("#/components/responses/Category"),
+            parameters: [
+              generateParam("id", "query", "id người bán", false, "integer"),
+            ],
+            description:
+              "Nếu có query id sẽ lấy theo người bán, nếu không sẽ lấy theo admin",
+          },
+        },
+        "/api/category": {
+          post: {
+            tags: ["Category"],
+            summary: "Thêm danh mục sản phẩm (cả người bán và admin)",
+            description: "permission là admin | seller",
+            security,
+            requestBody: requestBody("#/components/schemas/Category"),
+            parameters: [
+              generateParam(
+                "permission",
+                "query",
+                "admin | seller",
+                true,
+                "string"
+              ),
+              generateParam("name", "body", "Tên danh mục", true, "string"),
+              generateParam("image", "body", "Ảnh danh mục", true, "string"),
+              generateParam(
+                "parentId",
+                "body",
+                "id danh mục cha -- nếu null thì danh mục này sẽ là cha",
+                false,
+                "integer"
+              ),
+              generateParam(
+                "sellerId",
+                "body",
+                "id người bán -- nếu null thì danh mục này sẽ là cha",
+                false,
+                "string"
+              ),
+            ],
+            responses: responses("#/components/schemas/Category"),
+          },
+          put: {
+            tags: ["Category"],
+            summary: "Cập nhật danh mục (cả người bán và admin)",
+            description: "permission là admin | seller",
+            security,
+            requestBody: requestBody("#/components/schemas/Category"),
+            responses: responses("#/components/schemas/Category"),
+            parameters: [
+              generateParam(
+                "permission",
+                "query",
+                "admin | seller",
+                true,
+                "string"
+              ),
+              generateParam("id", "query", "id danh mục", true, "string"),
+              generateParam("name", "query", "tên danh mục", false, "string"),
+              generateParam(
+                "parentId",
+                "query",
+                "id danh mục cha",
+                false,
+                "string"
+              ),
+              generateParam(
+                "sellerId",
+                "query",
+                "id người bán",
+                false,
+                "string"
+              ),
+              generateParam("image", "query", "ảnh danh mục", false, "string"),
+            ],
+          },
+          delete: {
+            tags: ["Category"],
+            summary: "Xóa danh mục (cả người bán và admin)",
+            security,
+            parameters: [
+              generateParam(
+                "permission",
+                "query",
+                "admin | seller",
+                true,
+                "string"
+              ),
+              generateParam("id", "query", "id danh mục", true, "integer"),
+            ],
+            responses: responses("#/components/schemas/Category"),
+          },
+        },
+        "/api/product/category": {
+          get: {
+            tags: ["Product"],
+            summary: "Lấy sản phẩm theo danh mục của người bán",
+            parameters: [
+              generateParam(
+                "categoryId",
+                "query",
+                "id của danh mục người bán",
+                true,
+                "integer"
+              ),
+            ],
+            // responses:
           },
         },
       },

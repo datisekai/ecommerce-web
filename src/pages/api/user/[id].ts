@@ -14,9 +14,9 @@ const User = async (req: INextApiRequest, res: NextApiResponse) => {
         .json({ success: false, message: "Not Authorized" });
     }
     try {
-      const currentUser = await prisma?.user.findFirst({
+      const currentUser:any = await prisma?.user.findFirst({
         where: {
-          id: Number(id),
+          id: id.toString(),
         },
         include: {
           permission: true,
@@ -55,7 +55,7 @@ const User = async (req: INextApiRequest, res: NextApiResponse) => {
     try {
       const currentUser = await prisma?.user.update({
         where: {
-          id: Number(id),
+          id: id.toString(),
         },
         data,
       });
@@ -81,7 +81,7 @@ const User = async (req: INextApiRequest, res: NextApiResponse) => {
     try {
       const currentUser = await prisma?.user.delete({
         where: {
-          id: Number(id),
+          id: id.toString(),
         },
       });
 

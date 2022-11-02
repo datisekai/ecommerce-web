@@ -1,0 +1,253 @@
+POST http://localhost:3000/api/login
+Content-Type:  application/json
+
+{
+    "phone":"1",
+    "password":"bedatnee312"
+}
+
+
+###
+# eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJpYXQiOjE2NjczOTcyNzksImV4cCI6MTY2NzQ0MDQ3OX0.E0ukxmTG2W7zkckUOPVfUwHfmHxBvwSbfkAFOYm2LoE
+
+
+GET http://localhost:3000/api/user/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJpYXQiOjE2NjczOTc0NjcsImV4cCI6MTY2NzQ0MDY2N30.fPJfWsHPaLsp3Ujb7ISM-St5HG9KM5vIvBBaIZHbUeQ
+
+###
+GET http://localhost:3000/api/product?productId=2
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJpYXQiOjE2NjczOTc0NjcsImV4cCI6MTY2NzQ0MDY2N30.fPJfWsHPaLsp3Ujb7ISM-St5HG9KM5vIvBBaIZHbUeQ
+
+
+###
+POST http://localhost:3000/api/product/value
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJpYXQiOjE2NjczOTc0NjcsImV4cCI6MTY2NzQ0MDY2N30.fPJfWsHPaLsp3Ujb7ISM-St5HG9KM5vIvBBaIZHbUeQ
+
+{
+    "productId":2,
+    "skuValues": [
+        {
+            "price":40000,
+            "qty":30,
+            "discount":30,
+            "image":"https://abc",
+            "values":[
+                            {
+                "id": 4,
+                "name": "01",
+                "variantId": 4,
+                "productId": 2,
+                "variant": {
+                "id": 4,
+                "name": "Band Color",
+                "productId": 2
+                }
+            },
+            {
+                "id": 7,
+                "name": "For 38/40/41mm",
+                "variantId": 3,
+                "productId": 2,
+                "variant": {
+                "id": 3,
+                "name": "Band Width",
+                "productId": 2
+                }
+            }
+                ]
+        },
+        {
+            "price":20000,
+            "qty":50,
+            "discount":70,
+            "image":"https://abc",
+            "values":[
+                  {
+                    "id": 4,
+                    "name": "01",
+                    "variantId": 4,
+                    "productId": 2,
+                    "variant": {
+                        "id": 4,
+                        "name": "Band Color",
+                        "productId": 2
+                    }
+                },
+                {
+                    "id": 8,
+                    "name": "For 42/44/45mm",
+                    "variantId": 3,
+                    "productId": 2,
+                    "variant": {
+                        "id": 3,
+                        "name": "Band Width",
+                        "productId": 2
+                    }
+                }
+            ]
+        },
+        {
+            "price":30000,
+            "qty":40,
+            "discount":70,
+            "image":"https://abc",
+            "values":[
+                 {
+                    "id": 5,
+                    "name": "17",
+                    "variantId": 4,
+                    "productId": 2,
+                    "variant": {
+                        "id": 4,
+                        "name": "Band Color",
+                        "productId": 2
+                    }
+                },
+                {
+                    "id": 7,
+                    "name": "For 38/40/41mm",
+                    "variantId": 3,
+                    "productId": 2,
+                    "variant": {
+                        "id": 3,
+                        "name": "Band Width",
+                        "productId": 2
+                    }
+                }
+            ]
+        },
+         {
+            "price":80000,
+            "qty":10,
+            "discount":70,
+            "image":"https://abc",
+            "values":[
+                 {
+                    "id": 5,
+                    "name": "17",
+                    "variantId": 4,
+                    "productId": 2,
+                    "variant": {
+                    "id": 4,
+                    "name": "Band Color",
+                    "productId": 2
+                    }
+                },
+                {
+                    "id": 8,
+                    "name": "For 42/44/45mm",
+                    "variantId": 3,
+                    "productId": 2,
+                    "variant": {
+                    "id": 3,
+                    "name": "Band Width",
+                    "productId": 2
+                    }
+                }
+            ]
+        },
+         {
+            "price":45000,
+            "qty":45,
+            "discount":70,
+            "image":"https://abc",
+            "values":[
+                {
+                    "id": 6,
+                    "name": "05",
+                    "variantId": 4,
+                    "productId": 2,
+                    "variant": {
+                    "id": 4,
+                    "name": "Band Color",
+                    "productId": 2
+                    }
+                },
+                {
+                    "id": 7,
+                    "name": "For 38/40/41mm",
+                    "variantId": 3,
+                    "productId": 2,
+                    "variant": {
+                    "id": 3,
+                    "name": "Band Width",
+                    "productId": 2
+                    }
+                }
+            ]
+        },
+         {
+            "price":13000,
+            "qty":120,
+            "discount":70,
+            "image":"https://abc",
+            "values":[
+                {
+                "id": 6,
+                "name": "05",
+                "variantId": 4,
+                "productId": 2,
+                "variant": {
+                "id": 4,
+                "name": "Band Color",
+                "productId": 2
+                }
+            },
+            {
+                "id": 8,
+                "name": "For 42/44/45mm",
+                "variantId": 3,
+                "productId": 2,
+                "variant": {
+                "id": 3,
+                "name": "Band Width",
+                "productId": 2
+                }
+            }
+            ]
+        }
+    ]
+}
+
+
+###
+POST http://localhost:3000/api/product
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJpYXQiOjE2NjczOTc0NjcsImV4cCI6MTY2NzQ0MDY2N30.fPJfWsHPaLsp3Ujb7ISM-St5HG9KM5vIvBBaIZHbUeQ
+
+{
+  "categoryId": 1,
+  "name": "Dây đeo đồng hồ chất liệu da bò thật 100% thích hợp cho Apple Watch 7 6 SE 5 4 42Mm 3",
+  "description": "Thời gian giao hàng dự kiến cho sản phẩm này là từ 7-9 ngày",
+  "image": "https://cde",
+  "variants": [
+    {
+      "name": "Band Color",
+      "children": [{ "name": "01" }, { "name": "17" },{ "name": "05" }]
+    },
+    {
+      "name": "Band Width",
+      "children": [
+        {
+          "name": "For 38/40/41mm"
+        },
+        {
+          "name": "For 42/44/45mm"
+        }
+      ]
+    }
+  ]
+}
+
+###
+
+GET http://localhost:3000/api/product/view?page=2&limit=1
+Content-Type: application/json
+
+###
+DELETE http://localhost:3000/api/product/sku?skuId=24&permission=admin
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJpYXQiOjE2Njc0MDQ5MjgsImV4cCI6MTY2NzQ0ODEyOH0.EWwIPBMSP7isNBeDAfMZwr6JB-7oGulisidd5jvsKJI

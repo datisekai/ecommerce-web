@@ -2,6 +2,7 @@ import { NextApiResponse } from "next";
 import { NextApiRequest } from "next";
 import jwt from "jsonwebtoken";
 import INextApiRequest from "../src/models/NextApiRequest";
+import notAuthorized from "../src/utils/notAuthorized";
 
 const withProtected = (handler: any) => {
   return async (req: INextApiRequest, res: NextApiResponse) => {
@@ -16,28 +17,32 @@ const withProtected = (handler: any) => {
       process.env.NEXT_PUBLIC_JWT as string
     );
 
-    if (decode) {
-      const myUser = await prisma?.user.findFirst({
-        where: {
-          id: decode.id,
-        },
-        include: {
-          permission: true,
-        },
-      });
-
-      if (myUser) {
-        const actions = await prisma?.action.findMany({
+    try {
+      if (decode) {
+        const myUser: any = await prisma?.user.findFirst({
           where: {
-            perId: myUser.perId,
+            id: decode.id,
+          },
+          include: {
+            permission: true,
           },
         });
 
-        req.actions = actions;
-        req.userId = myUser.id;
+        if (myUser) {
+          const actions = await prisma?.action.findMany({
+            where: {
+              perId: myUser.perId,
+            },
+          });
 
-        return handler(req, res);
+          req.actions = actions;
+          req.userId = myUser.id;
+
+          return handler(req, res);
+        }
       }
+    } catch (error) {
+      return notAuthorized(res);
     }
 
     return res.status(401).json({ success: false, message: "No Authorized" });
