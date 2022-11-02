@@ -4,7 +4,6 @@ import type { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import NextNProgress from "nextjs-progressbar";
 import "react-lazy-load-image-component/src/effects/black-and-white.css";
-
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
