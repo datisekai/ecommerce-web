@@ -11,9 +11,9 @@ export const authOptions: NextAuthOptions = {
   // Include user.id on session
   callbacks: {
     session({ session, user }) {
-      // if (session.user) {
-      //   session.user.id = user.id;
-      // }
+      if (user) {
+        session.user = user;
+      }
       return session;
     },
   },
@@ -27,10 +27,10 @@ export const authOptions: NextAuthOptions = {
   ],
 
   pages: {
-    // signIn: "/login",
+    signIn: "/login",
   },
   session: {
-    strategy: "jwt",
+    strategy: "database",
   },
 };
 

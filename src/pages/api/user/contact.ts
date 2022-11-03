@@ -2,6 +2,8 @@ import { logError } from "./../../../utils/logError";
 import { NextApiResponse } from "next";
 import { NextApiRequest } from "next";
 import isLogin from "../../../../middlewares/isLogin";
+import { prisma } from "../../../server/db/client";
+
 const contactUser = async (req: any, res: NextApiResponse) => {
   if (req.method === "POST") {
     const { address, phone, name } = req.body;

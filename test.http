@@ -251,3 +251,16 @@ Content-Type: application/json
 DELETE http://localhost:3000/api/product/sku?skuId=24&permission=admin
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJpYXQiOjE2Njc0MDQ5MjgsImV4cCI6MTY2NzQ0ODEyOH0.EWwIPBMSP7isNBeDAfMZwr6JB-7oGulisidd5jvsKJI
+
+###
+
+GET http://localhost:3000/api/product/filter?categoryId=1
+Content-Type: application/json
+
+###
+POST http://localhost:3000/api/order/status
+Content-Type: application/json
+
+{
+    "name":"Chờ xác nhận"
+}

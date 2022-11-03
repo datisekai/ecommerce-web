@@ -239,13 +239,14 @@ model Order {
 }
 
 model OrderDetail {
-  id      Int    @id @default(autoincrement())
-  orderId Int
-  skuId   Int
-  price   BigInt
-  qty     Int    @default(0)
-  order   Order  @relation(fields: [orderId], references: [id])
-  sku     Sku    @relation(fields: [skuId], references: [id])
+  id       Int    @id @default(autoincrement())
+  orderId  Int
+  skuId    Int
+  price    BigInt
+  discount Int
+  qty      Int    @default(0)
+  order    Order  @relation(fields: [orderId], references: [id])
+  sku      Sku    @relation(fields: [skuId], references: [id])
 }
 
 model OrderReport {

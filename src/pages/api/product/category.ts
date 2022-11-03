@@ -3,6 +3,7 @@ import { NextApiResponse } from "next";
 import withProtected from "../../../../middlewares/withProtected";
 import INextApiRequest from "../../../models/NextApiRequest";
 import missing from "../../../utils/missing";
+import { prisma } from "../../../server/db/client";
 
 const handler = async (req: INextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {

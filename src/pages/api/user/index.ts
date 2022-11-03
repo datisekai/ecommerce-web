@@ -2,6 +2,7 @@ import { logError } from "./../../../utils/logError";
 import { NextApiResponse } from "next";
 import { NextApiRequest } from "next";
 import INextApiRequest from "../../../models/NextApiRequest";
+import { prisma } from "../../../server/db/client";
 import withProtected from "../../../../middlewares/withProtected";
 const Users = async (req: INextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {

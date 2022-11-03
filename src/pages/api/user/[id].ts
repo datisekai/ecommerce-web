@@ -1,6 +1,8 @@
 import { NextApiResponse } from "next";
 import withProtected from "../../../../middlewares/withProtected";
 import INextApiRequest from "../../../models/NextApiRequest";
+import { prisma } from "../../../server/db/client";
+
 const User = async (req: INextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
 
@@ -14,7 +16,7 @@ const User = async (req: INextApiRequest, res: NextApiResponse) => {
         .json({ success: false, message: "Not Authorized" });
     }
     try {
-      const currentUser:any = await prisma?.user.findFirst({
+      const currentUser: any = await prisma?.user.findFirst({
         where: {
           id: id.toString(),
         },

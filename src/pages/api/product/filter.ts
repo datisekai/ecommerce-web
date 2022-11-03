@@ -1,6 +1,7 @@
 import { logError } from "./../../../utils/logError";
 import { NextApiResponse } from "next";
 import INextApiRequest from "../../../models/NextApiRequest";
+import { prisma } from "../../../server/db/client";
 
 const handler = async (req: INextApiRequest, res: NextApiResponse) => {
   let data: any = req.query;

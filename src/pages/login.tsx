@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import LoginLayout from "../components/Layouts/LoginLayout";
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
@@ -9,13 +9,12 @@ import Meta from "../components/Meta";
 import { useSession, signIn, getProviders, getSession } from "next-auth/react";
 import { AppProps } from "next/app";
 import { NextPage } from "next";
+import { getToken } from "next-auth/jwt";
 
 interface LoginProps {}
 
 const Login: FC<LoginProps> = () => {
-  const data = useSession();
-
-  console.log(data);
+  const { data: session, status } = useSession();
 
   return (
     <>
@@ -55,7 +54,7 @@ const Login: FC<LoginProps> = () => {
               <span className="ml-2 text-[16px] text-gray-900">Facebook</span>
             </div>
             <div
-              onClick={() => signIn()}
+              onClick={() => signIn("google")}
               className="ml-2 flex w-full items-center justify-center rounded-sm border border-gray-300 bg-white py-2 px-4 transition-all hover:cursor-pointer hover:bg-gray-200"
             >
               <FcGoogle className="text-[28px] " />

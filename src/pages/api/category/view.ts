@@ -3,6 +3,7 @@ import withProtected from "../../../../middlewares/withProtected";
 import INextApiRequest from "../../../models/NextApiRequest";
 import { logError } from "../../../utils/logError";
 import missing from "../../../utils/missing";
+import { prisma } from "../../../server/db/client";
 
 const handler = async (req: INextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;

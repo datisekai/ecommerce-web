@@ -1,6 +1,8 @@
 import { NextApiResponse } from "next";
 import { NextApiRequest } from "next";
 import jwt from "jsonwebtoken";
+import { prisma } from "../../../server/db/client";
+
 const userMe = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {
     const authHeader = req.headers.authorization;

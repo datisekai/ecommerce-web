@@ -1,6 +1,7 @@
 import { NextApiResponse } from "next";
 import { NextApiRequest } from "next";
 import { logError } from "../../../utils/logError";
+import { prisma } from "../../../server/db/client";
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {
     const { page = 1, limit = 12, sellerId } = req.query;
@@ -20,14 +21,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       });
 
       const productsReturn = products?.map((item: any) => {
-        let maxPrice = item.skus[0].price * (item.skus[0].discount / 100);
-        let minPrice = item.skus[0].price * (item.skus[0].discount / 100);
+        let maxPrice =
+          item.skus[0].price * ((100 - item.skus[0].discount) / 100);
+        let minPrice =
+          item.skus[0].price * ((100 - item.skus[0].discount) / 100);
         item.skus.forEach((element: any) => {
           if (element.price > maxPrice) {
-            maxPrice = element.price * (element.discount / 100);
+            maxPrice = element.price * ((100 - element.discount) / 100);
           }
           if (element.price < minPrice) {
-            minPrice = element.price * (element.discount / 100);
+            minPrice = element.price * ((100 - element.discount) / 100);
           }
         });
         return {

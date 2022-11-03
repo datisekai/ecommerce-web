@@ -4,7 +4,7 @@ import INextApiRequest from "../../../models/NextApiRequest";
 import missing from "../../../utils/missing";
 import withProtected from "../../../../middlewares/withProtected";
 import notAuthorized from "../../../utils/notAuthorized";
-
+import { prisma } from "../../../server/db/client";
 const handler = async (req: INextApiRequest, res: NextApiResponse) => {
   const { sellerId, permission } = req.query;
   if (!permission) {
