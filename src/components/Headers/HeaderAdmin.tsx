@@ -27,7 +27,7 @@ const HeaderAdmin = () => {
         </div>
       </div>
       <div className=" mr-2 py-2">
-        <div className=" flex h-10 w-10 cursor-pointer items-center justify-center hover:rounded-[50%] hover:bg-[#d1d1d173]">
+        <div className=" flex h-10 w-10 cursor-pointer items-center justify-center transition-all hover:rounded-[50%] hover:bg-[#d1d1d173]">
           <CgMenuGridR className="h-7 w-7 text-[#333]" />
         </div>
       </div>
