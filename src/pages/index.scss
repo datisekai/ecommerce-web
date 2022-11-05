@@ -1,0 +1,11 @@
+@mixin up-down($deg) {
+  -webkit-transform: rotate($deg);
+  transform: rotate($deg);
+  transition: transform .2s ease,-webkit-transform .2s ease;
+}
+#icon_up{
+  @include  up-down(180deg);
+}
+#icon_down{
+  @include  up-down(0deg);
+}

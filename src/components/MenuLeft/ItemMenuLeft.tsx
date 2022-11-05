@@ -7,8 +7,8 @@ const ItemMenuLeft = ({ id, name, icon }: ISidebarData) => {
   const Icon = icon;
   const [isHover, setIsHover] = useState(false);
   const [_display, setDisplay] = useState(false);
-  const handleShowItem = (keyid: number) => {
-    keyid && _display === false ? setDisplay(true) : setDisplay(false);
+  const handleShowItem = () => {
+    _display === false ? setDisplay(true) : setDisplay(false);
   };
   return (
     <div className="mb-4">
@@ -16,13 +16,21 @@ const ItemMenuLeft = ({ id, name, icon }: ISidebarData) => {
         className=" flex cursor-pointer items-center py-2 text-[#999999] "
         onMouseOver={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
-        onClick={() => handleShowItem(id)}
+        onClick={() => handleShowItem()}
       >
-        <Icon className="mr-2 text-[16px]" />
-        <span className={`flex-1 text-sm`}>{name}</span>
-        <SlArrowDown
-          className={`ml-4 text-[16px] ${isHover && "text-red-500"}`}
-        />
+        <Icon className="mr-2 text-[16px] " />
+        <span className={`flex-1 text-sm `}>{name}</span>
+        {_display ? (
+          <SlArrowDown
+            id="icon_up"
+            className={`ml-4 text-[16px] ${isHover && "text-red-500"} `}
+          />
+        ) : (
+          <SlArrowDown
+            id="icon_down"
+            className={`ml-4 text-[16px] ${isHover && "text-red-500"} `}
+          />
+        )}
       </div>
       {itemSidebarData.map((item) => {
         if (item.idSlideBar === id)
