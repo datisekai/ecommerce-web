@@ -4,6 +4,13 @@ import type { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import NextNProgress from "nextjs-progressbar";
 import "react-lazy-load-image-component/src/effects/black-and-white.css";
+import { Provider } from "react-redux";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { store } from "../redux";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from "react-hot-toast";
+
+const queryClient = new QueryClient();
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -18,7 +25,13 @@ const MyApp: AppType<{ session: Session | null }> = ({
           showSpinner: false,
         }}
       />
-      <Component {...pageProps} />
+      <Provider store={store}>
+        <QueryClientProvider client={queryClient}>
+          <Component {...pageProps} />
+          <Toaster />
+          <ReactQueryDevtools initialIsOpen={true} />
+        </QueryClientProvider>
+      </Provider>
     </SessionProvider>
   );
 };

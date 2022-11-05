@@ -12,6 +12,7 @@ const handler = async (req: INextApiRequest, res: NextApiResponse) => {
   if (!slug || !permission) {
     return missing(res);
   }
+
   if (req.method === "PUT") {
     if (permission === "admin") {
       if (

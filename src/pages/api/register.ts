@@ -2,6 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "../../server/db/client";
 import argon2 from "argon2";
+import jwt from "jsonwebtoken";
 
 const Register = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
@@ -22,7 +23,7 @@ const Register = async (req: NextApiRequest, res: NextApiResponse) => {
     if (isExist?.length > 0) {
       return res
         .status(404)
-        .json({ success: false, message: "phone number is exist" });
+        .json({ success: false, message: "Phone number was exist" });
     }
 
     try {
@@ -37,7 +38,15 @@ const Register = async (req: NextApiRequest, res: NextApiResponse) => {
         },
       });
 
-      return res.status(200).json(newUser);
+      const token = jwt.sign(
+        {
+          id: newUser.id,
+        },
+        process.env.NEXT_PUBLIC_JWT as string,
+        { expiresIn: "12h" }
+      );
+
+      return res.status(200).json({ token });
     } catch (error) {
       return res
         .status(500)

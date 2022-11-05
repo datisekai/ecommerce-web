@@ -20,7 +20,7 @@ const Search = () => {
         render={(attrs) => (
           <div
             {...attrs}
-            className="shadowBox w-[90%] rounded-sm bg-white px-2 py-2"
+            className="shadowBox w-[90%] rounded-sm bg-white px-3 py-3"
           >
             <HistorySearch />
             <HistorySearch />

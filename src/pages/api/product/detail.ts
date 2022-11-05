@@ -11,25 +11,38 @@ const handler = async (req: INextApiRequest, res: NextApiResponse) => {
       return missing(res);
     }
 
+    console.log(slug);
     try {
       const currentProduct = await prisma?.product.findUnique({
         where: {
           slug: slug as string,
         },
         include: {
-          seller: true,
-          skus: {
-            include: {
-              skuValues: {
-                include: {
-                  variant: true,
-                  variantOption: true,
-                },
-              },
+          seller: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+              nameShop: true,
+              date: true,
+              image: true,
             },
           },
-          variants: true,
-          variantOptions: true,
+          // skus: {
+          //   include: {
+          //     skuValues: {
+          //       include: {
+          //         variant: true,
+          //         variantOption: true,
+          //       },
+          //     },
+          //   },
+          // },
+          variants: {
+            include: {
+              variantOptions: true,
+            },
+          },
         },
       });
       return res.json(currentProduct);

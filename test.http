@@ -264,3 +264,15 @@ Content-Type: application/json
 {
     "name":"Chờ xác nhận"
 }
+
+###
+GET http://localhost:3000/api/product/detail?slug=San-pham-1
+Content-Type: application/json
+
+###
+GET http://localhost:3000/api/login-social
+Content-Type: application/json
+
+{
+    "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNsOXV6Nm1iZzAwMDI3azJrMm04bTVhem0iLCJuYW1lIjoixJDhuqF0IFRow6BuaCIsImVtYWlsIjoibHlkYXRsdGRAZ21haWwuY29tIiwiaXNBY3RpdmUiOnRydWUsInBob25lIjpudWxsLCJwYXNzd29yZCI6bnVsbCwibmFtZVNob3AiOm51bGwsImdlbmRlciI6bnVsbCwiZGF0ZSI6bnVsbCwicGVySWQiOjEsImVtYWlsVmVyaWZpZWQiOm51bGwsImltYWdlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUxtNXd1MjZ1VlEzZ2gyMDAzX1YyWHhYcmF3dmRvR2pudWNYOU1lNnNLQ2g9czk2LWMiLCJpYXQiOjE2Njc1NDkxNjR9.qyiTWaGPVIBZsjd5_TiTwTErb4GRAKq5uGp57B-vzDI"
+}

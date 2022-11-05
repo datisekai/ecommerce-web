@@ -7,3 +7,6 @@ export const formatPrices = (price: number) => {
     currency: "VND",
   }).format(price);
 };
+
+export const createAvatar = (name: string) =>
+  `https://ui-avatars.com/api/?name=${name}`;

@@ -5,8 +5,54 @@ import LoginLayout from "../components/Layouts/LoginLayout";
 import Meta from "../components/Meta";
 import { SlUser } from "react-icons/sl";
 import { AiOutlineLock } from "react-icons/ai";
+import { signIn } from "next-auth/react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import TextField from "../components/TextField";
+import { useMutation } from "@tanstack/react-query";
+import LoginApi from "../services/handle-login";
+import toast from "react-hot-toast";
+import { useRouter } from "next/router";
+import { setCookie } from "cookies-next";
+import { GetServerSideProps } from "next";
+import { GiConfirmed } from "react-icons/gi";
 
 const SignUp = () => {
+  const [step, setStep] = useState(1); //1->sdt, 2->password
+
+  const router = useRouter();
+
+  const {
+    control,
+    formState: { errors },
+    handleSubmit,
+    watch,
+    setValue,
+    getValues,
+  } = useForm({
+    defaultValues: {
+      phone: "",
+      password: "",
+      matchPassword: "",
+    },
+  });
+  let pwd = watch("password");
+
+  const { mutate: signUp, isLoading } = useMutation(LoginApi.signUp, {
+    onSuccess: (data: string) => {
+      setCookie("token", data);
+      router.push("/");
+    },
+    onError: (error: any) => {
+      error.message && toast.error(error.message);
+      setStep(1);
+    },
+  });
+
+  const handleSignUp = (data: any) => {
+    signUp(data);
+  };
+
   return (
     <>
       <Meta
@@ -17,14 +63,85 @@ const SignUp = () => {
       <LoginLayout>
         <div className="absolute top-[50%] right-[15%] hidden w-[400px] translate-y-[-50%] rounded-md bg-white p-7 lg:block">
           <h3 className="text-[18px] lg:text-[20px]">Đăng ký</h3>
-          <input
-            type="text"
-            className="mt-7 w-full rounded-sm border px-4 py-3 text-[15px] outline-none lg:text-[16px]"
-            placeholder="Số điện thoại"
-          />
-          <button className="mt-7 w-full rounded-sm bg-primary px-4 py-3 font-medium uppercase text-white transition-all hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-70">
-            Tiếp theo
-          </button>
+          <div className={`${step !== 1 && "hidden"}`}>
+            <TextField
+              control={control}
+              error={errors}
+              name="phone"
+              placeholder="Số điện thoại"
+              className={`mt-7 w-full rounded-sm border px-4 py-3 text-[15px] outline-none focus:border-black lg:text-[16px] `}
+              rules={{
+                required: {
+                  value: true,
+                  message: "Vui lòng điền vào mục này",
+                },
+                pattern: {
+                  value: /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/,
+                  message: "Vui lòng nhập đúng số điện thoại",
+                },
+              }}
+            />
+          </div>
+
+          <div className={` ${step === 2 ? "block" : "hidden"}`}>
+            <TextField
+              control={control}
+              error={errors}
+              name="password"
+              placeholder="Mật khẩu"
+              rules={{
+                required: {
+                  value: true,
+                  message: "Vui lòng điền vào mục này",
+                },
+              }}
+            />
+            <TextField
+              control={control}
+              error={errors}
+              name="matchPassword"
+              placeholder="Xác nhận mật khẩu"
+              rules={{
+                required: {
+                  value: true,
+                  message: "Vui lòng điền vào mục này",
+                },
+                validate: (value: string) =>
+                  value === pwd || "Mật khẩu chưa khớp",
+              }}
+            />
+          </div>
+          {step === 2 ? (
+            <div className="flex items-center">
+              <button
+                disabled={isLoading}
+                onClick={() => setStep(step - 1)}
+                className="mt-7 w-full rounded-sm bg-gray-400 px-4 py-3 font-medium uppercase text-white transition-all hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-70"
+              >
+                Quay lại
+              </button>
+              <button
+                disabled={isLoading}
+                onClick={handleSubmit(handleSignUp)}
+                className="mt-7 ml-2 w-full rounded-sm bg-primary px-4 py-3 font-medium uppercase text-white transition-all hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-70"
+              >
+                Đăng ký
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={() => {
+                handleSubmit(handleSignUp);
+                if (!errors["phone"]) {
+                  setStep(step + 1);
+                }
+              }}
+              className="mt-7 w-full rounded-sm bg-primary px-4 py-3 font-medium uppercase text-white transition-all hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-70"
+            >
+              Tiếp theo
+            </button>
+          )}
+
           <div className="mt-7 flex items-center">
             <div className="h-[1px] w-full bg-gray-300"></div>
             <p className="px-2 text-[14px] font-medium uppercase text-gray-400">
@@ -67,7 +184,7 @@ const SignUp = () => {
         </div>
         <div className="block min-h-screen px-6 lg:hidden">
           <div className="mx-auto mt-12 h-[51px] w-[45px]">
-            <svg enable-background="new 0 0 54 61" viewBox="0 0 54 61">
+            <svg enableBackground="new 0 0 54 61" viewBox="0 0 54 61">
               <path
                 stroke="#ee4d2d"
                 fill="#ee4d2d"
@@ -75,21 +192,125 @@ const SignUp = () => {
               ></path>
             </svg>
           </div>
-          <div className="mt-10 flex items-center border-b-2">
-            <SlUser className="text-[18px] font-light" />
-            <input
-              type="text"
-              className="px-4 py-2 text-[16px] outline-none"
-              placeholder="Số điện thoại"
-            />
-          </div>
+          {step === 1 && (
+            <>
+              <div className="mt-10 flex items-center border-b-2">
+                <SlUser className="text-[18px] font-light" />
 
-          <button
-            disabled
-            className="mt-5 w-full rounded-sm bg-primary px-4 py-3 text-[16px] text-white disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-500"
-          >
-            Tiếp theo
-          </button>
+                <TextField
+                  control={control}
+                  error={errors}
+                  name="phone"
+                  placeholder="Số điện thoại"
+                  className={`px-4 py-2 text-[16px] outline-none `}
+                  showError={false}
+                  rules={{
+                    required: {
+                      value: true,
+                      message: "Vui lòng điền vào mục này",
+                    },
+                    pattern: {
+                      value:
+                        /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/,
+                      message: "Vui lòng nhập đúng số điện thoại",
+                    },
+                  }}
+                />
+              </div>
+              {errors["phone"] && (
+                <p className="mt-[2px] text-red-500">
+                  {errors["phone"].message}
+                </p>
+              )}
+            </>
+          )}
+          {step === 2 && (
+            <>
+              <div className="mt-4 flex items-center border-b-2">
+                <AiOutlineLock className="text-[22px] font-light" />
+                <TextField
+                  control={control}
+                  error={errors}
+                  name="password"
+                  placeholder="Mật khẩu"
+                  className="px-4 py-2 text-[16px] outline-none"
+                  showError={false}
+                  rules={{
+                    required: {
+                      value: true,
+                      message: "Vui lòng điền vào mục này",
+                    },
+                  }}
+                />
+              </div>
+              {errors["password"] && (
+                <p className="mt-[2px] text-red-500">
+                  {errors["password"].message}
+                </p>
+              )}
+            </>
+          )}
+
+          {step === 2 && (
+            <>
+              <div className="mt-4 flex items-center border-b-2">
+                <GiConfirmed className="text-[20px] font-light" />
+                <TextField
+                  control={control}
+                  error={errors}
+                  name="matchPassword"
+                  placeholder="Xác nhận mật khẩu"
+                  className="px-4 py-2 text-[16px] outline-none"
+                  showError={false}
+                  rules={{
+                    required: {
+                      value: true,
+                      message: "Vui lòng điền vào mục này",
+                    },
+                    validate: (value: string) =>
+                      value === pwd || "Mật khẩu chưa khớp",
+                  }}
+                />
+              </div>
+              {errors["matchPassword"] && (
+                <p className="mt-[2px] text-red-500">
+                  {errors["matchPassword"].message}
+                </p>
+              )}
+            </>
+          )}
+
+          {step === 2 ? (
+            <div className="flex items-center">
+              <button
+                disabled={isLoading}
+                onClick={() => setStep(step - 1)}
+                className="mt-7 w-full rounded-sm bg-gray-400 px-4 py-3 font-medium uppercase text-white transition-all hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-70"
+              >
+                Quay lại
+              </button>
+              <button
+                disabled={isLoading}
+                onClick={handleSubmit(handleSignUp)}
+                className="mt-7 ml-2 w-full rounded-sm bg-primary px-4 py-3 font-medium uppercase text-white transition-all hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-70"
+              >
+                Đăng ký
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={() => {
+                handleSubmit(handleSignUp);
+                if (!errors["phone"]) {
+                  setStep(step + 1);
+                }
+              }}
+              className="mt-7 w-full rounded-sm bg-primary px-4 py-3 font-medium uppercase text-white transition-all hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-70"
+            >
+              Tiếp theo
+            </button>
+          )}
+
           <div className="mt-4 flex items-center justify-between">
             <Link href={"/login"}>
               <p className="text-[14px] text-blue-600">Đăng nhập</p>
@@ -112,7 +333,10 @@ const SignUp = () => {
               </span>
             </div>
             <div className="mt-2 flex items-center border border-gray-300 py-[6px] px-2">
-              <FcGoogle className="text-[24px] " />
+              <FcGoogle
+                onClick={() => signIn("google")}
+                className="text-[24px] "
+              />
               <span className="ml-2 flex-1 text-center text-[14px] text-gray-900">
                 Tiếp tục với Google
               </span>
@@ -136,3 +360,19 @@ const SignUp = () => {
 };
 
 export default SignUp;
+
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  const token = req.cookies["token"];
+
+  if (token) {
+    return {
+      redirect: {
+        destination: "/",
+      },
+      props: {},
+    };
+  }
+  return {
+    props: {},
+  };
+};

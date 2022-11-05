@@ -1,20 +1,76 @@
-import React, { FC, useEffect, useState } from "react";
-import LoginLayout from "../components/Layouts/LoginLayout";
+import { deleteCookie, getCookie, setCookie } from "cookies-next";
+import { GetServerSideProps } from "next";
+import { signIn, useSession } from "next-auth/react";
+import Link from "next/link";
+import { FC, useEffect } from "react";
+import { AiOutlineLock } from "react-icons/ai";
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
-import Link from "next/link";
 import { SlUser } from "react-icons/sl";
-import { AiOutlineLock } from "react-icons/ai";
+import LoginLayout from "../components/Layouts/LoginLayout";
 import Meta from "../components/Meta";
-import { useSession, signIn, getProviders, getSession } from "next-auth/react";
-import { AppProps } from "next/app";
-import { NextPage } from "next";
-import { getToken } from "next-auth/jwt";
+import LoginApi from "../services/handle-login";
+import jwt from "jsonwebtoken";
+import { useRouter } from "next/router";
+import FullLoading from "../components/Loading/FullLoading";
+import TextField from "../components/TextField";
+import { useForm } from "react-hook-form";
+import { useMutation } from "@tanstack/react-query";
+import { Spin } from "react-cssfx-loading";
+import toast from "react-hot-toast";
+import Notify from "../components/Toast/notify";
 
-interface LoginProps {}
-
-const Login: FC<LoginProps> = () => {
+const Login = () => {
   const { data: session, status } = useSession();
+  const router = useRouter();
+
+  const checkLogin = async () => {
+    if (session && status === "authenticated") {
+      const token = jwt.sign(
+        session.user as any,
+        process.env.NEXT_PUBLIC_JWT as string
+      );
+      const newToken = await LoginApi.loginSocial(token);
+      setCookie("token", newToken);
+      router.push("/");
+    }
+  };
+
+  useEffect(() => {
+    checkLogin();
+  }, [session]);
+
+  const { mutate: login, isLoading } = useMutation(LoginApi.login, {
+    onSuccess: (data: string) => {
+      setCookie("token", data);
+      router.push("/");
+    },
+    onError: (error: any) => {
+      console.log(error);
+      toast.error(error?.message);
+      // toast.custom((t) => <Notify t={t} message={error?.message} />);
+    },
+  });
+
+  const {
+    control,
+    formState: { errors },
+    handleSubmit,
+  } = useForm({
+    defaultValues: {
+      phone: "",
+      password: "",
+    },
+  });
+
+  const handleLogin = (data: any) => {
+    console.log(data);
+    login(data);
+  };
+
+  if (status === "authenticated") {
+    return <FullLoading />;
+  }
 
   return (
     <>
@@ -25,20 +81,52 @@ const Login: FC<LoginProps> = () => {
       />
       <LoginLayout title="Đăng nhập">
         <div className="absolute hidden w-[90%] translate-y-[-50%] rounded-md bg-white p-7 md:w-[60%] lg:top-[50%] lg:right-[15%] lg:block lg:w-[400px]">
-          <h3 className="text-[18px] lg:text-[20px]">Đăng nhập</h3>
-          <input
-            type="text"
-            className="mt-7 w-full rounded-sm border px-4 py-3 text-[15px] outline-none focus:border-black lg:text-[16px]"
-            placeholder="Số điện thoại"
-          />
-          <input
-            type="password"
-            className="mt-6 w-full rounded-sm border px-4 py-3 text-[15px] outline-none focus:border-black lg:text-[16px]"
-            placeholder="Mật khẩu"
-          />
-          <button className="mt-7 w-full rounded-sm bg-primary px-4 py-3 font-medium uppercase text-white transition-all hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-70">
-            Đăng Nhập
-          </button>
+          <h3 className="mb-1 text-[18px] lg:text-[20px]">Đăng nhập</h3>
+          <form onSubmit={handleSubmit(handleLogin)}>
+            <TextField
+              control={control}
+              error={errors}
+              name="phone"
+              placeholder="Số điện thoại"
+              rules={{
+                required: {
+                  value: true,
+                  message: "Vui lòng điền vào mục này",
+                },
+                pattern: {
+                  value: /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/,
+                  message: "Vui lòng nhập đúng số điện thoại",
+                },
+              }}
+            />
+            <TextField
+              control={control}
+              error={errors}
+              name="password"
+              type="password"
+              placeholder="Mật khẩu"
+              rules={{
+                required: {
+                  value: true,
+                  message: "Vui lòng điền vào mục này",
+                },
+              }}
+            />
+            <button
+              onClick={handleSubmit(handleLogin)}
+              disabled={isLoading}
+              className="mt-7 w-full rounded-sm bg-primary px-4 py-3 text-center font-medium uppercase text-white transition-all hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-70"
+            >
+              <span className={`${isLoading && "hidden"}`}> Đăng nhập</span>
+              <div
+                className={`mx-auto  w-full justify-center ${
+                  isLoading ? "flex" : "hidden"
+                }`}
+              >
+                <Spin color="#ffffff" />
+              </div>
+            </button>
+          </form>
           <p className="mt-2 text-[13px] text-blue-600">Quên mật khẩu</p>
           <div className="mt-7 flex items-center">
             <div className="h-[1px] w-full bg-gray-300"></div>
@@ -65,7 +153,9 @@ const Login: FC<LoginProps> = () => {
           <div className="mt-7 text-center text-[16px] text-gray-400">
             Bạn mới biết đến Shopee?
             <Link href={"/sign-up"}>
-              <span className="text-primary hover:cursor-pointer">Đăng ký</span>
+              <span className="px-1 text-primary hover:cursor-pointer">
+                Đăng ký
+              </span>
             </Link>
           </div>
         </div>
@@ -81,25 +171,64 @@ const Login: FC<LoginProps> = () => {
           </div>
           <div className="mt-10 flex items-center border-b-2">
             <SlUser className="text-[18px] font-light" />
-            <input
-              type="text"
-              className="px-4 py-2 text-[16px] outline-none"
+            <TextField
+              control={control}
+              error={errors}
+              name="phone"
               placeholder="Số điện thoại"
+              className="px-4 py-2 text-[16px] outline-none"
+              showError={false}
+              rules={{
+                required: {
+                  value: true,
+                  message: "Vui lòng điền vào mục này",
+                },
+                pattern: {
+                  value: /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/,
+                  message: "Vui lòng nhập đúng số điện thoại",
+                },
+              }}
             />
           </div>
+          {errors["phone"] && (
+            <p className="mt-[2px] text-red-500">{errors["phone"].message}</p>
+          )}
           <div className="mt-4 flex items-center border-b-2">
             <AiOutlineLock className="text-[22px] font-light" />
-            <input
-              type="text"
-              className="px-4 py-2 text-[16px] outline-none"
+            <TextField
+              control={control}
+              error={errors}
+              name="password"
+              type="password"
               placeholder="Mật khẩu"
+              className="px-4 py-2 text-[16px] outline-none"
+              showError={false}
+              rules={{
+                required: {
+                  value: true,
+                  message: "Vui lòng điền vào mục này",
+                },
+              }}
             />
           </div>
+          {errors["password"] && (
+            <p className="mt-[2px] text-red-500">
+              {errors["password"].message}
+            </p>
+          )}
           <button
-            disabled
+            onClick={handleSubmit(handleLogin)}
+            disabled={isLoading}
             className="mt-5 w-full rounded-sm bg-primary px-4 py-3 text-[16px] text-white disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-500"
           >
-            Đăng nhập
+            <span className={`${isLoading && "hidden"}`}> Đăng nhập</span>
+            <div
+              className={`mx-auto  w-full justify-center ${
+                isLoading ? "flex" : "hidden"
+              }`}
+            >
+              <Spin color="#ffffff" />
+            </div>
           </button>
           <div className="mt-4 flex items-center justify-between">
             <Link href={"/sign-up"}>
@@ -116,13 +245,19 @@ const Login: FC<LoginProps> = () => {
           </div>
 
           <div className="mt-5">
-            <div className="mt-2 flex items-center border border-gray-300 py-[6px] px-2">
+            <div
+              onClick={() => signIn("facebook")}
+              className="mt-2 flex items-center border border-gray-300 py-[6px] px-2"
+            >
               <FaFacebook className="text-[24px] text-blue-600" />
               <span className="ml-2 flex-1 text-center text-[14px] text-gray-900">
                 Tiếp tục với Facebook
               </span>
             </div>
-            <div className="mt-2 flex items-center border border-gray-300 py-[6px] px-2">
+            <div
+              onClick={() => signIn("google")}
+              className="mt-2 flex items-center border border-gray-300 py-[6px] px-2"
+            >
               <FcGoogle className="text-[24px] " />
               <span className="ml-2 flex-1 text-center text-[14px] text-gray-900">
                 Tiếp tục với Google
@@ -136,3 +271,19 @@ const Login: FC<LoginProps> = () => {
 };
 
 export default Login;
+
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  const token = req.cookies["token"];
+
+  if (token) {
+    return {
+      redirect: {
+        destination: "/",
+      },
+      props: {},
+    };
+  }
+  return {
+    props: {},
+  };
+};

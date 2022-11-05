@@ -46,6 +46,16 @@ body{
     right:20px
 }
 
+
+.variant-checked{
+    position: absolute;
+    display: block;
+    right:-0.5px;
+    bottom:-0.5px;
+    z-index: 100;
+    border-color: #f53d2d;
+}
+
 .showNotification::after,.showLanguage::after{
     content: "";
     position: absolute;
@@ -57,6 +67,7 @@ body{
     right:0;
 }
 
+
 .showNotification:hover{
     cursor: pointer;
 }
@@ -65,7 +76,15 @@ body{
     display: flex;
 }
 
+.showMenuUser:hover .menuUser{
+    display: flex;
+}
+
 .showLanguage:hover .menuLanguage{
+    display: block;
+}
+
+.showMenuPrice:hover .menuPrice{
     display: block;
 }
 
@@ -80,7 +99,7 @@ body{
     }
 }
 
-.menuNotify, .menuLanguage{
+.menuNotify, .menuLanguage,.menuUser{
     transform-origin: top right;
     animation: headerNotifyGrowth ease-in 0.3s;
 }
@@ -94,3 +113,16 @@ body{
     display: block;
     z-index: 100;
 }
+
+.showMenuUser::after{
+    content: "";
+    position: absolute;
+    display: block;
+    width: 150px;
+    height: 20px;
+    background: transparent;
+    top: 15px;
+    right:0;
+}
+
+

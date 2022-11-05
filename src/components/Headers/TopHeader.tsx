@@ -5,10 +5,21 @@ import { BsBell, BsChevronDown } from "react-icons/bs";
 import { IoIosHelpCircleOutline } from "react-icons/io";
 import { MdLanguage } from "react-icons/md";
 import Link from "next/link";
+import { useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
+import { deleteCookie } from "cookies-next";
+import { useRouter } from "next/router";
+import { logOut, setUser } from "../../redux/slices/user";
+import { signOut } from "next-auth/react";
+import ActionUser from "../Popup/ActionUser";
 
 const TopHeader = () => {
+  const { user } = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+
   return (
-    <div className="flex items-center justify-between py-2">
+    <div className="mx-auto flex w-[calc(100%-16px)] items-center justify-between py-2  ">
       <div className="flex items-center">
         <a
           href="#"
@@ -63,20 +74,24 @@ const TopHeader = () => {
             </h3>
           </div>
         </div>
-        <div className="ml-3 flex items-center">
-          <Link href={"/sign-up"}>
-            <button className="mr-2 capitalize text-white hover:opacity-80">
-              Đăng ký
-            </button>
-          </Link>
-          <div className="divider relative ml-2">
-            <Link href={"/login"}>
-              <button className="ml-2 capitalize text-white hover:opacity-80">
-                Đăng nhập
+        {!user ? (
+          <div className="ml-3 flex items-center">
+            <Link href={"/sign-up"}>
+              <button className="mr-2 capitalize text-white hover:opacity-80">
+                Đăng ký
               </button>
             </Link>
+            <div className="divider relative ml-2">
+              <Link href={"/login"}>
+                <button className="ml-2 capitalize text-white hover:opacity-80">
+                  Đăng nhập
+                </button>
+              </Link>
+            </div>
           </div>
-        </div>
+        ) : (
+          <ActionUser />
+        )}
       </div>
     </div>
   );

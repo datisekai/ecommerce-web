@@ -1,14 +1,15 @@
 import { NextApiResponse } from "next";
-import { NextApiRequest } from "next";
+import INextApiRequest from "../../models/NextApiRequest";
+import missing from "../../utils/missing";
 import jwt from "jsonwebtoken";
-import INextApiRequest from "../src/models/NextApiRequest";
+import { prisma } from "../../server/db/client";
+import { setCookie } from "cookies-next";
 
-const isLogin = (handler: any) => {
-  return async (req: any, res: NextApiResponse) => {
-    const authHeader = req.headers.authorization;
-    const token = authHeader && authHeader.split(" ")[1];
+const handler = async (req: INextApiRequest, res: NextApiResponse) => {
+  if (req.method === "POST") {
+    const { token } = req.body;
     if (!token) {
-      return res.status(401).json({ success: false, message: "Missing token" });
+      return missing(res);
     }
 
     try {
@@ -20,7 +21,7 @@ const isLogin = (handler: any) => {
       if (decode) {
         const myUser = await prisma?.user.findFirst({
           where: {
-            id: decode.id,
+            email: decode.email,
           },
           include: {
             permission: true,
@@ -28,8 +29,15 @@ const isLogin = (handler: any) => {
         });
 
         if (myUser) {
-          req.userId = myUser.id;
-          return handler(req, res);
+          const token = jwt.sign(
+            {
+              id: myUser.id,
+            },
+            process.env.NEXT_PUBLIC_JWT as string,
+            { expiresIn: "12h" }
+          );
+
+          return res.json({ token });
         }
       }
 
@@ -37,7 +45,7 @@ const isLogin = (handler: any) => {
     } catch (error) {
       return res.status(401).json({ success: false, message: "No Authorized" });
     }
-  };
+  }
 };
 
-export default isLogin;
+export default handler;
