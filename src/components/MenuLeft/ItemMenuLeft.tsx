@@ -22,13 +22,13 @@ const ItemMenuLeft = ({ id, name, icon }: ISidebarData) => {
         <span className={`flex-1 text-sm `}>{name}</span>
         {_display ? (
           <SlArrowDown
-            id="icon_up"
-            className={`ml-4 text-[16px] ${isHover && "text-red-500"} `}
+            className={`icon_up ml-4 text-[16px] ${isHover && "text-red-500"} `}
           />
         ) : (
           <SlArrowDown
-            id="icon_down"
-            className={`ml-4 text-[16px] ${isHover && "text-red-500"} `}
+            className={`icon_down ml-4 text-[16px] ${
+              isHover && "text-red-500"
+            }`}
           />
         )}
       </div>

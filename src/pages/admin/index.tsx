@@ -1,11 +1,15 @@
 import React from "react";
 import HeaderAdmin from "../../components/Headers/HeaderAdmin";
 import MenuLeft from "../../components/MenuLeft/MenuLeft";
+import LayoutAdmin from "../../components/layoutsAdmin/LayoutProductAdmin";
 const Admin = () => {
   return (
-    <div className="h-[200vh] bg-[#f6f6f6]">
+    <div className=" bg-[#f6f6f6]">
       <HeaderAdmin />
-      <MenuLeft />
+      <div className="pt-14">
+        <MenuLeft />
+        <LayoutAdmin />
+      </div>
     </div>
   );
 };

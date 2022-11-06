@@ -3,9 +3,18 @@
   transform: rotate($deg);
   transition: transform .2s ease,-webkit-transform .2s ease;
 }
-#icon_up{
+.icon_up{
   @include  up-down(180deg);
 }
-#icon_down{
+.icon_down{
   @include  up-down(0deg);
+}
+._shadow{
+  box-shadow: rgb(0 0 0 / 13%) 0px 1px 4px 0px;
+}
+.shopee-tabs__ink-bar {
+  -webkit-transition: width .2s ease-in-out,-webkit-transform .2s ease-in-out;
+  transition: width .2s ease-in-out,-webkit-transform .2s ease-in-out;
+  transition: transform .2s ease-in-out,width .2s ease-in-out;
+  transition: transform .2s ease-in-out,width .2s ease-in-out,-webkit-transform .2s ease-in-out;
 }
