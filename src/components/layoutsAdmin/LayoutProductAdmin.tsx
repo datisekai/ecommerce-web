@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import TableLayout from "./TableLayout";
-import columnTable from "../data/columnTable";
+import LayoutContentProduct from "./LayoutContentProduct";
 import LayoutTopProduct from "./LayoutTopProduct";
 const LayoutAdmin = () => {
   return (
@@ -9,7 +8,7 @@ const LayoutAdmin = () => {
         <LayoutTopProduct />
       </div>
       <div className=" _shadow relative ml-80 mr-[100px] mt-4 mb-20 min-w-[900px] rounded-[4px] bg-[#ffffff] pb-1">
-        <TableLayout columnTable={columnTable} />
+        <LayoutContentProduct />
       </div>
     </>
   );

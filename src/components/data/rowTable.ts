@@ -1,5 +1,3 @@
-import internal from "stream";
-
 export type IDataRowTable = {
   id: number;
   name: string;

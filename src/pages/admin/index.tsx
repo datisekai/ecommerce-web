@@ -6,7 +6,7 @@ const Admin = () => {
   return (
     <div className=" bg-[#f6f6f6]">
       <HeaderAdmin />
-      <div className="pt-14">
+      <div className="min-h-screen pt-14">
         <MenuLeft />
         <LayoutAdmin />
       </div>
