@@ -266,7 +266,7 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:3000/api/product/detail?slug=San-pham-1
+GET http://localhost:3000/api/product/detail?slug=day-djeo-djong-ho-chat-lieu-da-bo-that-100percent-thich-hop-cho-apple-watch-7-6-se-5-4-42mm-3
 Content-Type: application/json
 
 ###

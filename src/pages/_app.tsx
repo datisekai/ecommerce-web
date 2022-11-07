@@ -20,7 +20,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
     <SessionProvider session={session}>
       <NextNProgress
         showOnShallow={true}
-        color={"#f53d2d"}
+        // color={"#f53d2d"}
         options={{
           showSpinner: false,
         }}

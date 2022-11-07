@@ -177,13 +177,13 @@ const DetailSku = () => {
                 </span>
                 <div className="flex flex-1 items-center">
                   <div className="flex items-center rounded-sm border">
-                    <AiOutlineMinus className="mx-2 my-2" />
+                    <AiOutlineMinus className="mx-2 my-2 cursor-pointer" />
                     <input
                       type="text"
                       className="h-full w-[50px] text-center text-[17px] outline-none"
                       value={1}
                     />
-                    <AiOutlinePlus className="mx-2 my-2 " />
+                    <AiOutlinePlus className="mx-2 my-2 cursor-pointer " />
                   </div>
                   <span className="ml-4 text-[15px] text-[#666]">
                     4978 sản phẩm có sẵn

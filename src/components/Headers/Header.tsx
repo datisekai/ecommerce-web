@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { BsCart2 } from "react-icons/bs";
+import Button from "../Button";
+import CartCard from "../Cards/CartCard";
 import WidthLayout from "../Layouts/WidthLayout";
 import Search from "../Search";
 import TopHeader from "./TopHeader";
@@ -48,8 +50,26 @@ const Header = () => {
               ))}
             </div>
           </div>
-          <div className="mx-[10px] mb-[12px] pl-[3.5rem] pr-[2.5rem]">
+          <div className="showMenuCart relative mx-[10px]  mb-[12px] pl-[3.5rem] pr-[2.5rem] hover:cursor-pointer ">
             <BsCart2 className="text-[28px]  text-white" />
+            <div className="square-divider  menuCart absolute right-0 mt-2 hidden w-[450px] rounded-sm bg-white p-4 shadow-md ">
+              <h4 className="text-[17px] text-[#666]">Sản phẩm mới thêm</h4>
+              <div className="mt-2">
+                <CartCard />
+                <CartCard />
+                <CartCard />
+                <CartCard />
+              </div>
+              <div className="mt-2 flex items-center justify-between">
+                <p>8 sản phẩm</p>
+                <Link href={"/cart"}>
+                  <Button
+                    text="Xem giỏ hàng"
+                    className="rounded-sm bg-primary px-4 py-2 text-white hover:opacity-90"
+                  />
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </WidthLayout>

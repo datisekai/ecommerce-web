@@ -1,5 +1,6 @@
 import { deleteCookie } from "cookies-next";
 import { signOut } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
@@ -44,9 +45,11 @@ const ActionUser = () => {
       </button>
 
       <ul className="square-divider menuUser shadowBox absolute right-0 top-[30px] z-10  hidden flex-col rounded-sm bg-white p-2">
-        <li className="py-2 px-2 text-[15px] transition-all hover:cursor-pointer hover:text-primary ">
-          Tài khoản của tôi
-        </li>
+        <Link href={"/user"}>
+          <li className="py-2 px-2 text-[15px] transition-all hover:cursor-pointer hover:text-primary ">
+            Tài khoản của tôi
+          </li>
+        </Link>
         <li className="py-2 px-2 text-[15px] transition-all hover:cursor-pointer hover:text-primary ">
           Đơn mua
         </li>
