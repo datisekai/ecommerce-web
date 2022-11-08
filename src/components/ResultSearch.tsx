@@ -1,19 +1,25 @@
-import React from "react";
+import React, { FC } from "react";
 import { AiOutlineDown, AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import { VscInfo } from "react-icons/vsc";
 import ProductCard from "./Cards/ProductCard";
 import Pagination from "./Pagination";
 
-const ResultSearch = () => {
+type ResultSearchProps = {
+  isMain?: boolean;
+};
+
+const ResultSearch: FC<ResultSearchProps> = ({ isMain = true }) => {
   return (
     <div className="flex-1 pl-4">
-      <div className="flex items-center">
-        <VscInfo className="text-[17px]" />
-        <h5 className="ml-2 text-[17px]">
-          Kết quả tìm kiếm cho từ khóa &quot;
-          <strong className="text-red-500">áo</strong>&quot;
-        </h5>
-      </div>
+      {isMain && (
+        <div className="flex items-center">
+          <VscInfo className="text-[17px]" />
+          <h5 className="ml-2 text-[17px]">
+            Kết quả tìm kiếm cho từ khóa &quot;
+            <strong className="text-red-500">áo</strong>&quot;
+          </h5>
+        </div>
+      )}
 
       <div className="mt-4 flex items-center justify-between bg-[rgba(0,0,0,.03)] px-4 py-3">
         <div className="flex items-center">

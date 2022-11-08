@@ -11,9 +11,13 @@ import { useRouter } from "next/router";
 
 type UserLayoutProps = {
   children: React.ReactNode;
+  bgcolor?: string;
 };
 
-const UserLayout: FC<UserLayoutProps> = ({ children }) => {
+const UserLayout: FC<UserLayoutProps> = ({
+  children,
+  bgcolor = "bg-white",
+}) => {
   const router = useRouter();
   const [showMenuUser, setShowMenuUser] = useState(true);
 
@@ -100,7 +104,8 @@ const UserLayout: FC<UserLayoutProps> = ({ children }) => {
                     <BiNotepad className="text-[20px] text-blue-500" />
                     <p
                       className={`ml-2 capitalize line-clamp-1 ${
-                        router.asPath === "/user/purchase" && "text-primary"
+                        router.asPath.indexOf("/user/purchase") !== -1 &&
+                        "text-primary"
                       }`}
                     >
                       Đơn mua
@@ -109,7 +114,7 @@ const UserLayout: FC<UserLayoutProps> = ({ children }) => {
                 </Link>
               </div>
             </div>
-            <div className="flex-1 rounded-sm bg-white px-6 py-4 shadow-md">
+            <div className={`flex-1 rounded-sm px-6 py-4 shadow-md ${bgcolor}`}>
               {children}
             </div>
           </div>
