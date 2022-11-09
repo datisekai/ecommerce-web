@@ -2,7 +2,7 @@ import React from "react";
 import { CgMenuGridR } from "react-icons/cg";
 const HeaderAdmin = () => {
   return (
-    <div className="min-h-14 fixed flex max-h-14 w-[100%] bg-[#fff]">
+    <div className="min-h-14 fixed z-50 flex max-h-14 w-[100%] bg-[#fff]">
       <svg viewBox="0 0 420 134" className="ml-4 mb-2 w-24 cursor-pointer">
         <g fill-rule="evenodd">
           <path

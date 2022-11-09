@@ -13,12 +13,12 @@ export type ISidebarData = {
 const sidebarData: ISidebarData[] = [
   {
     id: 1,
-    name: "Quản Lý Sản Phẩm",
+    name: "Quản Lý Đơn Hàng",
     icon: BsBoxSeam,
   },
   {
     id: 2,
-    name: "Quản Lý Đơn Hàng",
+    name: "Quản Lý Sản Phẩm",
     icon: RiBillLine,
   },
   {

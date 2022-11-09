@@ -1,17 +1,15 @@
 import React from "react";
 import HeaderAdmin from "../../components/Headers/HeaderAdmin";
 import MenuLeft from "../../components/MenuLeft/MenuLeft";
-import LayoutAdmin from "../../components/layoutsAdmin/LayoutProductAdmin";
-const Admin = () => {
+import LayoutProductAdmin from "../../components/layoutsAdmin/UIProduct/LayoutProductAdmin";
+import LayoutBill from "../../components/layoutsAdmin/UIBill/LayoutBill";
+import SellerLayout from "../../components/Layouts/SellerLayout";
+const AllBill = () => {
   return (
-    <div className=" bg-[#f6f6f6]">
-      <HeaderAdmin />
-      <div className="min-h-screen pt-14">
-        <MenuLeft />
-        <LayoutAdmin />
-      </div>
-    </div>
+    <SellerLayout>
+      <LayoutBill />
+    </SellerLayout>
   );
 };
 
-export default Admin;
+export default AllBill;

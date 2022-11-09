@@ -1,19 +1,30 @@
 export type IDataRowTable = {
   id: number;
+  Action: any;
+};
+export type I = {
+  id: number;
   name: string;
   sku: number;
   gia: number;
   soluong: number;
-  thaotac: string;
+  Action: any;
 };
-const rowTables: IDataRowTable[] = [
+const rowTables: I[] = [
   {
     id: 1,
     name: "ID sản phẩm",
     sku: 1,
     gia: 1,
     soluong: 1,
-    thaotac: "a",
+    Action: {
+      handleUpdate: () => {
+        console.log("datisekai");
+      },
+      handleDelete: () => {
+        console.log("ac");
+      },
+    },
   },
   {
     id: 2,
@@ -21,7 +32,14 @@ const rowTables: IDataRowTable[] = [
     sku: 1,
     gia: 1,
     soluong: 1,
-    thaotac: "a",
+    Action: {
+      handleUpdate: () => {
+        console.log("datisekai");
+      },
+      handleDelete: () => {
+        console.log("ac");
+      },
+    },
   },
   {
     id: 3,
@@ -29,7 +47,14 @@ const rowTables: IDataRowTable[] = [
     sku: 1,
     gia: 1,
     soluong: 1,
-    thaotac: "a",
+    Action: {
+      handleUpdate: () => {
+        console.log("datisekai");
+      },
+      handleDelete: () => {
+        console.log("ac");
+      },
+    },
   },
   {
     id: 4,
@@ -37,7 +62,14 @@ const rowTables: IDataRowTable[] = [
     sku: 1,
     gia: 1,
     soluong: 1,
-    thaotac: "a",
+    Action: {
+      handleUpdate: () => {
+        console.log("datisekai");
+      },
+      handleDelete: () => {
+        console.log("ac");
+      },
+    },
   },
   {
     id: 5,
@@ -45,7 +77,14 @@ const rowTables: IDataRowTable[] = [
     sku: 1,
     gia: 1,
     soluong: 1,
-    thaotac: "a",
+    Action: {
+      handleUpdate: () => {
+        console.log("datisekai");
+      },
+      handleDelete: () => {
+        console.log("ac");
+      },
+    },
   },
   {
     id: 6,
@@ -53,7 +92,14 @@ const rowTables: IDataRowTable[] = [
     sku: 1,
     gia: 1,
     soluong: 1,
-    thaotac: "a",
+    Action: {
+      handleUpdate: () => {
+        console.log("datisekai");
+      },
+      handleDelete: () => {
+        console.log("ac");
+      },
+    },
   },
   {
     id: 7,
@@ -61,7 +107,14 @@ const rowTables: IDataRowTable[] = [
     sku: 2,
     gia: 1,
     soluong: 1,
-    thaotac: "a",
+    Action: {
+      handleUpdate: () => {
+        console.log("datisekai");
+      },
+      handleDelete: () => {
+        console.log("ac");
+      },
+    },
   },
   {
     id: 8,
@@ -69,7 +122,14 @@ const rowTables: IDataRowTable[] = [
     sku: 2,
     gia: 1,
     soluong: 1,
-    thaotac: "a",
+    Action: {
+      handleUpdate: () => {
+        console.log("datisekai");
+      },
+      handleDelete: () => {
+        console.log("ac");
+      },
+    },
   },
   {
     id: 9,
@@ -77,7 +137,14 @@ const rowTables: IDataRowTable[] = [
     sku: 2,
     gia: 1,
     soluong: 1,
-    thaotac: "a",
+    Action: {
+      handleUpdate: () => {
+        console.log("datisekai");
+      },
+      handleDelete: () => {
+        console.log("ac");
+      },
+    },
   },
   {
     id: 10,
@@ -85,7 +152,14 @@ const rowTables: IDataRowTable[] = [
     sku: 2,
     gia: 1,
     soluong: 1,
-    thaotac: "a",
+    Action: {
+      handleUpdate: () => {
+        console.log("datisekai");
+      },
+      handleDelete: () => {
+        console.log("ac");
+      },
+    },
   },
   {
     id: 11,
@@ -93,7 +167,14 @@ const rowTables: IDataRowTable[] = [
     sku: 2,
     gia: 1,
     soluong: 1,
-    thaotac: "a",
+    Action: {
+      handleUpdate: () => {
+        console.log("datisekai");
+      },
+      handleDelete: () => {
+        console.log("ac");
+      },
+    },
   },
   {
     id: 12,
@@ -101,7 +182,14 @@ const rowTables: IDataRowTable[] = [
     sku: 2,
     gia: 1,
     soluong: 1,
-    thaotac: "a",
+    Action: {
+      handleUpdate: () => {
+        console.log("datisekai");
+      },
+      handleDelete: () => {
+        console.log("ac");
+      },
+    },
   },
 ];
 

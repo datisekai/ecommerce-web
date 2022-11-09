@@ -1,9 +1,9 @@
-export type IDataRowTable = {
+export type IDataColumnTable = {
   id: string;
   name: string;
   width: string;
 };
-const columnTable: IDataRowTable[] = [
+const columnTable: IDataColumnTable[] = [
   {
     id: "id",
     name: "ID",
@@ -30,7 +30,7 @@ const columnTable: IDataRowTable[] = [
     width: "100px",
   },
   {
-    id: "thaotac",
+    id: "Action",
     name: "Thao tác",
     width: "200px",
   },

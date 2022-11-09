@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import TableLayout from "./TableLayout";
-import columnTable from "../data/columnTable";
-import rowTables from "../data/rowTable";
+import TableLayout from "../../_custom/TableLayout";
+import columnTable from "../../data/columnTable";
+import rowTables from "../../data/rowTable";
 const LayoutContentProduct = () => {
   const [changebottom, setChangeBottom] = useState({
     width: 71,
@@ -64,7 +64,13 @@ const LayoutContentProduct = () => {
         </div>
       </div>
       {/* ************************************** */}
-      <TableLayout columnTable={columnTable} rowTables={rowTables} />
+      <TableLayout
+        columnTable={columnTable}
+        rowTables={rowTables}
+        isAction={true}
+        isUpdate={true}
+        isDelete={true}
+      />
     </>
   );
 };

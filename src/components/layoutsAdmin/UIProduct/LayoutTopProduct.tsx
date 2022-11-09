@@ -1,5 +1,4 @@
 import React from "react";
-
 const LayoutTopProduct = () => {
   return (
     <div className="mb-4 flex items-center justify-between  p-4">

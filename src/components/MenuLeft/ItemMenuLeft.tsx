@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { ISidebarData } from "../data/sidebar";
 import { SlArrowDown } from "react-icons/sl";
 import itemSidebarData from "../data/itemSlideBar";
-import { IItemSidebarData } from "../data/itemSlideBar";
+import { useRouter } from "next/router";
+import Link from "next/link";
 const ItemMenuLeft = ({ id, name, icon }: ISidebarData) => {
   const Icon = icon;
   const [isHover, setIsHover] = useState(false);
@@ -10,6 +11,9 @@ const ItemMenuLeft = ({ id, name, icon }: ISidebarData) => {
   const handleShowItem = () => {
     _display === false ? setDisplay(true) : setDisplay(false);
   };
+
+  const router = useRouter();
+
   return (
     <div className="mb-4">
       <div
@@ -32,15 +36,21 @@ const ItemMenuLeft = ({ id, name, icon }: ISidebarData) => {
           />
         )}
       </div>
-      {itemSidebarData.map((item) => {
+      {itemSidebarData.map((item, index) => {
         if (item.idSlideBar === id)
           return (
             _display && (
-              <div
-                className={`text-xm ml-6 py-1 text-[#333333] hover:cursor-pointer hover:text-red-500`}
-              >
-                {item.name}
-              </div>
+              <Link href={item.url} key={index}>
+                <div
+                  className={`text-xm ml-6 py-1  hover:cursor-pointer hover:text-red-500 ${
+                    router.asPath === item.url
+                      ? "text-primary"
+                      : "text-[#333333]"
+                  }`}
+                >
+                  {item.name}
+                </div>
+              </Link>
             )
           );
         return;
