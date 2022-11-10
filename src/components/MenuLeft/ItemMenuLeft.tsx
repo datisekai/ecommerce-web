@@ -42,11 +42,7 @@ const ItemMenuLeft = ({ id, name, icon }: ISidebarData) => {
             _display && (
               <Link href={item.url} key={index}>
                 <div
-                  className={`text-xm ml-6 py-1  hover:cursor-pointer hover:text-red-500 ${
-                    router.asPath === item.url
-                      ? "text-primary"
-                      : "text-[#333333]"
-                  }`}
+                  className={`text-xm ml-6 py-1  hover:cursor-pointer hover:text-red-500 `}
                 >
                   {item.name}
                 </div>
