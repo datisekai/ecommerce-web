@@ -1,28 +1,48 @@
 import Link from "next/link";
-import React from "react";
+import React, { FC } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import { formatPrices } from "../../utils";
+import { ProductModel } from "../../models/product.model";
+import { formatPrices, formatPrices1 } from "../../utils";
 
-const ProductCard = () => {
+const ProductCard: FC<ProductModel> = ({
+  categoryId,
+  createdAt,
+  description,
+  id,
+  image,
+  maxPrice,
+  minPrice,
+  name,
+  qtySold,
+  slug,
+}) => {
   return (
-    <Link href={"/1"}>
+    <Link href={`/${slug}`}>
       <div className="parentProductSame relative  rounded-sm border border-transparent bg-white shadow-md  hover:cursor-pointer hover:border-primary">
         <LazyLoadImage
-          alt={"https://cf.shopee.vn/file/e9a1464780d98ef4ef9b9c32ce8e02b8_tn"}
+          alt={name}
           effect="black-and-white"
           className="block aspect-[1/1]"
-          src={"https://cf.shopee.vn/file/e9a1464780d98ef4ef9b9c32ce8e02b8_tn"}
+          src={image || "https://source.unsplash.com/random"}
         />
         <div className="mt-1 px-3 pb-3">
           <h4 className="text-[12px] text-black line-clamp-2 lg:text-[14px]">
-            Áo khoác dù nam mặc được 2 mặt thêu Logo ANPAI thời trang cao cấp
+            {name}
           </h4>
           <div className="mt-4 flex items-center justify-between">
             <div className="flex items-center text-[15px] text-primary lg:text-[16px]">
-              <span>{formatPrices(20000)}</span>
+              {maxPrice === minPrice ? (
+                <span>{formatPrices(maxPrice)}</span>
+              ) : (
+                <div className="flex items-center">
+                  <span>{formatPrices1(minPrice)}</span>
+                  <span className="px-1">-</span>
+                  <span>{formatPrices1(maxPrice)}</span>
+                </div>
+              )}
             </div>
             <span className="text-[12px] text-gray-500 lg:text-[13px]">
-              Đã bán 128
+              Đã bán {formatPrices1(qtySold)}
             </span>
           </div>
         </div>

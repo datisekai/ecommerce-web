@@ -11,7 +11,6 @@ const handler = async (req: INextApiRequest, res: NextApiResponse) => {
       return missing(res);
     }
 
-    console.log(slug);
     try {
       const currentProduct = await prisma?.product.findUnique({
         where: {
@@ -43,9 +42,20 @@ const handler = async (req: INextApiRequest, res: NextApiResponse) => {
               variantOptions: true,
             },
           },
+          skuValues: true,
+          skus: true,
+          variantOptions: true,
         },
       });
-      return res.json(currentProduct);
+
+      const qtySold = await prisma.orderDetail.count({
+        where: {
+          skuId: {
+            in: currentProduct?.skus.map((item: any) => item.id),
+          },
+        },
+      });
+      return res.json({ ...currentProduct, qtySold });
     } catch (error) {
       return logError(res, error);
     }

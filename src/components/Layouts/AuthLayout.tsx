@@ -6,7 +6,7 @@ import { setToken, setUser } from "../../redux/slices/user";
 import userApi from "../../services/user";
 
 interface AuthLayoutProps extends Children {
-  token: string;
+  token?: string;
 }
 
 const AuthLayout: FC<AuthLayoutProps> = ({ children, token }) => {

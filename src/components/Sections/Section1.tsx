@@ -3,12 +3,14 @@ import CategoryCard from "../Cards/CategoryCard";
 import WidthLayout from "../Layouts/WidthLayout";
 
 import { AiOutlineRight } from "react-icons/ai";
+import { CategoryModel } from "../../models/category.model";
 
 type Section1Props = {
   mt?: number;
+  data: CategoryModel[];
 };
 
-const Section1: FC<Section1Props> = ({ mt = 7 }) => {
+const Section1: FC<Section1Props> = ({ mt = 7, data }) => {
   return (
     <div className={`mt-${mt}`}>
       <WidthLayout>
@@ -23,8 +25,8 @@ const Section1: FC<Section1Props> = ({ mt = 7 }) => {
             </div>
           </div>
           <div className="mt-2 flex overflow-scroll lg:grid lg:grid-cols-10 lg:overflow-auto">
-            {Array.from(Array(20).keys()).map((item: number, index: number) => (
-              <CategoryCard key={index} />
+            {data?.map((item: CategoryModel, index: number) => (
+              <CategoryCard key={index} {...item} />
             ))}
           </div>
         </div>

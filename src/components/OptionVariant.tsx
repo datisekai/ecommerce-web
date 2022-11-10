@@ -4,16 +4,17 @@ import { BsCheck } from "react-icons/bs";
 type OptionVariantProps = {
   text: string;
   checked: boolean;
-  onChange?: () => void;
+  onClick?: () => void;
 };
 
 const OptionVariant: FC<OptionVariantProps> = ({
-  checked = true,
+  checked = false,
   text,
-  onChange,
+  onClick,
 }) => {
   return (
     <div
+      onClick={onClick}
       className={`relative flex cursor-pointer items-center justify-center rounded-sm border  px-5 py-2 transition-all hover:border-primary ${
         checked && "border-primary"
       }`}

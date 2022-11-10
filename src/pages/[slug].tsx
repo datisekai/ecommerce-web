@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC, useEffect, useMemo, useState } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import Divider from "../components/Divider";
 import FilterStarItem from "../components/Filters/FilterStarItem";
@@ -11,74 +11,151 @@ import Button from "../components/Button";
 import { BsCartPlus } from "react-icons/bs";
 import ShopCard from "../components/Cards/ShopCard";
 import ReviewCard from "../components/Cards/ReviewCard";
+import { GetStaticPaths, GetStaticProps } from "next";
+import ProductApi from "../services/product";
+import {
+  ProductDetail,
+  Sku,
+  Variant,
+  VariantOption,
+} from "../models/product.model";
+import { SkuValue } from "@prisma/client";
 
-const detail = {
-  id: 2,
-  slug: "day-djeo-djong-ho-chat-lieu-da-bo-that-100percent-thich-hop-cho-apple-watch-7-6-se-5-4-42mm-3",
-  name: "Dây đeo đồng hồ chất liệu da bò thật 100% thích hợp cho Apple Watch 7 6 SE 5 4 42Mm 3",
-  description: "Thời gian giao hàng dự kiến cho sản phẩm này là từ 7-9 ngày",
-  categoryId: 1,
-  sellerId: "cla19bf6s00007k0wesqyaxrs",
-  createdAt: "2022-11-02T14:50:23.000Z",
-  image: "https://cde",
-  seller: {
-    id: "cla19bf6s00007k0wesqyaxrs",
-    name: "Đạt Lý Thành (3120410115)",
-    email: "datly030102@gmail.com",
-    nameShop: null,
-    date: null,
-    image:
-      "https://lh3.googleusercontent.com/a/ALm5wu2ZxN4etg3g-CkSFP_moGf7Eo1FlbtdesspuwsvMA=s96-c",
-  },
-  variants: [
-    {
-      id: 3,
-      name: "Band Width",
-      productId: 2,
-      variantOptions: [
-        {
-          id: 7,
-          name: "For 38/40/41mm",
-          variantId: 3,
-          productId: 2,
-        },
-        {
-          id: 8,
-          name: "For 42/44/45mm",
-          variantId: 3,
-          productId: 2,
-        },
-      ],
-    },
-    {
-      id: 4,
-      name: "Band Color",
-      productId: 2,
-      variantOptions: [
-        {
-          id: 4,
-          name: "01",
-          variantId: 4,
-          productId: 2,
-        },
-        {
-          id: 5,
-          name: "17",
-          variantId: 4,
-          productId: 2,
-        },
-        {
-          id: 6,
-          name: "05",
-          variantId: 4,
-          productId: 2,
-        },
-      ],
-    },
-  ],
+type DetailSkuProps = {
+  product: ProductDetail;
+  slug: string;
 };
 
-const DetailSku = () => {
+const DetailSku: FC<DetailSkuProps> = ({ product, slug }) => {
+  const images = useMemo(() => {
+    return {
+      main: product.image,
+      children: product.skus?.map((item: Sku) => item.image).slice(0, 5),
+    };
+  }, [product]);
+
+  const [options, setOptions] = useState<VariantOption[]>([]);
+  const [currentSku, setCurrentSku] = useState<Sku>();
+
+  const price = useMemo(() => {
+    return {
+      old: currentSku?.price || 0,
+      current:
+        ((100 - (currentSku?.discount || 0)) / 100) * (currentSku?.price || 0),
+    };
+  }, [currentSku]);
+
+  const checkItemSameArray = (items: number[]) => {
+    if (items.length === 0) {
+      return false;
+    }
+    if (items.length === 1) {
+      return true;
+    } else {
+      return items[0] === items[1];
+    }
+  };
+
+  useEffect(() => {
+    const variantOptions = product.skuValues.filter(
+      (item: SkuValue) => item.skuId === product.skus[0]?.id
+    );
+    let newOptions: VariantOption[] = [];
+    variantOptions.forEach((item: SkuValue) => {
+      const option: any = product.variantOptions.find(
+        (element: VariantOption) => element.id === item.variantOptionId
+      );
+      newOptions.push(option);
+    });
+
+    setCurrentSku(product.skus[0]);
+    setOptions(newOptions);
+  }, [product]);
+
+  useEffect(() => {
+    if (options.length > 0 && options.length === product.variants.length) {
+      let skuId: number;
+      const groupBySkuId = product.skuValues.reduce((group, product) => {
+        const { skuId } = product;
+        group[skuId] = group[skuId] ?? [];
+        group[skuId].push(product);
+        return group;
+      }, {});
+
+      for (let key in groupBySkuId) {
+        const newOptions = options
+          .map((item: VariantOption) => ({
+            id: item.id,
+            variantId: item.variantId,
+          }))
+          .sort((a, b) => a.id - b.id);
+        const newSkuValue = groupBySkuId[key]
+          .map((item: SkuValue) => ({
+            id: item.variantOptionId,
+            variantId: item.variantId,
+          }))
+          .sort((a, b) => a.id - b.id);
+        if (JSON.stringify(newOptions) === JSON.stringify(newSkuValue)) {
+          skuId = +key;
+        }
+      }
+
+      // console.log("Groupby", groupBySkuId);
+      // options.forEach((item: VariantOption) => {
+      //   const skuValueCurrent = product.skuValues.filter(
+      //     (element: SkuValue) =>
+      //       element.variantId === item.variantId &&
+      //       element.variantOptionId === item.id
+      //   );
+
+      //   console.log("SkuValueCurrent", skuValueCurrent);
+      //   if (skuValueCurrent.length === 1) {
+      //     skuId.push(skuValueCurrent[0].skuId);
+      //   } else {
+      //     if (skuId.length > 1) {
+      //       const sameSku = skuValueCurrent.find(
+      //         (element: SkuValue) => element.skuId === skuId[0]
+      //       );
+      //       skuId.push(sameSku.id);
+      //     }
+      //   }
+      // });
+      console.log("skuId", skuId);
+      if (skuId) {
+        const sku = product.skus.find((item: Sku) => item.id === skuId);
+        if (sku) {
+          setCurrentSku(sku);
+        }
+      }
+    }
+  }, [options]);
+
+  const handleChecked = (data: VariantOption) => {
+    const isExist = options.some((item: VariantOption) => item.id === data.id);
+    if (isExist) {
+      setOptions(options.filter((item: VariantOption) => item.id !== data.id));
+    } else {
+      const isExistVariant = options.some(
+        (item: VariantOption) => item.variantId === data.variantId
+      );
+      if (isExistVariant) {
+        setOptions(
+          options.map((item: VariantOption) => {
+            if (item.variantId === data.variantId) {
+              return { ...data };
+            }
+            return item;
+          })
+        );
+      } else {
+        setOptions([...options, data]);
+      }
+    }
+  };
+
+  console.log(currentSku);
+  console.log(options);
+
   return (
     <MainLayout>
       <WidthLayout>
@@ -86,16 +163,16 @@ const DetailSku = () => {
           <div className="flex flex-col rounded-sm bg-white p-6 shadow-sm lg:flex-row">
             <div className="w-full lg:w-[40%]">
               <LazyLoadImage
-                src="https://cf.shopee.vn/file/100a8907f73cf6fbbd7747b4a1e004fe"
+                src={images.main}
                 alt=""
                 className="aspect-[1/1] w-full rounded-sm"
               />
               <div className="mt-1 grid grid-cols-5 gap-1">
-                {[1, 2, 3, 4, 5].map((item: any) => (
+                {images.children?.map((item: string, index: number) => (
                   <LazyLoadImage
-                    key={item}
-                    src="https://cf.shopee.vn/file/100a8907f73cf6fbbd7747b4a1e004fe"
-                    alt=""
+                    key={index}
+                    src={item}
+                    alt={item}
                     className="aspect-[1/1] w-full rounded-sm"
                   />
                 ))}
@@ -103,9 +180,7 @@ const DetailSku = () => {
             </div>
 
             <div className="mt-6 w-full pl-0 lg:mt-0 lg:w-[60%] lg:pl-6">
-              <h1 className="text-[17px] lg:text-[19px]">
-                Áo kiểu tay dài họa tiết hoa xinh xắn thời trang cho nữ
-              </h1>
+              <h1 className="text-[17px] lg:text-[19px]">{product.name}</h1>
               <div className="mt-2 flex items-center">
                 <FilterStarItem
                   color="text-primary"
@@ -122,16 +197,21 @@ const DetailSku = () => {
                 </div>
                 <Divider width="2px" height="20px" mx="16px" my="0px" />
                 <div className="flex items-center">
-                  <span className="mr-2 text-[18px] ">324</span>
+                  <span className="mr-2 text-[18px] ">{product.qtySold}</span>
                   <span className="text-[16px] capitalize text-[#666]">
                     Đã bán
                   </span>
                 </div>
               </div>
               <div className="mt-6 rounded-sm bg-bgPrimary p-4">
-                <span className="text-[25px] text-primary lg:text-[30px]">
-                  {formatPrices(89000)}
-                </span>
+                <div className="flex items-center">
+                  <span className="text-[17px] text-[#666] line-through lg:text-[17px]">
+                    {formatPrices(price.old)}
+                  </span>
+                  <span className="ml-4 text-[25px] text-primary lg:text-[30px]">
+                    {formatPrices(price.current)}
+                  </span>
+                </div>
               </div>
 
               <div className="mt-6 flex items-center">
@@ -145,7 +225,7 @@ const DetailSku = () => {
                 </div>
               </div>
 
-              {detail.variants.map((item: any, index: number) => {
+              {product?.variants?.map((item: Variant, index: number) => {
                 return (
                   <div
                     className="mt-6 flex items-center"
@@ -155,12 +235,16 @@ const DetailSku = () => {
                       {item.name}
                     </span>
                     <div className="grid flex-1 grid-cols-3 gap-2 lg:grid-cols-5">
-                      {item.variantOptions.map(
-                        (element: any, index: number) => {
+                      {item?.variantOptions?.map(
+                        (element: VariantOption, index: number) => {
                           return (
                             <OptionVariant
+                              onClick={() => handleChecked(element)}
                               key={`variantOption-${element.id}`}
-                              checked={true}
+                              checked={options.some(
+                                (variant: VariantOption) =>
+                                  variant.id === element.id
+                              )}
                               text={element.name}
                             />
                           );
@@ -186,7 +270,7 @@ const DetailSku = () => {
                     <AiOutlinePlus className="mx-2 my-2 cursor-pointer " />
                   </div>
                   <span className="ml-4 text-[15px] text-[#666]">
-                    4978 sản phẩm có sẵn
+                    {currentSku?.qty} sản phẩm có sẵn
                   </span>
                 </div>
               </div>
@@ -211,16 +295,7 @@ const DetailSku = () => {
           <div className="mt-4 rounded-sm bg-white p-4">
             <h3 className="text-[17px] uppercase">Mô tả sản phẩm</h3>
             <p className="mt-4 text-justify" style={{ lineHeight: 1.5 }}>
-              MẸO NHỎ GIÚP SỬ DỤNG VÀ BẢO QUẢN QUẦN ÁO - Sản phẩm mới, khách
-              hàng nên giặt tay ở lần giặt đầu để tránh lem màu sang quần áo
-              khác - Khi giặt và phơi, nên lộn mặt trái để đảm bảo độ bền của
-              màu vải - Không nên giặt chung với đồ trắng hoặc đồ tối màu QUYỀN
-              LỢI CỦA KHÁCH HÀNG TẠI NGA VIỆT SHOP - Mua sản phẩm đúng với 100%
-              mô tả - Mọi thắc mắc về sản phẩm được giải đáp, tư vấn kỹ càng
-              trước khi chốt đơn - Giao hàng nhanh, hàng được đóng gói và giao
-              vận chuyển ngay sau khi đặt hàng thành công - Chính sách đổi trả
-              hàng/hoàn tiền luôn ưu tiên trải nghiệm của khách hàng - Giao
-              hàng, hỗ trợ COD toàn quốc
+              {product.description}
             </p>
           </div>
           <div className="mt-4 rounded-sm bg-white p-4">
@@ -269,3 +344,21 @@ const DetailSku = () => {
 };
 
 export default DetailSku;
+
+export const getStaticPaths: GetStaticPaths = () => {
+  return {
+    paths: [],
+    fallback: "blocking",
+  };
+};
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const slug = params?.slug as string;
+  const data = await Promise.all([ProductApi.detail(slug)]);
+  return {
+    props: {
+      product: data[0],
+      slug,
+    },
+  };
+};

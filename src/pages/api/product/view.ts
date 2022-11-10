@@ -20,7 +20,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         },
       });
 
-      const productsReturn = products?.map((item: any) => {
+      const counts = await prisma.product.count();
+
+      const qtys = await Promise.all(
+        products.map((item: any) => {
+          return prisma.orderDetail.count({
+            where: {
+              skuId: {
+                in: item.skus.map((element: any) => element.id),
+              },
+            },
+          });
+        })
+      );
+
+      const productsReturn = products?.map((item: any, index: number) => {
         let maxPrice =
           item.skus[0].price * ((100 - item.skus[0].discount) / 100);
         let minPrice =
@@ -38,10 +52,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           skus: undefined,
           minPrice,
           maxPrice,
+          qtySold: qtys[index],
         };
       });
 
-      return res.json(productsReturn);
+      return res.json({
+        products: productsReturn,
+        totalPage: Math.ceil(counts / +limit),
+      });
     } catch (error) {
       return logError(res, error);
     }

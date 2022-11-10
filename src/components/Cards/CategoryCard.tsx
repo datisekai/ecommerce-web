@@ -1,17 +1,27 @@
-import React from "react";
+import React, { FC } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import { CategoryModel } from "../../models/category.model";
 
-const CategoryCard = () => {
+const CategoryCard: FC<CategoryModel> = ({
+  id,
+  image,
+  name,
+  parentId,
+  sellerId,
+}) => {
   return (
     <div className="w-[107px] border-r border-b border-t border-[rgba(0,0,0,0.05)] p-2 transition-all hover:cursor-pointer hover:shadow-lg lg:w-full">
       <LazyLoadImage
-        alt={"https://cf.shopee.vn/file/687f3967b7c2fe6a134a2c11894eea4b_tn"}
+        alt={name}
         effect="black-and-white"
         className="aspect-[1/1]"
-        src={"https://cf.shopee.vn/file/687f3967b7c2fe6a134a2c11894eea4b_tn"}
+        src={
+          image ||
+          "https://cf.shopee.vn/file/687f3967b7c2fe6a134a2c11894eea4b_tn"
+        }
       />
       <h4 className="overflow-x-hidden text-ellipsis whitespace-nowrap text-[13px] capitalize lg:whitespace-normal lg:text-center lg:text-[15px] lg:line-clamp-2">
-        Thời trang Nam
+        {name}
       </h4>
     </div>
   );

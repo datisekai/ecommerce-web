@@ -119,7 +119,7 @@ model Product {
 
 model Variant {
   id             Int             @id @default(autoincrement())
-  name           String          @unique
+  name           String
   productId      Int
   product        Product         @relation(fields: [productId], references: [id])
   variantOptions VariantOption[]
@@ -128,7 +128,7 @@ model Variant {
 
 model VariantOption {
   id        Int        @id @default(autoincrement())
-  name      String     @unique
+  name      String
   variantId Int
   productId Int
   variant   Variant    @relation(fields: [variantId], references: [id])

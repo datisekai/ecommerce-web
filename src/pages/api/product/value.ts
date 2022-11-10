@@ -58,6 +58,7 @@ const handler = async (req: INextApiRequest, res: NextApiResponse) => {
 
     try {
       const { slug, skuValues } = req.body;
+
       if (!slug || !skuValues) {
         return missing(res);
       }

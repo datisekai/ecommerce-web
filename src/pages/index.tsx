@@ -7,8 +7,20 @@ import FullLoading from "../components/Loading/FullLoading";
 import Section1 from "../components/Sections/Section1";
 import SectionMain from "../components/Sections/SectionMain";
 import Slider from "../components/Slider";
+import { CategoryModel } from "../models/category.model";
+import { ProductModel, Products } from "../models/product.model";
+import CategoryApi from "../services/category";
+import ProductApi from "../services/product";
 
-const Home: NextPage = ({ token }: any) => {
+type HomeProps = {
+  token?: string;
+  categories: CategoryModel[];
+  products: Products;
+};
+
+const Home: NextPage<HomeProps> = ({ token, categories, products }) => {
+  console.log(categories);
+  console.log(products);
   return (
     <>
       <Head>
@@ -22,8 +34,8 @@ const Home: NextPage = ({ token }: any) => {
       <AuthLayout token={token}>
         <MainLayout>
           <Slider />
-          <Section1 />
-          <SectionMain />
+          <Section1 data={categories} />
+          <SectionMain data={products} />
         </MainLayout>
       </AuthLayout>
     </>
@@ -34,16 +46,28 @@ export default Home;
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const token = req.cookies["token"];
+  const data = await Promise.all([
+    CategoryApi.getCategory(),
+    ProductApi.home(),
+  ]);
 
   if (token) {
     return {
       props: {
         token,
+        categories: data[0],
+        products: data[1],
       },
     };
   }
 
+  // const data = await Promise.all([CategoryApi.getCategory]);
+  // console.log(data);
+
   return {
-    props: {},
+    props: {
+      categories: data[0],
+      products: data[1],
+    },
   };
 };

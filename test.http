@@ -20,194 +20,198 @@ GET http://localhost:3000/api/product?productId=2
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJpYXQiOjE2NjczOTc0NjcsImV4cCI6MTY2NzQ0MDY2N30.fPJfWsHPaLsp3Ujb7ISM-St5HG9KM5vIvBBaIZHbUeQ
 
+###
+GET http://localhost:3000/api/product?productId=9
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjA4ODYyNDkwMjIiLCJpYXQiOjE2NjgwNzA5NzQsImV4cCI6MTY2ODExNDE3NH0.sZbgNTNzRitkE-7dR_SXeAqUq3MkBUkkYqatbR1ojFI
 
 ###
 POST http://localhost:3000/api/product/value
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJpYXQiOjE2NjczOTc0NjcsImV4cCI6MTY2NzQ0MDY2N30.fPJfWsHPaLsp3Ujb7ISM-St5HG9KM5vIvBBaIZHbUeQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjA4ODYyNDkwMjIiLCJpYXQiOjE2NjgwNzA5NzQsImV4cCI6MTY2ODExNDE3NH0.sZbgNTNzRitkE-7dR_SXeAqUq3MkBUkkYqatbR1ojFI
 
 {
-    "productId":2,
+    "slug":"ao-khoac-jean-denim-caro-nam-unisex-form-rong-basic-ao-khoat-jacket-jean-nam-nu-caro-phong-cach-djuong-pho-1077",
     "skuValues": [
         {
-            "price":40000,
-            "qty":30,
-            "discount":30,
-            "image":"https://abc",
+            "price":550000,
+            "qty":5000,
+            "discount":36,
+            "image":"https://cf.shopee.vn/file/sg-11134201-22100-eigw4ikj5eiv76",
             "values":[
-                            {
-                "id": 4,
-                "name": "01",
-                "variantId": 4,
-                "productId": 2,
-                "variant": {
-                "id": 4,
-                "name": "Band Color",
-                "productId": 2
-                }
-            },
-            {
-                "id": 7,
-                "name": "For 38/40/41mm",
-                "variantId": 3,
-                "productId": 2,
-                "variant": {
-                "id": 3,
-                "name": "Band Width",
-                "productId": 2
-                }
-            }
-                ]
+                        {
+                            "id": 20,
+                            "name": "Xám",
+                            "variantId": 11,
+                            "productId": 9,
+                            "variant": {
+                            "id": 11,
+                            "name": "Màu",
+                            "productId": 9
+                            }
+                        },
+                        {
+                            "id": 21,
+                            "name": "L",
+                            "variantId": 12,
+                            "productId": 9,
+                            "variant": {
+                            "id": 12,
+                            "name": "Size",
+                            "productId": 9
+                            }
+                        }
+                    ]
         },
         {
-            "price":20000,
-            "qty":50,
-            "discount":70,
-            "image":"https://abc",
+            "price":550000,
+            "qty":4560,
+            "discount":40,
+            "image":"https://cf.shopee.vn/file/sg-11134201-22100-eigw4ikj5eiv76",
             "values":[
-                  {
-                    "id": 4,
-                    "name": "01",
-                    "variantId": 4,
-                    "productId": 2,
+                                    {
+                    "id": 20,
+                    "name": "Xám",
+                    "variantId": 11,
+                    "productId": 9,
                     "variant": {
-                        "id": 4,
-                        "name": "Band Color",
-                        "productId": 2
+                    "id": 11,
+                    "name": "Màu",
+                    "productId": 9
                     }
                 },
                 {
-                    "id": 8,
-                    "name": "For 42/44/45mm",
-                    "variantId": 3,
-                    "productId": 2,
+                    "id": 23,
+                    "name": "XL",
+                    "variantId": 12,
+                    "productId": 9,
                     "variant": {
-                        "id": 3,
-                        "name": "Band Width",
-                        "productId": 2
+                    "id": 12,
+                    "name": "Size",
+                    "productId": 9
                     }
                 }
-            ]
+                    ]
         },
         {
-            "price":30000,
-            "qty":40,
-            "discount":70,
-            "image":"https://abc",
+            "price":550000,
+            "qty":3456,
+            "discount":23,
+            "image":"https://cf.shopee.vn/file/sg-11134201-22100-eigw4ikj5eiv76",
             "values":[
-                 {
-                    "id": 5,
-                    "name": "17",
-                    "variantId": 4,
-                    "productId": 2,
-                    "variant": {
-                        "id": 4,
-                        "name": "Band Color",
-                        "productId": 2
-                    }
-                },
-                {
-                    "id": 7,
-                    "name": "For 38/40/41mm",
-                    "variantId": 3,
-                    "productId": 2,
-                    "variant": {
-                        "id": 3,
-                        "name": "Band Width",
-                        "productId": 2
-                    }
-                }
-            ]
+                       {
+        "id": 20,
+        "name": "Xám",
+        "variantId": 11,
+        "productId": 9,
+        "variant": {
+          "id": 11,
+          "name": "Màu",
+          "productId": 9
+        }
+      },
+      {
+        "id": 24,
+        "name": "M",
+        "variantId": 12,
+        "productId": 9,
+        "variant": {
+          "id": 12,
+          "name": "Size",
+          "productId": 9
+        }
+      }
+                    ]
         },
-         {
-            "price":80000,
-            "qty":10,
-            "discount":70,
-            "image":"https://abc",
+        {
+            "price":550000,
+            "qty":5000,
+            "discount":36,
+            "image":"https://cf.shopee.vn/file/sg-11134201-22100-eigw4ikj5eiv76",
             "values":[
-                 {
-                    "id": 5,
-                    "name": "17",
-                    "variantId": 4,
-                    "productId": 2,
-                    "variant": {
-                    "id": 4,
-                    "name": "Band Color",
-                    "productId": 2
-                    }
-                },
-                {
-                    "id": 8,
-                    "name": "For 42/44/45mm",
-                    "variantId": 3,
-                    "productId": 2,
-                    "variant": {
-                    "id": 3,
-                    "name": "Band Width",
-                    "productId": 2
-                    }
-                }
-            ]
+                        {
+        "id": 22,
+        "name": "Đen",
+        "variantId": 11,
+        "productId": 9,
+        "variant": {
+          "id": 11,
+          "name": "Màu",
+          "productId": 9
+        }
+      },
+      {
+        "id": 21,
+        "name": "L",
+        "variantId": 12,
+        "productId": 9,
+        "variant": {
+          "id": 12,
+          "name": "Size",
+          "productId": 9
+        }
+      }
+                    ]
         },
-         {
-            "price":45000,
-            "qty":45,
-            "discount":70,
-            "image":"https://abc",
+        {
+            "price":450000,
+            "qty":5700,
+            "discount":10,
+            "image":"https://cf.shopee.vn/file/sg-11134201-22100-eigw4ikj5eiv76",
             "values":[
-                {
-                    "id": 6,
-                    "name": "05",
-                    "variantId": 4,
-                    "productId": 2,
-                    "variant": {
-                    "id": 4,
-                    "name": "Band Color",
-                    "productId": 2
-                    }
-                },
-                {
-                    "id": 7,
-                    "name": "For 38/40/41mm",
-                    "variantId": 3,
-                    "productId": 2,
-                    "variant": {
-                    "id": 3,
-                    "name": "Band Width",
-                    "productId": 2
-                    }
-                }
-            ]
+                        {
+        "id": 22,
+        "name": "Đen",
+        "variantId": 11,
+        "productId": 9,
+        "variant": {
+          "id": 11,
+          "name": "Màu",
+          "productId": 9
+        }
+      },
+      {
+        "id": 23,
+        "name": "XL",
+        "variantId": 12,
+        "productId": 9,
+        "variant": {
+          "id": 12,
+          "name": "Size",
+          "productId": 9
+        }
+      }
+                    ]
         },
-         {
-            "price":13000,
-            "qty":120,
-            "discount":70,
-            "image":"https://abc",
+        {
+            "price":550000,
+            "qty":4500,
+            "discount":36,
+            "image":"https://cf.shopee.vn/file/sg-11134201-22100-eigw4ikj5eiv76",
             "values":[
-                {
-                "id": 6,
-                "name": "05",
-                "variantId": 4,
-                "productId": 2,
-                "variant": {
-                "id": 4,
-                "name": "Band Color",
-                "productId": 2
-                }
-            },
-            {
-                "id": 8,
-                "name": "For 42/44/45mm",
-                "variantId": 3,
-                "productId": 2,
-                "variant": {
-                "id": 3,
-                "name": "Band Width",
-                "productId": 2
-                }
-            }
-            ]
+                        {
+        "id": 22,
+        "name": "Đen",
+        "variantId": 11,
+        "productId": 9,
+        "variant": {
+          "id": 11,
+          "name": "Màu",
+          "productId": 9
+        }
+      },
+      {
+        "id": 24,
+        "name": "M",
+        "variantId": 12,
+        "productId": 9,
+        "variant": {
+          "id": 12,
+          "name": "Size",
+          "productId": 9
+        }
+      }
+                    ]
         }
     ]
 }
@@ -216,28 +220,21 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJpYXQiO
 ###
 POST http://localhost:3000/api/product
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJpYXQiOjE2NjczOTc0NjcsImV4cCI6MTY2NzQ0MDY2N30.fPJfWsHPaLsp3Ujb7ISM-St5HG9KM5vIvBBaIZHbUeQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjA4ODYyNDkwMjIiLCJpYXQiOjE2NjgwNzQ3OTMsImV4cCI6MTY2ODExNzk5M30.SF12tnbTIFU1zOk2XcHMbzKeHKOXUG6CCjiXxgBrKr4
 
 {
   "categoryId": 1,
-  "name": "Dây đeo đồng hồ chất liệu da bò thật 100% thích hợp cho Apple Watch 7 6 SE 5 4 42Mm 3",
-  "description": "Thời gian giao hàng dự kiến cho sản phẩm này là từ 7-9 ngày",
-  "image": "https://cde",
+  "name": "Áo khoác jean denim caro nam unisex form rộng basic, áo khoát jacket jean nam nữ caro phong cách đường phố 1077",
+  "description":"áo khoác jean, áo khoát jean HÀNG CÓ SẴN #aokhoacjean #aokhoatjean Áo khoác jean denim caro nam unisex form rộng basic, áo khoát jacket jean nam nữ caro phong cách đường phố Hàng có sẵn nên shop có thể giao ngay ạ",
+  "image": "https://cf.shopee.vn/file/sg-11134201-22100-eigw4ikj5eiv76",
   "variants": [
     {
-      "name": "Band Color",
-      "children": [{ "name": "01" }, { "name": "17" },{ "name": "05" }]
+      "name": "Màu",
+      "children": [{ "name": "Đen" }, { "name": "Xám" }]
     },
     {
-      "name": "Band Width",
-      "children": [
-        {
-          "name": "For 38/40/41mm"
-        },
-        {
-          "name": "For 42/44/45mm"
-        }
-      ]
+        "name":"Size",
+        "children":[{"name":"M"},{"name":"L"},{"name":"XL"}]
     }
   ]
 }
@@ -272,7 +269,17 @@ Content-Type: application/json
 ###
 GET http://localhost:3000/api/login-social
 Content-Type: application/json
-
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjA4ODYyNDkwMjIiLCJpYXQiOjE2Njc5ODE0NzIsImV4cCI6MTY2ODAyNDY3Mn0.9vpkyomtsVi-kKhvkyLOTAO-b2XKz044HuRiBARnm6o
 {
     "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNsOXV6Nm1iZzAwMDI3azJrMm04bTVhem0iLCJuYW1lIjoixJDhuqF0IFRow6BuaCIsImVtYWlsIjoibHlkYXRsdGRAZ21haWwuY29tIiwiaXNBY3RpdmUiOnRydWUsInBob25lIjpudWxsLCJwYXNzd29yZCI6bnVsbCwibmFtZVNob3AiOm51bGwsImdlbmRlciI6bnVsbCwiZGF0ZSI6bnVsbCwicGVySWQiOjEsImVtYWlsVmVyaWZpZWQiOm51bGwsImltYWdlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUxtNXd1MjZ1VlEzZ2gyMDAzX1YyWHhYcmF3dmRvR2pudWNYOU1lNnNLQ2g9czk2LWMiLCJpYXQiOjE2Njc1NDkxNjR9.qyiTWaGPVIBZsjd5_TiTwTErb4GRAKq5uGp57B-vzDI"
+}
+
+###
+POST http://localhost:3000/api/category?permission=admin
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjA4ODYyNDkwMjIiLCJpYXQiOjE2Njc5ODE0NzIsImV4cCI6MTY2ODAyNDY3Mn0.9vpkyomtsVi-kKhvkyLOTAO-b2XKz044HuRiBARnm6o
+
+{
+    "name":"Điện thoại & phụ kiện",
+    "image":"https://cf.shopee.vn/file/31234a27876fb89cd522d7e3db1ba5ca_tn"
 }
