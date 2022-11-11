@@ -12,6 +12,7 @@ import { Toaster } from "react-hot-toast";
 
 const queryClient = new QueryClient();
 
+import "../components/index.scss";
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
