@@ -142,7 +142,7 @@ const Thongtinbanhang = () => {
                       return (
                         <div className="mb-4 flex items-center" key={index}>
                           <input
-                            value={item}
+                            defaultValue={item}
                             type="text"
                             className=" w-[150px] rounded-[4px] border  border-solid border-[#E5E5E5] py-2 px-2"
                             placeholder="ví dụ: Trắng, Đỏ v.v"
@@ -208,7 +208,7 @@ const Thongtinbanhang = () => {
                           <div className="mb-4 flex items-center" key={index}>
                             <input
                               key={index}
-                              value={item}
+                              defaultValue={item}
                               type="text"
                               className="w-[150px] rounded-[4px] border  border-solid border-[#E5E5E5] py-2 px-2"
                               placeholder="ví dụ: S, M, v.v"
