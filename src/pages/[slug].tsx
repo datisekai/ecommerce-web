@@ -20,6 +20,7 @@ import {
   VariantOption,
 } from "../models/product.model";
 import { SkuValue } from "@prisma/client";
+import Meta from "../components/Meta";
 
 type DetailSkuProps = {
   product: ProductDetail;
@@ -60,7 +61,7 @@ const DetailSku: FC<DetailSkuProps> = ({ product, slug }) => {
     const variantOptions = product.skuValues.filter(
       (item: SkuValue) => item.skuId === product.skus[0]?.id
     );
-    let newOptions: VariantOption[] = [];
+    const newOptions: VariantOption[] = [];
     variantOptions.forEach((item: SkuValue) => {
       const option: any = product.variantOptions.find(
         (element: VariantOption) => element.id === item.variantOptionId
@@ -82,7 +83,7 @@ const DetailSku: FC<DetailSkuProps> = ({ product, slug }) => {
         return group;
       }, {});
 
-      for (let key in groupBySkuId) {
+      for (const key in groupBySkuId) {
         const newOptions = options
           .map((item: VariantOption) => ({
             id: item.id,
@@ -100,27 +101,6 @@ const DetailSku: FC<DetailSkuProps> = ({ product, slug }) => {
         }
       }
 
-      // console.log("Groupby", groupBySkuId);
-      // options.forEach((item: VariantOption) => {
-      //   const skuValueCurrent = product.skuValues.filter(
-      //     (element: SkuValue) =>
-      //       element.variantId === item.variantId &&
-      //       element.variantOptionId === item.id
-      //   );
-
-      //   console.log("SkuValueCurrent", skuValueCurrent);
-      //   if (skuValueCurrent.length === 1) {
-      //     skuId.push(skuValueCurrent[0].skuId);
-      //   } else {
-      //     if (skuId.length > 1) {
-      //       const sameSku = skuValueCurrent.find(
-      //         (element: SkuValue) => element.skuId === skuId[0]
-      //       );
-      //       skuId.push(sameSku.id);
-      //     }
-      //   }
-      // });
-      console.log("skuId", skuId);
       if (skuId) {
         const sku = product.skus.find((item: Sku) => item.id === skuId);
         if (sku) {
@@ -153,10 +133,10 @@ const DetailSku: FC<DetailSkuProps> = ({ product, slug }) => {
     }
   };
 
-  console.log(currentSku);
-  console.log(options);
 
   return (
+    <>
+    <Meta image={product.image} title={product.name} description={product.description} />
     <MainLayout>
       <WidthLayout>
         <div className="mx-auto max-w-[calc(100%-16px)] py-6">
@@ -339,7 +319,7 @@ const DetailSku: FC<DetailSkuProps> = ({ product, slug }) => {
           </div>
         </div>
       </WidthLayout>
-    </MainLayout>
+    </MainLayout></>
   );
 };
 
