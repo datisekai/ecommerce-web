@@ -9,7 +9,8 @@ const Thongtinbanhang = () => {
   const [_textArray2, setTextArray2] = useState("");
   const [_textGroup1, setTextGroup1] = useState("");
   const [_textGroup2, setTextGroup2] = useState("");
-  const [isDelete, setIsDelete] = useState(false);
+  const [isDelete1, setIsDelete1] = useState(false);
+  const [isDelete2, setIsDelete2] = useState(false);
   const [vitri1, setVitri1] = useState(-1);
   const [vitri2, setVitri2] = useState(-1);
   const [_displayGroupCategory, _setDisplayGroupCategory] = useState(false);
@@ -22,65 +23,67 @@ const Thongtinbanhang = () => {
   };
   useEffect(() => {
     let arr = [..._group1];
-    if (!isDelete) {
+    const test = arr.map((item, index) => {
+      if (vitri1 === index) {
+        return _textArray1;
+      }
+      return item;
+    });
+    _setGroup1(test);
+    if (vitri1 === arr.length - 1) {
       const test = arr.map((item, index) => {
         if (vitri1 === index) {
           return _textArray1;
         }
         return item;
       });
-      _setGroup1(test);
-      if (vitri1 === arr.length - 1) {
-        const test = arr.map((item, index) => {
-          if (vitri1 === index) {
-            return _textArray1;
-          }
-          return item;
-        });
-        _setGroup1([...test, ""]);
-      }
-    } else {
-      const test2 = arr.filter((item, index) => index !== vitri1);
-      _setGroup1(test2);
+      _setGroup1([...test, ""]);
     }
-    console.log(_group1);
   }, [_textArray1]);
   useEffect(() => {
     let arr = [..._group2];
-    if (!isDelete) {
+    const test = arr.map((item, index) => {
+      if (vitri2 === index) {
+        return _textArray2;
+      }
+      return item;
+    });
+    _setGroup2(test);
+    if (vitri2 === arr.length - 1) {
       const test = arr.map((item, index) => {
         if (vitri2 === index) {
           return _textArray2;
         }
         return item;
       });
-      _setGroup2(test);
-      if (vitri2 === arr.length - 1) {
-        const test = arr.map((item, index) => {
-          if (vitri2 === index) {
-            return _textArray2;
-          }
-          return item;
-        });
-        _setGroup2([...test, ""]);
-      }
-    } else {
+      _setGroup2([...test, ""]);
+    }
+  }, [_textArray2]);
+  useEffect(() => {
+    if (isDelete1) {
+      let arr = [..._group1];
+      const test2 = arr.filter((item, index) => index !== vitri1);
+      _setGroup1(test2);
+      setIsDelete1(false);
+    }
+  }, [isDelete1]);
+  useEffect(() => {
+    if (isDelete2) {
+      let arr = [..._group2];
       const test2 = arr.filter((item, index) => index !== vitri2);
       _setGroup2(test2);
+      setIsDelete2(false);
     }
-    console.log(_group2);
-  }, [_textArray2]);
+  }, [isDelete2]);
   /* ********************************************************* */
   const DeleteInput = (key: number, key_vitri: number) => {
-    console.log("check1");
     if (key == 1) {
       setVitri1(key_vitri);
-      setTextArray1("/-?/");
+      setIsDelete1(true);
     } else {
       setVitri2(key_vitri);
-      setTextArray2("/-?/");
+      setIsDelete2(true);
     }
-    setIsDelete(true);
   };
   const SaveProduct = () => {};
   return (
@@ -139,6 +142,7 @@ const Thongtinbanhang = () => {
                       return (
                         <div className="mb-4 flex items-center" key={index}>
                           <input
+                            value={item}
                             type="text"
                             className=" w-[150px] rounded-[4px] border  border-solid border-[#E5E5E5] py-2 px-2"
                             placeholder="ví dụ: Trắng, Đỏ v.v"
@@ -201,19 +205,30 @@ const Thongtinbanhang = () => {
                     <div className="grid grid-cols-3 ">
                       {_group2.map((item: any, index: number) => {
                         return (
-                          <>
+                          <div className="mb-4 flex items-center" key={index}>
                             <input
                               key={index}
+                              value={item}
                               type="text"
-                              className="mr-4 mb-4  w-[150px] rounded-[4px] border border-solid  border-[#E5E5E5] py-2 px-2 pr-4"
+                              className="w-[150px] rounded-[4px] border  border-solid border-[#E5E5E5] py-2 px-2"
                               placeholder="ví dụ: S, M, v.v"
                               onChange={(e) => {
                                 setVitri2(index);
                                 setTextArray2(e.target.value);
                               }}
                             />
-                            <ImBin className="text-[24px]" />
-                          </>
+                            {index < _group2.length - 1 &&
+                              _group2.length != 2 && (
+                                <ImBin
+                                  onClick={() => DeleteInput(2, index)}
+                                  className=" m-2 text-[20px] text-[#757575] hover:cursor-pointer"
+                                />
+                              )}
+                            {index < _group2.length - 1 &&
+                              _group2.length == 2 && (
+                                <ImBin className=" m-2 text-[20px] text-[#757575] hover:cursor-not-allowed" />
+                              )}
+                          </div>
                         );
                       })}
                     </div>
