@@ -25,18 +25,11 @@ const handler = async (req: INextApiRequest, res: NextApiResponse) => {
               nameShop: true,
               date: true,
               image: true,
+              createdAt:true
             },
+           
           },
-          // skus: {
-          //   include: {
-          //     skuValues: {
-          //       include: {
-          //         variant: true,
-          //         variantOption: true,
-          //       },
-          //     },
-          //   },
-          // },
+  
           variants: {
             include: {
               variantOptions: true,
@@ -45,17 +38,43 @@ const handler = async (req: INextApiRequest, res: NextApiResponse) => {
           skuValues: true,
           skus: true,
           variantOptions: true,
+          comments:{
+            include:{
+              user:{
+                select:{
+                  phone:true,
+                  id:true,
+                  image:true,
+                  email:true,
+                  name:true
+                }
+              },
+              commentImages:true
+            }
+          }
         },
       });
 
-      const qtySold = await prisma.orderDetail.count({
+
+      const qtys = await Promise.all([prisma.orderDetail.count({
         where: {
           skuId: {
             in: currentProduct?.skus.map((item: any) => item.id),
           },
         },
-      });
-      return res.json({ ...currentProduct, qtySold });
+      }), prisma.product.count({
+        where:{
+          sellerId:currentProduct.sellerId
+        }
+      })])
+
+      const currentStar = (( currentProduct.comments.reduce((total:any, current:any) => {
+        return total + current.pointStar
+      },0))/currentProduct.comments.length) || 0
+
+
+      
+      return res.json({ ...currentProduct, qtySold:qtys[0], seller:{...currentProduct.seller, qty:qtys[1]}, currentStar });
     } catch (error) {
       return logError(res, error);
     }

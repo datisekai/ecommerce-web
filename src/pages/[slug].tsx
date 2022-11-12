@@ -11,9 +11,10 @@ import Button from "../components/Button";
 import { BsCartPlus } from "react-icons/bs";
 import ShopCard from "../components/Cards/ShopCard";
 import ReviewCard from "../components/Cards/ReviewCard";
-import { GetStaticPaths, GetStaticProps } from "next";
+import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
 import ProductApi from "../services/product";
 import {
+  Comment,
   ProductDetail,
   Sku,
   Variant,
@@ -27,7 +28,7 @@ type DetailSkuProps = {
   slug: string;
 };
 
-const DetailSku: FC<DetailSkuProps> = ({ product, slug }) => {
+const DetailSku: FC<DetailSkuProps> = ({ product, slug }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const images = useMemo(() => {
     return {
       main: product.image,
@@ -35,8 +36,10 @@ const DetailSku: FC<DetailSkuProps> = ({ product, slug }) => {
     };
   }, [product]);
 
+
   const [options, setOptions] = useState<VariantOption[]>([]);
   const [currentSku, setCurrentSku] = useState<Sku>();
+  const [quantity, setQuantity] = useState(1);
 
   const price = useMemo(() => {
     return {
@@ -46,16 +49,22 @@ const DetailSku: FC<DetailSkuProps> = ({ product, slug }) => {
     };
   }, [currentSku]);
 
-  const checkItemSameArray = (items: number[]) => {
-    if (items.length === 0) {
-      return false;
+  const handleIncrease = () => {
+    if(quantity < currentSku.qty){
+      setQuantity(quantity + 1)
     }
-    if (items.length === 1) {
-      return true;
-    } else {
-      return items[0] === items[1];
+  }
+
+  const handleDecrease = () => {
+    if(quantity !== 1){
+      setQuantity(quantity - 1);
     }
-  };
+  }
+
+  useEffect(() => {
+    setQuantity(1)
+  },[currentSku])
+
 
   useEffect(() => {
     const variantOptions = product.skuValues.filter(
@@ -123,7 +132,7 @@ const DetailSku: FC<DetailSkuProps> = ({ product, slug }) => {
           options.map((item: VariantOption) => {
             if (item.variantId === data.variantId) {
               return { ...data };
-            }
+            } 
             return item;
           })
         );
@@ -133,6 +142,7 @@ const DetailSku: FC<DetailSkuProps> = ({ product, slug }) => {
     }
   };
 
+  console.log(product.seller)
 
   return (
     <>
@@ -164,13 +174,13 @@ const DetailSku: FC<DetailSkuProps> = ({ product, slug }) => {
               <div className="mt-2 flex items-center">
                 <FilterStarItem
                   color="text-primary"
-                  star={4.6}
+                  star={product.currentStar || 0}
                   isStar={true}
                   isText={false}
                 />
                 <Divider width="2px" height="20px" mx="16px" my="0px" />
                 <div className="flex items-center">
-                  <span className="mr-2 text-[18px] underline">115</span>
+                  <span className="mr-2 text-[18px] underline">{product?.comments?.length || 0}</span>
                   <span className="text-[16px] capitalize text-[#666]">
                     Đánh giá
                   </span>
@@ -241,13 +251,14 @@ const DetailSku: FC<DetailSkuProps> = ({ product, slug }) => {
                 </span>
                 <div className="flex flex-1 items-center">
                   <div className="flex items-center rounded-sm border">
-                    <AiOutlineMinus className="mx-2 my-2 cursor-pointer" />
+                    <AiOutlineMinus onClick={handleDecrease} className="mx-2 my-2 cursor-pointer" />
                     <input
                       type="text"
-                      className="h-full w-[50px] text-center text-[17px] outline-none"
-                      value={1}
+                      className="h-full w-[50px] text-center text-[17px] outline-none select-none"
+                      value={quantity}
+                      readOnly
                     />
-                    <AiOutlinePlus className="mx-2 my-2 cursor-pointer " />
+                    <AiOutlinePlus onClick={handleIncrease} className="mx-2 my-2 cursor-pointer " />
                   </div>
                   <span className="ml-4 text-[15px] text-[#666]">
                     {currentSku?.qty} sản phẩm có sẵn
@@ -270,7 +281,7 @@ const DetailSku: FC<DetailSkuProps> = ({ product, slug }) => {
           </div>
 
           <div className="mt-4">
-            <ShopCard />
+            <ShopCard {...product.seller}/>
           </div>
           <div className="mt-4 rounded-sm bg-white p-4">
             <h3 className="text-[17px] uppercase">Mô tả sản phẩm</h3>
@@ -282,8 +293,8 @@ const DetailSku: FC<DetailSkuProps> = ({ product, slug }) => {
             <h3 className="text-[17px] uppercase">Đánh giá sản phẩm</h3>
             <div className="mt-4 flex items-center rounded-sm bg-orange-100 p-6">
               <div>
-                <span className="text-[30px] text-primary">4.7</span>
-                <span className="pl-1 text-[20px] text-primary">trên 5</span>
+                <span className="text-[30px] text-primary">{product.currentStar || 1}</span>
+                <span className="pl-1 text-[20px] text-primary">/5</span>
                 <FilterStarItem
                   star={4.4}
                   isText={false}
@@ -299,7 +310,7 @@ const DetailSku: FC<DetailSkuProps> = ({ product, slug }) => {
                   "2 Sao ",
                   "1 Sao ",
                   "Có hình ảnh",
-                ].map((item: any) => (
+                ].map((item: string) => (
                   <button
                     key={item}
                     className="border bg-white px-4 py-2 capitalize shadow-sm"
@@ -311,10 +322,8 @@ const DetailSku: FC<DetailSkuProps> = ({ product, slug }) => {
             </div>
 
             <div className="mt-4">
-              <ReviewCard />
-              <ReviewCard />
-              <ReviewCard />
-              <ReviewCard />
+              {product.comments.map((item:Comment) => <ReviewCard {...item} key={item.id} /> )}
+           
             </div>
           </div>
         </div>

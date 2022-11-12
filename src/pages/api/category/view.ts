@@ -22,8 +22,18 @@ const handler = async (req: INextApiRequest, res: NextApiResponse) => {
             sellerId: id.toString(),
           },
         });
+        
+        
       }
-      return res.json(categories);
+      const qtys = await Promise.all(categories.map((item:any) => prisma.product.count({
+        where:{
+          categoryId:item.id
+        }
+      })))
+      const categoryReturn = categories.map((item:any,index:number) => ({
+        ...item, count:qtys[index]
+      }))
+      return res.json(categoryReturn);
     } catch (error) {
       return logError(res, error);
     }

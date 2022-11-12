@@ -61,8 +61,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     };
   }
 
-  // const data = await Promise.all([CategoryApi.getCategory]);
-  // console.log(data);
 
   return {
     props: {

@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import React, { FC } from "react";
 
 import { AiOutlineStar, AiFillStar } from "react-icons/ai";
@@ -7,7 +8,8 @@ type FilterStarItemProps = {
   star: number;
   isText?: boolean;
   isStar?: boolean;
-  color: string;
+  color?: string;
+  onClick?:(star:number) => void
 };
 
 const FilterStarItem: FC<FilterStarItemProps> = ({
@@ -15,9 +17,12 @@ const FilterStarItem: FC<FilterStarItemProps> = ({
   isText = true,
   isStar = false,
   color = "text-yellow-500",
+  onClick
 }) => {
+
+
   return (
-    <div className=" flex cursor-pointer items-center py-2">
+    <div className=" flex cursor-pointer items-center py-2" onClick={() => onClick(star)}>
       {isStar && (
         <span className="mr-2  text-[18px] text-primary underline">{star}</span>
       )}

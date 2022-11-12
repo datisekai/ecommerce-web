@@ -12,6 +12,23 @@ export interface ProductModel {
   qtySold: number;
 }
 
+export interface CommentImage {
+  id:number,
+  image:string,
+  commentId:number
+}
+
+export interface Comment {
+  id: number;
+  content: string;
+  pointStar: number;
+  userId: string;
+  productId: number;
+  user: User2;
+  createdAt:string
+  commentImages:CommentImage[]
+}
+
 export interface Products {
   products: ProductModel[];
   totalPage: number;
@@ -24,6 +41,8 @@ export interface Seller {
   nameShop?: any;
   date?: any;
   image: string;
+  createdAt:string
+  qty:number
 }
 
 export interface VariantOption {
@@ -57,6 +76,15 @@ export interface SkuValue {
   skuId: number;
 }
 
+export interface User2 {
+  phone: string;
+  id: string;
+  image: string;
+  email: string;
+  name: string;
+}
+
+
 export interface ProductDetail {
   id: number;
   slug: string;
@@ -72,4 +100,6 @@ export interface ProductDetail {
   variantOptions: VariantOption[];
   qtySold: number;
   skuValues: SkuValue[];
+  currentStar:number
+  comments:Comment[]
 }

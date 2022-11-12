@@ -1,22 +1,26 @@
-import React, { FC } from "react";
+import { Pagination } from "@mui/material";
+import { useRouter } from "next/router";
+import { FC } from "react";
 import { AiOutlineDown, AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import { VscInfo } from "react-icons/vsc";
+import { ProductModel, Products } from "../models/product.model";
 import ProductCard from "./Cards/ProductCard";
-import Pagination from "./Pagination";
 
 type ResultSearchProps = {
   isMain?: boolean;
+  data: Products;
 };
 
-const ResultSearch: FC<ResultSearchProps> = ({ isMain = true }) => {
+const ResultSearch: FC<ResultSearchProps> = ({ isMain = true, data }) => {
+  const router = useRouter();
   return (
     <div className="flex-1 pl-4">
-      {isMain && (
+      {isMain && router.query.name && (
         <div className="flex items-center">
           <VscInfo className="text-[17px]" />
           <h5 className="ml-2 text-[17px]">
             Kết quả tìm kiếm cho từ khóa &quot;
-            <strong className="text-red-500">áo</strong>&quot;
+            <strong className="text-red-500">{router.query?.name}</strong>&quot;
           </h5>
         </div>
       )}
@@ -24,24 +28,86 @@ const ResultSearch: FC<ResultSearchProps> = ({ isMain = true }) => {
       <div className="mt-4 flex items-center justify-between bg-[rgba(0,0,0,.03)] px-4 py-3">
         <div className="flex items-center">
           <span className="text-[17px]">Sắp xếp theo</span>
-          <button className="ml-3 rounded-sm bg-primary px-4 py-2 text-[17px] capitalize text-white">
+          <button
+            onClick={() =>
+              router.push({
+                query: {
+                  ...router.query,
+                  sortBy: "relevancy",
+                },
+              })
+            }
+            className={`ml-3 rounded-sm  px-4 py-2 text-[17px] capitalize  ${
+              !router.query.sortBy || router.query?.sortBy === "relevancy"
+                ? "bg-primary text-white"
+                : "bg-white text-black"
+            }`}
+          >
             Liên quan
           </button>
-          <button className="ml-3 rounded-sm bg-white px-4 py-2 text-[17px] capitalize">
+          <button
+            onClick={() =>
+              router.push({
+                query: {
+                  ...router.query,
+                  sortBy: "ctime",
+                },
+              })
+            }
+            className={`ml-3 rounded-sm  px-4 py-2 text-[17px] capitalize  ${
+              !router.query.sortBy || router.query?.sortBy === "ctime"
+                ? "bg-primary text-white"
+                : "bg-white text-black"
+            }`}
+          >
             Mới nhất
           </button>
-          <button className="ml-3 rounded-sm bg-white px-4 py-2 text-[17px] capitalize">
+          <button
+            onClick={() =>
+              router.push({
+                query: {
+                  ...router.query,
+                  sortBy: "sales",
+                },
+              })
+            }
+            className={`ml-3 rounded-sm  px-4 py-2 text-[17px] capitalize  ${
+              !router.query.sortBy || router.query?.sortBy === "sales"
+                ? "bg-primary text-white"
+                : "bg-white text-black"
+            }`}
+          >
             Bán chạy
           </button>
-          <div className="showMenuPrice relative ml-3 flex w-[200px] cursor-pointer items-center justify-between bg-white px-4 py-2 text-[17px]">
+          <div className={`showMenuPrice relative ml-3 flex w-[200px] cursor-pointer items-center justify-between  px-4 py-2 text-[17px] ${router.query && router.query?.sortBy.indexOf("price") !== -1 ? "bg-primary text-white" : "bg-white"}`}>
             <span>Giá</span>
             <AiOutlineDown />
             <ul className=" menuPrice absolute top-[38px] left-0 z-10 hidden w-[200px] bg-white py-2 transition-all ">
-              <li className="py-2 px-4 transition-all hover:text-primary">
+              <li
+                onClick={() =>
+                  router.push({
+                    query: {
+                      ...router.query,
+                      sortBy: "priceDesc",
+                    },
+                  })
+                }
+                className={`py-2 px-4 transition-all hover:text-primary ${router.query && router.query?.sortBy === "priceDesc" ? 'text-primary' : 'text-black'}`}
+              >
                 Giá: Thấp đến Cao
               </li>
-              <li className="py-2 px-4 transition-all hover:text-primary">
-                Giá: Thấp đến Cao
+              <li
+                onClick={() =>
+                  router.push({
+                    query: {
+                      ...router.query,
+                      sortBy: "priceAsc",
+                    },
+                  })
+                }
+                className={`py-2 px-4 transition-all hover:text-primary ${router.query && router.query?.sortBy === "priceAsc" ? 'text-primary' : 'text-black'}`}
+              >
+                Giá: Cao đến Thấp
               </li>
             </ul>
           </div>
@@ -62,13 +128,31 @@ const ResultSearch: FC<ResultSearchProps> = ({ isMain = true }) => {
       </div>
       <div>
         <div className="mt-4 grid grid-cols-5 gap-2">
-          {Array.from(Array(30).keys()).map((item: number, index: number) => (
-            <ProductCard key={index} />
+          {data?.products.map((item: ProductModel, index: number) => (
+            <ProductCard key={index} {...item} />
           ))}
         </div>
         <div className="mt-7 flex items-center justify-center">
-          {/* <Pagination defaultActivePage={1} totalPages={5} /> */}
-          <Pagination page={1} totalPage={10} />
+          <Pagination
+            onChange={(e, page) =>
+              router.push({
+                query: {
+                  ...router.query,
+                  page,
+                },
+              })
+            }
+            page={router.query.page ? +router.query.page : 1}
+            count={data.totalPage}
+            shape={"rounded"}
+            sx={{
+              ".css-10w330c-MuiButtonBase-root-MuiPaginationItem-root.Mui-selected":
+                {
+                  bgcolor: "#f53d2d",
+                  color: "white  ",
+                },
+            }}
+          />
         </div>
       </div>
     </div>

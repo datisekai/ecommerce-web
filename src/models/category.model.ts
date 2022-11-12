@@ -4,4 +4,5 @@ export interface CategoryModel {
   parentId?: number;
   sellerId?: number;
   image: string;
+  count:number
 }

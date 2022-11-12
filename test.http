@@ -283,3 +283,16 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjA4ODYyNDkwM
     "name":"Điện thoại & phụ kiện",
     "image":"https://cf.shopee.vn/file/31234a27876fb89cd522d7e3db1ba5ca_tn"
 }
+
+
+###
+POST http://localhost:3000/api/comment
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNsYWQ4OWQ5aTAwMDByZ2gwOW0xdTV1N2IiLCJpYXQiOjE2NjgyMTUyMDUsImV4cCI6MTY2ODI1ODQwNX0.-Hxa6rWr8Wu_ugQcBmh5x6JmDnd9DlXPPpCAVxE0lOw
+
+{
+  "content":"Iphone quá đẹp luôn!!!",
+  "pointStar":3,
+  "productId":6,
+  "images":["https://cf.shopee.vn/file/92e22ea754c54e8acd305b1f70087cbe_tn","https://cf.shopee.vn/file/92e22ea754c54e8acd305b1f70087cbe_tn"]
+}

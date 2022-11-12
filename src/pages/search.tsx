@@ -1,10 +1,21 @@
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import MainLayout from "../components/Layouts/MainLayout";
 import WidthLayout from "../components/Layouts/WidthLayout";
 import Meta from "../components/Meta";
 import ResultSearch from "../components/ResultSearch";
 import SearchTool from "../components/SearchTool";
+import { CategoryModel } from "../models/category.model";
+import { ProductModel, Products } from "../models/product.model";
+import CategoryApi from "../services/category";
+import SearchApi from "../services/search";
 
-const Search = () => {
+type SearchProps = {
+  categories:CategoryModel[],
+  products:Products
+  
+}
+
+const Search:React.FC<SearchProps> = ({categories,products }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
     <>
       <Meta
@@ -15,8 +26,8 @@ const Search = () => {
       <MainLayout>
         <WidthLayout>
           <div className="mx-auto flex max-w-[calc(100%-16px)] pt-6 pb-6">
-            <SearchTool />
-            <ResultSearch />
+            <SearchTool categories={categories} />
+            <ResultSearch data={products} />
           </div>
         </WidthLayout>
       </MainLayout>
@@ -25,3 +36,16 @@ const Search = () => {
 };
 
 export default Search;
+
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+
+  const data = await Promise.all([CategoryApi.getCategory(), SearchApi.filter(query)])
+
+  return {
+    props: {
+      categories:data[0],
+      products:data[1]
+    },
+  };
+};
+

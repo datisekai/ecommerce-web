@@ -29,7 +29,7 @@ const ProductCard: FC<ProductModel> = ({
           <h4 className="text-[12px] text-black line-clamp-2 lg:text-[14px]">
             {name}
           </h4>
-          <div className="mt-4 flex items-center justify-between">
+          <div className="mt-2 flex items-center justify-between">
             <div className="flex items-center text-[15px] text-primary lg:text-[16px]">
               {maxPrice === minPrice ? (
                 <span>{formatPrices(maxPrice)}</span>
@@ -41,10 +41,11 @@ const ProductCard: FC<ProductModel> = ({
                 </div>
               )}
             </div>
-            <span className="text-[12px] text-gray-500 lg:text-[13px]">
+           
+          </div>
+          <span className=" mt-2 text-[12px] text-gray-500 lg:text-[13px]">
               Đã bán {formatPrices1(qtySold)}
             </span>
-          </div>
         </div>
         <div className="productSame absolute z-[100] hidden w-full rounded-sm bg-secondary p-2 shadow-md transition-all">
           <h4 className="text-center text-[14px] text-white line-clamp-1 lg:text-[15px]">

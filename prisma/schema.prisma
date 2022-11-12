@@ -50,6 +50,7 @@ model User {
   password      String?       @db.Text
   nameShop      String?
   gender        String?
+  createdAt     DateTime      @db.Timestamp() @default(now())
   date          DateTime?     @db.Timestamp()
   perId         Int?          @default(1)
   permission    Permission?   @relation(fields: [perId], references: [id])
@@ -170,6 +171,7 @@ model Comment {
   user          User           @relation(fields: [userId], references: [id])
   product       Product        @relation(fields: [productId], references: [id])
   commentImages CommentImage[]
+  createdAt      DateTime       @default(now()) @db.Timestamp
 }
 
 model CommentImage {
