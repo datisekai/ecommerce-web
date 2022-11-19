@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import { deleteCookie, getCookie, setCookie } from "cookies-next";
 import { API_URL } from "../config";
+import { store } from "../redux";
 const axiosClient = axios.create({
   baseURL: API_URL,
 });
@@ -16,7 +17,7 @@ axiosClient.interceptors.request.use((config) => {
     );
   }
 
-  const token = getCookie("token");
+  const token = getCookie('token');
 
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
@@ -33,7 +34,10 @@ axiosClient.interceptors.response.use(
     console.log(error);
     if (error.response.status === 401) {
       deleteCookie("token");
+      setCookie('token','')
+     if(typeof window !== "undefined"){
       window.location.href = "/login";
+     }
     }
     return Promise.reject(error.response.data);
   }

@@ -1,17 +1,16 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { GiPositionMarker } from "react-icons/gi";
+import { IoNewspaperOutline } from "react-icons/io5";
+import Button from "../components/Button";
+import CheckoutCard from "../components/Cards/CheckoutCard";
 import MainLayout from "../components/Layouts/MainLayout";
 import WidthLayout from "../components/Layouts/WidthLayout";
-import { GiPositionMarker } from "react-icons/gi";
-import Button from "../components/Button";
 import Meta from "../components/Meta";
-import CheckoutCard from "../components/Cards/CheckoutCard";
-import { IoNewspaperOutline } from "react-icons/io5";
-import VoucherCard from "../components/Cards/VoucherCard";
+import AddressModal from "../components/Popup/AddressModal";
 import VoucherModal from "../components/Popup/VoucherModal";
 import { formatPrices } from "../utils";
-import AddressModal from "../components/Popup/AddressModal";
 
-const Checkout = () => {
+const Checkout = (props) => {
   const [open, setOpen] = useState(false);
   const [openAddress, setOpenAddress] = useState(false);
   return (

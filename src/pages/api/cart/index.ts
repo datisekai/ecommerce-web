@@ -16,7 +16,24 @@ const handler = async (req: INextApiRequest, res: NextApiResponse) => {
         include: {
           cartDetails: {
             include: {
-              sku: true,
+              sku: {
+                include: {
+                  product: true,
+                },
+              },
+            },
+          },
+          seller: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+              phone: true,
+              nameShop: true,
+              gender: true,
+              createdAt: true,
+              date: true,
+              image: true,
             },
           },
         },
@@ -51,21 +68,27 @@ const handler = async (req: INextApiRequest, res: NextApiResponse) => {
           return notAuthorized(res);
         }
 
-        if (myCart) {
-          const newCartDetail = await prisma?.cartDetail.create({
-            data: {
-              cartId: myCart.id,
-              skuId: Number(skuId),
-              qty: Number(qty),
+        const newCartDetail = await prisma?.cartDetail.create({
+          data: {
+            cartId: myCart.id,
+            skuId: Number(skuId),
+            qty: Number(qty),
+          },
+          include: {
+            sku: {
+              include: {
+                product: true,
+              },
             },
-          });
+          },
+        });
 
-          return res.json({ carts: myCart, cartDetail: newCartDetail });
-        }
+        return res.json(newCartDetail);
       } else {
         const currentSku = await prisma?.cartDetail.findFirst({
           where: {
             skuId: Number(skuId),
+            cartId: currentCart.id,
           },
         });
         if (!currentSku) {
@@ -75,8 +98,15 @@ const handler = async (req: INextApiRequest, res: NextApiResponse) => {
               skuId: Number(skuId),
               qty: Number(qty),
             },
+            include: {
+              sku: {
+                include: {
+                  product: true,
+                },
+              },
+            },
           });
-          return res.json({ carts: currentCart, cartDetail: newCartSku });
+          return res.json(newCartSku);
         } else {
           const updateSku = await prisma?.cartDetail.update({
             where: {
@@ -85,22 +115,29 @@ const handler = async (req: INextApiRequest, res: NextApiResponse) => {
             data: {
               qty: currentSku.qty + Number(qty),
             },
+            include: {
+              sku: {
+                include: {
+                  product: true,
+                },
+              },
+            },
           });
-          return res.json({ carts: currentCart, cartDetail: updateSku });
+          return res.json(updateSku);
         }
       }
     } catch (error) {
       return logError(res, error);
     }
   } else if (req.method === "DELETE") {
-    const { cartDetailId, sellerId } = req.body;
+    const { cartDetailId, sellerId } = req.query;
     if (!cartDetailId || !sellerId) {
       return missing(res);
     }
     try {
       const currentCart = await prisma?.cart.findFirst({
         where: {
-          sellerId,
+          sellerId: sellerId as string,
           userId: req.userId,
         },
         include: {
@@ -131,7 +168,7 @@ const handler = async (req: INextApiRequest, res: NextApiResponse) => {
   } else if (req.method === "PUT") {
     const { cartDetailId, sellerId, qty } = req.body;
 
-    if (!cartDetailId || !sellerId || !qty) {
+    if (!cartDetailId || !qty) {
       return missing(res);
     }
 

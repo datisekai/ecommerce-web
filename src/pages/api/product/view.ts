@@ -8,6 +8,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const skip = (+page - 1) * +limit;
 
+    let where = {}
+
+    if(sellerId){
+      where = { 
+        sellerId:sellerId as string
+      }
+    }
     try {
       const products = await prisma?.product.findMany({
         include: {
@@ -18,6 +25,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         orderBy: {
           createdAt: "desc",
         },
+        where
       });
 
       const counts = await prisma.product.count();

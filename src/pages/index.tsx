@@ -1,5 +1,5 @@
 import { getCookie } from "cookies-next";
-import type { GetServerSideProps, NextPage } from "next";
+import type { GetServerSideProps, NextPage, InferGetServerSidePropsType } from "next";
 import Head from "next/head";
 import AuthLayout from "../components/Layouts/AuthLayout";
 import MainLayout from "../components/Layouts/MainLayout";
@@ -18,9 +18,7 @@ type HomeProps = {
   products: Products;
 };
 
-const Home: NextPage<HomeProps> = ({ token, categories, products }) => {
-  console.log(categories);
-  console.log(products);
+const Home: NextPage<HomeProps> = ({ categories, products }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
     <>
       <Head>
@@ -31,7 +29,7 @@ const Home: NextPage<HomeProps> = ({ token, categories, products }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <AuthLayout token={token}>
+      <AuthLayout >
         <MainLayout>
           <Slider />
           <Section1 data={categories} />

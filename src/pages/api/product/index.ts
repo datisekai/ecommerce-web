@@ -64,7 +64,7 @@ const handler = async (req: INextApiRequest, res: NextApiResponse) => {
         )
       );
 
-      let variantOptions: any = [];
+      const variantOptions: any = [];
       newVariants.forEach((item: any, index: number) => {
         if (variants[index].children) {
           variants[index].children.forEach((element: any) => {
@@ -114,7 +114,7 @@ const handler = async (req: INextApiRequest, res: NextApiResponse) => {
         },
       });
 
-      let variants: any = [];
+      const variants: any = [];
 
       variantOptions.forEach((item: any) => {
         const isExist = variants.some(
@@ -125,9 +125,9 @@ const handler = async (req: INextApiRequest, res: NextApiResponse) => {
         }
       });
 
-      let options = [variantOptions[0]];
+      const options = [variantOptions[0]];
       console.log(options[0]);
-      let otherOptions: any = [];
+      const otherOptions: any = [];
       variantOptions.forEach((item: any, index) => {
         if (index > 0) {
           if (item.variantId === options[0]?.variantId) {
@@ -138,7 +138,7 @@ const handler = async (req: INextApiRequest, res: NextApiResponse) => {
         }
       });
 
-      let data: any = [];
+      const data: any = [];
 
       options.forEach((item: any) => {
         otherOptions.forEach((item1: any) => {

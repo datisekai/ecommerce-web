@@ -5,7 +5,8 @@ type filterData = {
     name?:string,
     page?:number
     limit?:number
-    categoryId?:number
+    categoryId?:number, 
+    sellerId?:string
 }
 
 type SearchApiProps = {

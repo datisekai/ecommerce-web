@@ -27,7 +27,7 @@ const ActionUser = () => {
           // user.image || user.email
           //   ? createAvatar(user.email.slice(0, user.email.indexOf("@")))
           //   : createAvatar(user.phone)
-          user.image ||
+
           createAvatar(
             user.email
               ? user.email.slice(0, user.email.indexOf("@"))
@@ -37,7 +37,6 @@ const ActionUser = () => {
         style={{ width: 20, height: 20, borderRadius: "50%" }}
       />
       <button
-        onClick={handleLogout}
         className="ml-2   overflow-x-hidden capitalize text-white"
         title={user.name || user.email}
       >
@@ -50,9 +49,11 @@ const ActionUser = () => {
             Tài khoản của tôi
           </li>
         </Link>
-        <li className="py-2 px-2 text-[15px] transition-all hover:cursor-pointer hover:text-primary ">
-          Đơn mua
-        </li>
+        <Link href={"/cart"}>
+          <li className="py-2 px-2 text-[15px] transition-all hover:cursor-pointer hover:text-primary ">
+            Đơn mua
+          </li>
+        </Link>
         <li
           onClick={handleLogout}
           className="py-2 px-2 text-[15px] transition-all hover:cursor-pointer hover:text-primary "

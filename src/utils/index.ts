@@ -8,8 +8,11 @@ export const formatPrices = (price: number) => {
   }).format(price);
 };
 
-export const createAvatar = (name: string) =>
-  `https://ui-avatars.com/api/?name=${name}`;
+export const createAvatar = (name: string) => {
+  console.log(name)
+  return   `https://ui-avatars.com/api/?name=${name}`;
+}
+
 var SI_SYMBOL = ["", "k", "M", "G", "T", "P", "E"];
 
 export function formatPrices1(number: number) {

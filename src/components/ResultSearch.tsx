@@ -38,7 +38,7 @@ const ResultSearch: FC<ResultSearchProps> = ({ isMain = true, data }) => {
               })
             }
             className={`ml-3 rounded-sm  px-4 py-2 text-[17px] capitalize  ${
-              !router.query.sortBy || router.query?.sortBy === "relevancy"
+              !router.query.sortBy || router.query.sortBy === "relevancy"
                 ? "bg-primary text-white"
                 : "bg-white text-black"
             }`}
@@ -55,7 +55,7 @@ const ResultSearch: FC<ResultSearchProps> = ({ isMain = true, data }) => {
               })
             }
             className={`ml-3 rounded-sm  px-4 py-2 text-[17px] capitalize  ${
-              !router.query.sortBy || router.query?.sortBy === "ctime"
+              router.query.sortBy && router.query.sortBy === "ctime"
                 ? "bg-primary text-white"
                 : "bg-white text-black"
             }`}
@@ -72,14 +72,14 @@ const ResultSearch: FC<ResultSearchProps> = ({ isMain = true, data }) => {
               })
             }
             className={`ml-3 rounded-sm  px-4 py-2 text-[17px] capitalize  ${
-              !router.query.sortBy || router.query?.sortBy === "sales"
+              router.query.sortBy && router.query?.sortBy === "sales"
                 ? "bg-primary text-white"
                 : "bg-white text-black"
             }`}
           >
             Bán chạy
           </button>
-          <div className={`showMenuPrice relative ml-3 flex w-[200px] cursor-pointer items-center justify-between  px-4 py-2 text-[17px] ${router.query && router.query?.sortBy.indexOf("price") !== -1 ? "bg-primary text-white" : "bg-white"}`}>
+          {/* <div className={`showMenuPrice relative ml-3 flex w-[200px] cursor-pointer items-center justify-between  px-4 py-2 text-[17px] ${router.query && router.query?.sortBy?.indexOf("price") !== -1 ? "bg-primary text-white" : "bg-white"}`}>
             <span>Giá</span>
             <AiOutlineDown />
             <ul className=" menuPrice absolute top-[38px] left-0 z-10 hidden w-[200px] bg-white py-2 transition-all ">
@@ -110,9 +110,9 @@ const ResultSearch: FC<ResultSearchProps> = ({ isMain = true, data }) => {
                 Giá: Cao đến Thấp
               </li>
             </ul>
-          </div>
+          </div> */}
         </div>
-        <div className="flex items-center">
+        {/* <div className="flex items-center">
           <span className="text-[17px]">
             <span className="text-primary">1</span>/50
           </span>
@@ -124,7 +124,7 @@ const ResultSearch: FC<ResultSearchProps> = ({ isMain = true, data }) => {
               <AiOutlineRight className="text-[15px]" />
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
       <div>
         <div className="mt-4 grid grid-cols-5 gap-2">

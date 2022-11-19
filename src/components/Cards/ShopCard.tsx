@@ -6,21 +6,16 @@ import Divider from "../Divider";
 import { Seller } from "../../models/product.model";
 import Link from "next/link";
 import { calculateCreatedTime } from "../../utils/formatTime";
-import { createAvatar } from "../../utils";
+import { createAvatar, formatPrices1 } from "../../utils";
 import dayjs from 'dayjs'
 
-const ShopCard:FC<Seller> = ({email,id,image,name,date,nameShop,createdAt,qty = 0}) => {
-  console.log(calculateCreatedTime(createdAt))
+const ShopCard:FC<Seller> = ({email,id,image,name,date,nameShop,createdAt,qty = 0, qtyComment}) => {
   return (
     <div className="flex flex-col items-center justify-between rounded-sm bg-white p-4 shadow-sm lg:flex-row">
       <div className="flex items-center ">
         <LazyLoadImage
-          src={image ||
-            createAvatar(
-              email
-                ? email.slice(0, email.indexOf("@"))
-                : id
-            )}
+          src={image ? image : createAvatar(nameShop || name || email || id  )
+           }
           className="h-[78px] w-[78px] rounded-full"
         />
         <div className="ml-4">
@@ -48,7 +43,7 @@ const ShopCard:FC<Seller> = ({email,id,image,name,date,nameShop,createdAt,qty = 
         </div>
         <div className="flex items-center">
           <span className="text-[16px] text-[#666]">Đánh giá</span>
-          <span className="ml-2 text-[16px] text-primary">2,9k</span>
+          <span className="ml-2 text-[16px] text-primary">{formatPrices1(qtyComment || 0)}</span>
         </div>
       </div>
     </div>

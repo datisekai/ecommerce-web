@@ -1,3 +1,4 @@
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { BsCart2 } from "react-icons/bs";
 import Button from "../Button";
@@ -5,6 +6,13 @@ import CartCard from "../Cards/CartCard";
 import WidthLayout from "../Layouts/WidthLayout";
 import Search from "../Search";
 import TopHeader from "./TopHeader";
+import React, { useEffect, useMemo } from "react";
+import { Cart, CartDetail } from "../../models/cart.model";
+import CartApi from "../../services/cart";
+import { getCookie } from "cookies-next";
+import cart from "../../pages/api/cart";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import { useAppSelector } from "../../hooks/reduxHooks";
 
 const searchHistory = [
   "Áo Khoác",
@@ -17,8 +25,19 @@ const searchHistory = [
 ];
 
 const Header = () => {
+  const cartsQuery = useAppSelector((state) => state.cart.carts);
+
+  const carts = useMemo(() => {
+    let newCarts = [];
+
+    cartsQuery?.forEach((element: Cart) => {
+      newCarts = [...newCarts, ...element.cartDetails];
+    });
+    return newCarts;
+  }, [cartsQuery]);
+
   return (
-    <div className="transform-[translateZ(0)] shadow-[rgba(0, 0, 0, 0.24)] fixed top-0 left-0 right-0  z-[100] hidden bg-gradient-to-b from-primary to-secondary shadow-sm lg:block">
+    <div className="transform-[translateZ(0)] shadow-[rgba(0, 0, 0, 0.24)] sticky top-0 left-0 right-0  z-[100] hidden bg-gradient-to-b from-primary to-secondary shadow-sm lg:block">
       <WidthLayout>
         <TopHeader />
         <div className="mx-auto flex w-[calc(100%-16px)] items-center pt-[16px] pb-[10px]">
@@ -52,24 +71,36 @@ const Header = () => {
           </div>
           <div className="showMenuCart relative mx-[10px]  mb-[12px] pl-[3.5rem] pr-[2.5rem] hover:cursor-pointer ">
             <BsCart2 className="text-[28px]  text-white" />
-            <div className="square-divider  menuCart absolute right-0 mt-2 hidden w-[450px] rounded-sm bg-white p-4 shadow-md ">
-              <h4 className="text-[17px] text-[#666]">Sản phẩm mới thêm</h4>
-              <div className="mt-2">
-                <CartCard />
-                <CartCard />
-                <CartCard />
-                <CartCard />
+            {carts && carts.length > 0 && <div className="absolute bg-white top-0 right-[32px] shadow-sm w-4 h-4 rounded-full text-center border text-primary">{carts.length}</div>}
+
+            {carts && carts.length > 0 ? (
+              <div className="square-divider  menuCart absolute right-0 mt-2 hidden w-[450px] rounded-sm bg-white p-4 shadow-md ">
+                <h4 className="text-[17px] text-[#666]">Sản phẩm mới thêm</h4>
+                <div className="mt-2">
+                  {carts?.map((item: CartDetail) => (
+                    <CartCard key={item.id} {...item} />
+                  ))}
+                </div>
+                <div className="mt-2 flex items-center justify-between">
+                  <p>{carts?.length || 0} sản phẩm</p>
+                  <Link href={"/cart"}>
+                    <Button
+                      text="Xem giỏ hàng"
+                      className="rounded-sm bg-primary px-4 py-2 text-white hover:opacity-90"
+                    />
+                  </Link>
+                </div>
               </div>
-              <div className="mt-2 flex items-center justify-between">
-                <p>8 sản phẩm</p>
-                <Link href={"/cart"}>
-                  <Button
-                    text="Xem giỏ hàng"
-                    className="rounded-sm bg-primary px-4 py-2 text-white hover:opacity-90"
-                  />
-                </Link>
+            ) : (
+              <div className="square-divider  menuCart absolute right-0 mt-2 hidden w-[450px] rounded-sm bg-white p-4 shadow-md ">
+                {!carts || carts.length === 0}
+                <LazyLoadImage
+                  className="mx-auto  w-[200px]"
+                  src="https://www.f50bodyfit.vn/Bodyfit/Lirary/img/icon/cart-trong.png"
+                />
+                <h3 className="mt-2 text-center">Chưa có sản phẩm</h3>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </WidthLayout>

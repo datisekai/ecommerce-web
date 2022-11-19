@@ -25,7 +25,7 @@ const ProductCard: FC<ProductModel> = ({
           className="block aspect-[1/1]"
           src={image || "https://source.unsplash.com/random"}
         />
-        <div className="mt-1 px-3 pb-3">
+        <div className="mt-1 px-3 p-3">
           <h4 className="text-[12px] text-black line-clamp-2 lg:text-[14px]">
             {name}
           </h4>

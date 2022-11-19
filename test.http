@@ -2,7 +2,7 @@ POST http://localhost:3000/api/login
 Content-Type:  application/json
 
 {
-    "phone":"1",
+    "phone":"0123456789",
     "password":"bedatnee312"
 }
 
@@ -21,198 +21,95 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJpYXQiOjE2NjczOTc0NjcsImV4cCI6MTY2NzQ0MDY2N30.fPJfWsHPaLsp3Ujb7ISM-St5HG9KM5vIvBBaIZHbUeQ
 
 ###
-GET http://localhost:3000/api/product?productId=9
+GET http://localhost:3000/api/product?productId=10
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjA4ODYyNDkwMjIiLCJpYXQiOjE2NjgwNzA5NzQsImV4cCI6MTY2ODExNDE3NH0.sZbgNTNzRitkE-7dR_SXeAqUq3MkBUkkYqatbR1ojFI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNsOXV6Nm1iZzAwMDI3azJrMm04bTVhem0iLCJpYXQiOjE2Njg4NzM2MDUsImV4cCI6MTY2ODkxNjgwNX0.PH0d8IKIv4Wzh1G3MD8Hp6DVt8K8MxqcXaSCmnz0vWQ
 
 ###
 POST http://localhost:3000/api/product/value
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjA4ODYyNDkwMjIiLCJpYXQiOjE2NjgwNzA5NzQsImV4cCI6MTY2ODExNDE3NH0.sZbgNTNzRitkE-7dR_SXeAqUq3MkBUkkYqatbR1ojFI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNsOXV6Nm1iZzAwMDI3azJrMm04bTVhem0iLCJpYXQiOjE2Njg4NzM2MDUsImV4cCI6MTY2ODkxNjgwNX0.PH0d8IKIv4Wzh1G3MD8Hp6DVt8K8MxqcXaSCmnz0vWQ
 
 {
-    "slug":"ao-khoac-jean-denim-caro-nam-unisex-form-rong-basic-ao-khoat-jacket-jean-nam-nu-caro-phong-cach-djuong-pho-1077",
+    "slug":"chuot-ko-day-bluetooth-2.4ghz-tu-sac-pin-cao-cap-2-trong-1-chong-on-dung-cho-djtmay-tinhlaptoplaptop-tao",
     "skuValues": [
         {
-            "price":550000,
-            "qty":5000,
-            "discount":36,
-            "image":"https://cf.shopee.vn/file/sg-11134201-22100-eigw4ikj5eiv76",
+            "price":149000,
+            "qty":124,
+            "discount":34,
+            "image":"https://cf.shopee.vn/file/94f96b48d787e9258e0f533d03a410b3",
             "values":[
                         {
-                            "id": 20,
-                            "name": "Xám",
-                            "variantId": 11,
-                            "productId": 9,
-                            "variant": {
-                            "id": 11,
+                          "id": 25,
+                          "name": "Xám",
+                          "variantId": 13,
+                          "productId": 10,
+                          "variant": {
+                            "id": 13,
                             "name": "Màu",
-                            "productId": 9
-                            }
-                        },
-                        {
-                            "id": 21,
-                            "name": "L",
-                            "variantId": 12,
-                            "productId": 9,
-                            "variant": {
-                            "id": 12,
-                            "name": "Size",
-                            "productId": 9
-                            }
+                            "productId": 10
+                          }
                         }
                     ]
         },
         {
-            "price":550000,
-            "qty":4560,
-            "discount":40,
-            "image":"https://cf.shopee.vn/file/sg-11134201-22100-eigw4ikj5eiv76",
+            "price":150000,
+            "qty":123,
+            "discount":34,
+            "image":"https://cf.shopee.vn/file/7bda47cfcd5a5907d638b3f7f09e5213",
             "values":[
-                                    {
-                    "id": 20,
-                    "name": "Xám",
-                    "variantId": 11,
-                    "productId": 9,
-                    "variant": {
-                    "id": 11,
-                    "name": "Màu",
-                    "productId": 9
+                                  {
+                      "id": 26,
+                      "name": "Đen",
+                      "variantId": 13,
+                      "productId": 10,
+                      "variant": {
+                        "id": 13,
+                        "name": "Màu",
+                        "productId": 10
+                      }
                     }
-                },
-                {
-                    "id": 23,
-                    "name": "XL",
-                    "variantId": 12,
-                    "productId": 9,
-                    "variant": {
-                    "id": 12,
-                    "name": "Size",
-                    "productId": 9
-                    }
-                }
                     ]
         },
         {
-            "price":550000,
-            "qty":3456,
-            "discount":23,
+            "price":149000,
+            "qty":120,
+            "discount":34,
             "image":"https://cf.shopee.vn/file/sg-11134201-22100-eigw4ikj5eiv76",
             "values":[
-                       {
-        "id": 20,
-        "name": "Xám",
-        "variantId": 11,
-        "productId": 9,
-        "variant": {
-          "id": 11,
-          "name": "Màu",
-          "productId": 9
-        }
-      },
-      {
-        "id": 24,
-        "name": "M",
-        "variantId": 12,
-        "productId": 9,
-        "variant": {
-          "id": 12,
-          "name": "Size",
-          "productId": 9
-        }
-      }
+                      {
+              "id": 27,
+              "name": "Trắng",
+              "variantId": 13,
+              "productId": 10,
+              "variant": {
+                "id": 13,
+                "name": "Màu",
+                "productId": 10
+              }
+            }
                     ]
         },
         {
-            "price":550000,
+            "price":151000,
             "qty":5000,
-            "discount":36,
-            "image":"https://cf.shopee.vn/file/sg-11134201-22100-eigw4ikj5eiv76",
+            "discount":34,
+            "image":"https://cf.shopee.vn/file/db8bcb16c7a34de025d019075027deea",
             "values":[
                         {
-        "id": 22,
-        "name": "Đen",
-        "variantId": 11,
-        "productId": 9,
-        "variant": {
-          "id": 11,
-          "name": "Màu",
-          "productId": 9
-        }
-      },
-      {
-        "id": 21,
-        "name": "L",
-        "variantId": 12,
-        "productId": 9,
-        "variant": {
-          "id": 12,
-          "name": "Size",
-          "productId": 9
-        }
+      "id": 28,
+      "name": "Vàng",
+      "variantId": 13,
+      "productId": 10,
+      "variant": {
+        "id": 13,
+        "name": "Màu",
+        "productId": 10
       }
-                    ]
-        },
-        {
-            "price":450000,
-            "qty":5700,
-            "discount":10,
-            "image":"https://cf.shopee.vn/file/sg-11134201-22100-eigw4ikj5eiv76",
-            "values":[
-                        {
-        "id": 22,
-        "name": "Đen",
-        "variantId": 11,
-        "productId": 9,
-        "variant": {
-          "id": 11,
-          "name": "Màu",
-          "productId": 9
-        }
-      },
-      {
-        "id": 23,
-        "name": "XL",
-        "variantId": 12,
-        "productId": 9,
-        "variant": {
-          "id": 12,
-          "name": "Size",
-          "productId": 9
-        }
-      }
-                    ]
-        },
-        {
-            "price":550000,
-            "qty":4500,
-            "discount":36,
-            "image":"https://cf.shopee.vn/file/sg-11134201-22100-eigw4ikj5eiv76",
-            "values":[
-                        {
-        "id": 22,
-        "name": "Đen",
-        "variantId": 11,
-        "productId": 9,
-        "variant": {
-          "id": 11,
-          "name": "Màu",
-          "productId": 9
-        }
-      },
-      {
-        "id": 24,
-        "name": "M",
-        "variantId": 12,
-        "productId": 9,
-        "variant": {
-          "id": 12,
-          "name": "Size",
-          "productId": 9
-        }
-      }
+    }
                     ]
         }
+        
     ]
 }
 
@@ -220,21 +117,17 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjA4ODYyNDkwM
 ###
 POST http://localhost:3000/api/product
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjA4ODYyNDkwMjIiLCJpYXQiOjE2NjgwNzQ3OTMsImV4cCI6MTY2ODExNzk5M30.SF12tnbTIFU1zOk2XcHMbzKeHKOXUG6CCjiXxgBrKr4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNsOXV6Nm1iZzAwMDI3azJrMm04bTVhem0iLCJpYXQiOjE2Njg4NzM2MDUsImV4cCI6MTY2ODkxNjgwNX0.PH0d8IKIv4Wzh1G3MD8Hp6DVt8K8MxqcXaSCmnz0vWQ
 
 {
-  "categoryId": 1,
-  "name": "Áo khoác jean denim caro nam unisex form rộng basic, áo khoát jacket jean nam nữ caro phong cách đường phố 1077",
-  "description":"áo khoác jean, áo khoát jean HÀNG CÓ SẴN #aokhoacjean #aokhoatjean Áo khoác jean denim caro nam unisex form rộng basic, áo khoát jacket jean nam nữ caro phong cách đường phố Hàng có sẵn nên shop có thể giao ngay ạ",
-  "image": "https://cf.shopee.vn/file/sg-11134201-22100-eigw4ikj5eiv76",
+  "categoryId": 2,
+  "name": "Chuột ko dây Bluetooth 2.4Ghz tự sạc pin cao cấp 2 trong 1 chống ồn dùng cho ĐT,Máy Tính,Laptop,laptop táo",
+  "description":"Được thiết kế đơn giản, hiện đại, màu sắc trang nhã với kích thước phù hợp với cả người dùng là nam hay nữ. Chất liệu ABS cao cấp có khả năng chống va đập rơi vỡ, đảm bảo độ bền cho chuột. ",
+  "image": "https://cf.shopee.vn/file/7bda47cfcd5a5907d638b3f7f09e5213",
   "variants": [
     {
       "name": "Màu",
-      "children": [{ "name": "Đen" }, { "name": "Xám" }]
-    },
-    {
-        "name":"Size",
-        "children":[{"name":"M"},{"name":"L"},{"name":"XL"}]
+      "children": [{ "name": "Đen" }, { "name": "Trắng" }, { "name": "Xám" },{"name":"Vàng"}]
     }
   ]
 }
@@ -291,8 +184,13 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNsYWQ4OWQ5aTAwMDByZ2gwOW0xdTV1N2IiLCJpYXQiOjE2NjgyMTUyMDUsImV4cCI6MTY2ODI1ODQwNX0.-Hxa6rWr8Wu_ugQcBmh5x6JmDnd9DlXPPpCAVxE0lOw
 
 {
-  "content":"Iphone quá đẹp luôn!!!",
-  "pointStar":3,
-  "productId":6,
+  "content":"Áo mặc quá chuẩn form!!",
+  "pointStar":5,
+  "productId":5,
   "images":["https://cf.shopee.vn/file/92e22ea754c54e8acd305b1f70087cbe_tn","https://cf.shopee.vn/file/92e22ea754c54e8acd305b1f70087cbe_tn"]
 }
+
+###
+GET http://localhost:3000/api/cart
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNsYWQ4OWQ5aTAwMDByZ2gwOW0xdTV1N2IiLCJpYXQiOjE2NjgzNDY0NTgsImV4cCI6MTY2ODM4OTY1OH0.qddBnA2Bn8EiGjKoUlshZLU7kQYVRg51OtPpBijapRY

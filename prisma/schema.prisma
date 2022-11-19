@@ -63,6 +63,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  carts         Cart[]
 }
 
 model ContactUser {
@@ -209,6 +210,7 @@ model Cart {
   sellerId    String
   userId      String
   cartDetails CartDetail[]
+  seller      User @relation(fields: [sellerId],references: [id])
 }
 
 model CartDetail {

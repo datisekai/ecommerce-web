@@ -1,5 +1,5 @@
 import { deleteCookie, getCookie, setCookie } from "cookies-next";
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
 import { FC, useEffect } from "react";
@@ -20,7 +20,7 @@ import { Spin } from "react-cssfx-loading";
 import toast from "react-hot-toast";
 import Notify from "../components/Toast/notify";
 
-const Login = () => {
+const Login = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { data: session, status } = useSession();
   const router = useRouter();
 
@@ -32,7 +32,11 @@ const Login = () => {
       );
       const newToken = await LoginApi.loginSocial(token);
       setCookie("token", newToken);
-      router.push("/");
+      if(router.query?.redirect){
+        router.push(`/${router.query.redirect}`)
+      }else{
+        router.push("/");
+      }
     }
   };
 
@@ -43,7 +47,11 @@ const Login = () => {
   const { mutate: login, isLoading } = useMutation(LoginApi.login, {
     onSuccess: (data: string) => {
       setCookie("token", data);
-      router.push("/");
+      if(router.query?.redirect){
+        router.push(`/${router.query.redirect}`)
+      }else{
+        router.push("/");
+      }
     },
     onError: (error: any) => {
       console.log(error);
@@ -64,7 +72,6 @@ const Login = () => {
   });
 
   const handleLogin = (data: any) => {
-    console.log(data);
     login(data);
   };
 

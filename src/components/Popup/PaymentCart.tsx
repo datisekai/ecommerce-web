@@ -7,9 +7,15 @@ import WidthLayout from "../Layouts/WidthLayout";
 
 type PaymentCartProps = {
   onShowVoucher: () => void;
+  total: number;
+  length: number;
 };
 
-const PaymentCart: FC<PaymentCartProps> = ({ onShowVoucher }) => {
+const PaymentCart: FC<PaymentCartProps> = ({
+  onShowVoucher,
+  total,
+  length,
+}) => {
   return (
     <div className="sticky bottom-0 right-0 left-0 mt-3">
       <WidthLayout>
@@ -32,9 +38,9 @@ const PaymentCart: FC<PaymentCartProps> = ({ onShowVoucher }) => {
             <div className="flex items-center justify-between">
               <div className="flex items-center">
                 <span className="ml-1 text-[16px]">
-                  Tổng thanh toán {`(${0} Sản Phẩm): `}
+                  Tổng thanh toán {`(${length} Sản Phẩm): `}
                   <span className="text-[20px] text-primary">
-                    {formatPrices(12000)}
+                    {formatPrices(total)}
                   </span>
                 </span>
               </div>

@@ -43,6 +43,7 @@ export interface Seller {
   image: string;
   createdAt:string
   qty:number
+  qtyComment?:number
 }
 
 export interface VariantOption {
