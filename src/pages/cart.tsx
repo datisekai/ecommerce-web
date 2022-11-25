@@ -13,62 +13,57 @@ import CartList from "../components/Lists/CartList";
 import Meta from "../components/Meta";
 import PaymentCart from "../components/Popup/PaymentCart";
 import VoucherModal from "../components/Popup/VoucherModal";
-import { useAppSelector } from "../hooks/reduxHooks";
+import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { Cart, CartDetail } from "../models/cart.model";
+import { setCheckout } from "../redux/slices/cart";
 
 type CartProps = {};
 
 const Cart: NextPage<CartProps> = () => {
   const [showModalVoucher, setShowModalVoucher] = useState(false);
   // const { data: carts, isLoading } = useQuery(["cart"], CartApi.view);
-  const { carts } = useAppSelector((state) => state.cart);
-  const [skuCheckout, setSkuCheckout] = useState<CartDetail[]>([]);
+  const { carts, checkout } = useAppSelector((state) => state.cart);
+  const dispatch = useAppDispatch()
 
   const total = useMemo(() => {
-    let newCarts = [];
 
-    // carts?.forEach((element: Cart) => {
-    //   newCarts = [...newCarts, ...element.cartDetails];
-    // });
 
-    return skuCheckout.reduce(
+    return checkout.reduce(
       (pre, cur) =>
         pre + ((cur.sku.price * (100 - cur.sku.discount)) / 100) * cur.qty,
       0
     );
-  }, [skuCheckout]);
+  }, [checkout]);
 
   const handleAddListSku = (currentCart: Cart) => {
-    const isExist = skuCheckout.some((item) => {
+    const isExist = checkout.some((item) => {
       return item.cartId === currentCart.id;
     });
     if (!isExist) {
       carts.forEach((item) => {
         if (item.id === currentCart.id) {
-          setSkuCheckout([...item.cartDetails]);
+          dispatch(setCheckout([...item.cartDetails]));
         }
       });
     } else {
-      setSkuCheckout([]);
+      dispatch(setCheckout([]));
     }
   };
 
   const handleAddSku = (sku: CartDetail) => {
-    if (skuCheckout.length === 0) {
-      setSkuCheckout([sku]);
+    if (checkout.length === 0) {
+      dispatch(setCheckout([sku]));
     } else {
-      const isExistCart = skuCheckout.some(
+      const isExistCart = checkout.some(
         (item) => item.cartId === sku.cartId
       );
 
       if (isExistCart) {
-        const isExistSku = skuCheckout.some((item) => item.skuId === sku.skuId);
+        const isExistSku = checkout.some((item) => item.skuId === sku.skuId);
         if (isExistSku) {
-          setSkuCheckout(
-            skuCheckout.filter((item) => item.skuId !== sku.skuId)
-          );
+        dispatch(setCheckout( checkout.filter((item) => item.skuId !== sku.skuId)))
         } else {
-          setSkuCheckout([...skuCheckout, sku]);
+          dispatch(setCheckout([...checkout, sku]))
         }
       } else {
         return toast.error(
@@ -78,9 +73,7 @@ const Cart: NextPage<CartProps> = () => {
     }
   };
 
-  useEffect(() => {
-    console.log("skuCheckout", skuCheckout);
-  }, [skuCheckout]);
+
 
   return (
     <>
@@ -112,7 +105,6 @@ const Cart: NextPage<CartProps> = () => {
               </div>
               {carts?.map((item: Cart, index: number) => (
                 <CartList
-                  skuCheckout={skuCheckout}
                   onChangeSku={handleAddSku}
                   onChange={handleAddListSku}
                   key={item.id}
@@ -120,7 +112,7 @@ const Cart: NextPage<CartProps> = () => {
                 />
               ))}
               <PaymentCart
-                length={skuCheckout.length}
+                length={checkout.length}
                 total={total}
                 onShowVoucher={() => setShowModalVoucher(true)}
               />

@@ -5,10 +5,12 @@ import { ActionTypes } from "@mui/base";
 
 export interface userState {
   carts: Cart[];
+  checkout:CartDetail[]
 }
 
 const initialState: userState = {
   carts: [],
+  checkout:[]
 };
 
 export const CartSlice = createSlice({
@@ -17,6 +19,9 @@ export const CartSlice = createSlice({
   reducers: {
     setCarts: (state, action) => {
       state.carts = action.payload;
+    },
+    setCheckout:(state,action) => {
+        state.checkout = action.payload
     },
     deleteCartDetail: (state, action) => {
       const currentCart = [...state.carts];
@@ -79,7 +84,7 @@ export const CartSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { setCarts, deleteCartDetail, updateCartDetail, addCartDetail } =
+export const { setCarts, deleteCartDetail, updateCartDetail, addCartDetail,setCheckout } =
   CartSlice.actions;
 
 export default CartSlice.reducer;

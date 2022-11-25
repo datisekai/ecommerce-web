@@ -73,6 +73,7 @@ model ContactUser {
   name    String @db.Text
   userId  String
   user    User   @relation(fields: [userId], references: [id])
+  active  Boolean @default(false)
 }
 
 model SupportUser {

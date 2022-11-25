@@ -1,11 +1,11 @@
 import React, { useCallback } from "react";
+import { useAppSelector } from "../../hooks/reduxHooks";
 import { Cart, CartDetail } from "../../models/cart.model";
 import ProductCartCard from "../Cards/ProductCartCard";
 
 interface CartProps extends Cart {
   onChange: (currentCart: Cart) => void;
   onChangeSku: (sku: CartDetail) => void;
-  skuCheckout:CartDetail[]
 }
 
 const CartList: React.FC<CartProps> = ({
@@ -16,8 +16,10 @@ const CartList: React.FC<CartProps> = ({
   seller,
   onChange,
   onChangeSku,
-  skuCheckout
 }) => {
+  
+  const skuCheckout = useAppSelector(state => state.cart.checkout)
+
   return (
     <div className="mt-3 rounded-sm bg-white pt-3 shadow-sm">
       <div className="flex items-center border-b  px-10   py-5">

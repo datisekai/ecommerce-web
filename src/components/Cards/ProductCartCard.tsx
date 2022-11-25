@@ -82,6 +82,8 @@ const ProductCartCard: React.FC<ProductCartCardProps> = ({
     });
   };
 
+  console.log(sku)
+
   return (
     <div className="flex items-center border-b py-5 px-10 last:border-none ">
       <div className="flex flex-1 items-center pr-4">
@@ -101,7 +103,7 @@ const ProductCartCard: React.FC<ProductCartCardProps> = ({
           <h3 className=" px-4 text-[16px] line-clamp-2">{sku.product.name}</h3>
         </div>
         <span className="text-[16px] text-[#666] ">
-          Phân loại hàng: <span>Màu trắng, Size L</span>
+          Phân loại hàng: {sku.skuValues.map(item => <span className="ml-2 first:ml-0">{item.variant.name} {item.variantOption.name}</span>)}
         </span>
       </div>
       <div className="flex flex-1 items-center justify-between ">

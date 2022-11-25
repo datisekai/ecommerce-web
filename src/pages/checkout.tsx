@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { GiPositionMarker } from "react-icons/gi";
 import { IoNewspaperOutline } from "react-icons/io5";
 import Button from "../components/Button";
@@ -8,11 +8,29 @@ import WidthLayout from "../components/Layouts/WidthLayout";
 import Meta from "../components/Meta";
 import AddressModal from "../components/Popup/AddressModal";
 import VoucherModal from "../components/Popup/VoucherModal";
+import { useAppSelector } from "../hooks/reduxHooks";
 import { formatPrices } from "../utils";
 
 const Checkout = (props) => {
   const [open, setOpen] = useState(false);
   const [openAddress, setOpenAddress] = useState(false);
+
+  const {checkout} = useAppSelector(state => state.cart)
+
+  let feeTransport = 20000;
+
+  const total = useMemo(() => {
+    return checkout.reduce(
+      (pre, cur) =>
+        pre + ((cur.sku.price * (100 - cur.sku.discount)) / 100) * cur.qty,
+      0
+    );
+  },[checkout])
+
+  const totalAll = useMemo(() => {
+    return total + feeTransport
+  },[total, feeTransport])
+
   return (
     <>
       <Meta
@@ -59,9 +77,7 @@ const Checkout = (props) => {
                 </div>
               </div>
               <div className="mt-2">
-                <CheckoutCard />
-                <CheckoutCard />
-                <CheckoutCard />
+                {checkout?.map(item => <CheckoutCard key={item.id} {...item}/>)}
               </div>
               <div className="flex items-center justify-end border-t border-dotted py-4">
                 <div className="flex w-[50%] items-center">
@@ -90,9 +106,9 @@ const Checkout = (props) => {
                 </div>
                 <div className="flex flex-1 items-center justify-end">
                   <p className="text-[#666]">
-                    Tổng số tiền (1 sản phẩm):{" "}
+                    Tổng số tiền ({checkout.length} sản phẩm):{" "}
                     <span className="text-[20px] text-primary">
-                      {formatPrices(70000)}
+                      {formatPrices(total)}
                     </span>
                   </p>
                 </div>
@@ -109,15 +125,15 @@ const Checkout = (props) => {
                 <div>
                   <div className="grid grid-cols-2 gap-6 text-[#666]">
                     <p>Tổng tiền hàng</p>
-                    <p>{formatPrices(20000)}</p>
+                    <p>{formatPrices(total)}</p>
                   </div>
                   <div className=" mt-2 grid grid-cols-2 gap-6 text-[#666]">
                     <p>Phí vận chuyển</p>
-                    <p>{formatPrices(20000)}</p>
+                    <p>{formatPrices(feeTransport)}</p>
                   </div>
                   <div className="mt-2 grid grid-cols-2 gap-6 text-[#666]">
                     <p>Tổng thanh toán</p>
-                    <p>{formatPrices(20000)}</p>
+                    <p>{formatPrices(totalAll)}</p>
                   </div>
                 </div>
               </div>

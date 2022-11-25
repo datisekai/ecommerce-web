@@ -3,8 +3,9 @@ import { NextApiResponse } from "next";
 import { NextApiRequest } from "next";
 import isLogin from "../../../../middlewares/isLogin";
 import { prisma } from "../../../server/db/client";
+import INextApiRequest from "../../../models/NextApiRequest";
 
-const contactUser = async (req: any, res: NextApiResponse) => {
+const contactUser = async (req: INextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
     const { address, phone, name } = req.body;
     if (!address || !phone || !name) {
@@ -57,6 +58,18 @@ const contactUser = async (req: any, res: NextApiResponse) => {
       return res.json(updateContact);
     } catch (error) {
       return logError(res, error);
+    }
+  }else if(req.method === "GET"){
+    try {
+      const contacts = await prisma.contactUser.findMany({
+        where:{
+          userId:req.userId
+        }
+      })
+      
+      return res.json(contacts)
+    } catch (error) {
+      return logError(res, error)
     }
   }
 };

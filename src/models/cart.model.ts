@@ -6,6 +6,7 @@ export interface Sku {
   image: string;
   productId: number;
   product: Product;
+  skuValues: SkuValue[];
 }
 
 export interface Product {
@@ -17,6 +18,30 @@ export interface Product {
   sellerId: string;
   createdAt: Date;
   image: string;
+}
+
+
+export interface Variant {
+  id: number;
+  name: string;
+  productId: number;
+}
+
+export interface VariantOption {
+  id: number;
+  name: string;
+  variantId: number;
+  productId: number;
+}
+
+export interface SkuValue {
+  id: number;
+  productId: number;
+  variantId: number;
+  variantOptionId: number;
+  skuId: number;
+  variant: Variant;
+  variantOption: VariantOption;
 }
 
 export interface CartDetail {

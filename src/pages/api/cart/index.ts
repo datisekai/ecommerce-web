@@ -19,6 +19,12 @@ const handler = async (req: INextApiRequest, res: NextApiResponse) => {
               sku: {
                 include: {
                   product: true,
+                  skuValues:{
+                    include:{
+                      variant:true,
+                      variantOption:true
+                    }
+                  }
                 },
               },
             },
@@ -78,6 +84,12 @@ const handler = async (req: INextApiRequest, res: NextApiResponse) => {
             sku: {
               include: {
                 product: true,
+                skuValues:{
+                  include:{
+                    variant:true,
+                    variantOption:true
+                  }
+                }
               },
             },
           },
@@ -102,6 +114,12 @@ const handler = async (req: INextApiRequest, res: NextApiResponse) => {
               sku: {
                 include: {
                   product: true,
+                  skuValues:{
+                    include:{
+                      variant:true,
+                      variantOption:true
+                    }
+                  }
                 },
               },
             },
@@ -119,6 +137,12 @@ const handler = async (req: INextApiRequest, res: NextApiResponse) => {
               sku: {
                 include: {
                   product: true,
+                  skuValues:{
+                    include:{
+                      variant:true,
+                      variantOption:true
+                    }
+                  }
                 },
               },
             },
