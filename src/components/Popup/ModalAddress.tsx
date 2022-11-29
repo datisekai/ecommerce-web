@@ -1,6 +1,11 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React, { FC, useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { useAppDispatch } from "../../hooks/reduxHooks";
 import { Contact } from "../../models/contact.model";
+import { setContacts } from "../../redux/slices/user";
+import ContactApi from "../../services/contact";
 import Button from "../Button";
 import AddressCard from "../Cards/AddressCard";
 import TextField from "../TextField";
@@ -27,6 +32,38 @@ const ModalAddress: FC<ModalAddressProps> = ({ open, onHide, currentAddress }) =
     },
   });
 
+  const queryClient = useQueryClient();
+  const addressList: Contact[] = queryClient.getQueryData(['address']);
+  const dispatch = useAppDispatch();
+
+  const { mutate: handleAdd, isLoading: loadingAdd } = useMutation(ContactApi.addContact, {
+    onSuccess: (data) => {
+      queryClient.setQueryData(['address'], [...addressList, data]);
+      dispatch(setContacts([...addressList, data]))
+      toast.success("Thêm địa mới thành công");
+      onHide();
+    },
+    onError: (error: any) => {
+      error && error.message && toast.error(error)
+    }
+  })
+
+  const { mutate: handleUpdate, isLoading: loadingUpdate } = useMutation(ContactApi.updateContact, {
+    onSuccess: (data) => {
+      queryClient.setQueryData(['address'], addressList.map(item => {
+        if (item.id == data.id) {
+          return data;
+        }
+        return item;
+      }))
+      toast.success("Cập nhật địa mới thành công");
+      onHide();
+    },
+    onError: (error: any) => {
+      error && error.message && toast.error(error)
+    }
+  })
+
   useEffect(() => {
     if (currentAddress) {
       setValue("name", currentAddress.name)
@@ -39,8 +76,12 @@ const ModalAddress: FC<ModalAddressProps> = ({ open, onHide, currentAddress }) =
     }
   }, [currentAddress])
 
-  const handle = (data: any) => {
-
+  const handleAddress = (data: any) => {
+    if (!currentAddress) {
+      handleAdd(data);
+    } else {
+      handleUpdate({ ...data, id: currentAddress.id, userId: undefined })
+    }
   }
 
   return (
@@ -114,8 +155,9 @@ const ModalAddress: FC<ModalAddressProps> = ({ open, onHide, currentAddress }) =
             className="flex w-[150px] select-none items-center justify-center rounded-sm border border-[#999] px-4 py-2 text-center uppercase shadow-sm transition-all hover:opacity-80"
           />
           <Button
-            onClick={handleSubmit(handle)}
+            onClick={handleSubmit(handleAddress)}
             text={currentAddress ? "Cập nhật" : "Thêm"}
+            disabled={loadingAdd || loadingUpdate}
             className="ml-2 flex w-[150px] select-none items-center justify-center rounded-sm border  bg-primary px-4 py-2 uppercase text-white shadow-sm transition-all hover:opacity-80"
           />
         </div>

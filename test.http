@@ -2,7 +2,7 @@ POST http://localhost:3000/api/login
 Content-Type:  application/json
 
 {
-    "phone":"0123456789",
+    "phone":"123",
     "password":"bedatnee312"
 }
 
@@ -194,3 +194,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNsYWQ4OWQ5a
 GET http://localhost:3000/api/cart
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNsYWQ4OWQ5aTAwMDByZ2gwOW0xdTV1N2IiLCJpYXQiOjE2NjgzNDY0NTgsImV4cCI6MTY2ODM4OTY1OH0.qddBnA2Bn8EiGjKoUlshZLU7kQYVRg51OtPpBijapRY
+
+###
+GET http://localhost:3000/api/order
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNsYTE5YmY2czAwMDA3azB3ZXNxeWF4cnMiLCJpYXQiOjE2Njk3MzMyMzUsImV4cCI6MTY2OTc3NjQzNX0.i3mCcHSr8R28jSbR585EGia_RamLEQxQXTdJ8wBsjHs

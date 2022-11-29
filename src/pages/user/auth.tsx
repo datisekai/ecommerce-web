@@ -4,8 +4,12 @@ import Button from "../../components/Button";
 import UserLayout from "../../components/Layouts/UserLayout";
 import Meta from "../../components/Meta";
 import TextField from "../../components/TextField";
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { useMutation } from "@tanstack/react-query";
+import userApi from "../../services/user";
+import toast from "react-hot-toast";
 
-const ChangePassword = () => {
+const ChangePassword = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const {
     control,
     formState: { errors },
@@ -14,14 +18,29 @@ const ChangePassword = () => {
   } = useForm({
     defaultValues: {
       password: "",
+      newPassword: "",
       confirm: "",
-      code: "",
     },
   });
 
-  let pwd = watch("password");
+  let pwd = watch("currentPassword");
 
-  const handleChangePassword = (data: any) => {};
+  const { mutate, isLoading } = useMutation(userApi.changePassword, {
+    onSuccess: (data) => {
+      toast.success("Đổi mật khẩu thành công")
+    },
+    onError: (error: any) => {
+      console.log(error)
+      toast.error("Vui lòng thử lại")
+    }
+  })
+
+  const handleChangePassword = (data: any) => {
+    mutate({
+      password: data.password,
+      newPassword: data.newPassword
+    })
+  };
 
   return (
     <>
@@ -40,7 +59,7 @@ const ChangePassword = () => {
         <div className="py-4">
           <div className="mt-6 flex items-center">
             <label className="w-[20%] text-right text-[#666] line-clamp-1">
-              Mật khẩu mới
+              Mật khẩu cũ
             </label>
 
             <TextField
@@ -60,6 +79,30 @@ const ChangePassword = () => {
           {errors["password"] && (
             <p className="ml-[calc(20%+16px)] mt-1 text-red-500">
               {errors["password"].message}
+            </p>
+          )}
+          <div className="mt-6 flex items-center">
+            <label className="w-[20%] text-right text-[#666] line-clamp-1">
+              Nhập mật khẩu mới
+            </label>
+
+            <TextField
+              control={control}
+              error={errors}
+              name="newPassword"
+              className="ml-4 rounded-sm border py-3 px-4 outline-none "
+              showError={false}
+              rules={{
+                required: {
+                  value: true,
+                  message: "Vui lòng nhập trường này",
+                },
+              }}
+            />
+          </div>
+          {errors["newPassword"] && (
+            <p className="ml-[calc(20%+16px)] mt-1 text-red-500">
+              {errors["newPassword"].message}
             </p>
           )}
           <div className="mt-6 flex items-center">
@@ -87,30 +130,25 @@ const ChangePassword = () => {
               {errors["confirm"].message}
             </p>
           )}
-          <div className="mt-6 flex items-center">
+          {/* <div className="mt-6 flex items-center">
             <label className="w-[20%] text-right text-[#666] line-clamp-1">
               Mã xác minh
             </label>
-            <div className="ml-4 flex items-center">
-              <TextField
-                control={control}
-                error={errors}
-                name="code"
-                className="rounded-sm border py-3 px-4 outline-none "
-                showError={false}
-                rules={{
-                  required: {
-                    value: true,
-                    message: "Vui lòng nhập trường này",
-                  },
-                }}
-              />
-              <Button
-                text="Gửi mã xác minh"
-                className="rounded-sm border-y border-r px-6 py-3 capitalize hover:bg-slate-50"
-              />
-            </div>
-          </div>
+            <TextField
+              control={control}
+              error={errors}
+              name="confirm"
+              className="rounded-sm border py-3 px-4 outline-none "
+              showError={false}
+              rules={{
+                required: {
+                  value: true,
+                  message: "Vui lòng nhập trường này",
+                },
+              }}
+            />
+
+          </div> */}
           {errors["code"] && (
             <p className="ml-[calc(20%+16px)] mt-1 text-red-500">
               {errors["code"].message}
@@ -119,6 +157,7 @@ const ChangePassword = () => {
           <div className="mt-6 flex items-center">
             <label className="w-[20%] text-right text-[#666] line-clamp-1"></label>
             <button
+              disabled={isLoading}
               onClick={handleSubmit(handleChangePassword)}
               className="ml-4 rounded-sm bg-primary px-6 py-2 text-white hover:cursor-pointer disabled:cursor-not-allowed disabled:opacity-70"
             >
@@ -132,3 +171,19 @@ const ChangePassword = () => {
 };
 
 export default ChangePassword;
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const token = req.cookies["token"];
+  if (token) {
+
+
+    return {
+      props: {
+      },
+    };
+  }
+
+  return {
+    notFound: true
+  }
+
+};

@@ -6,6 +6,7 @@ type ContactApiProps = {
     addContact:(data:ContactAdd) => Promise<Contact>
     deleteContact:(id:number) => Promise<Contact>
     updateContact:(data:ContactUpdate) => Promise<Contact>
+    setDefaultContact:(id:string | number) => Promise<Contact>
 }
 
 type ContactUpdate = {
@@ -13,6 +14,7 @@ type ContactUpdate = {
     address?:string,
     phone?:string,
     name?:string
+    active?:boolean
 }
 
 type ContactAdd = {
@@ -39,6 +41,10 @@ const ContactApi:ContactApiProps = {
             ...data,
             id:undefined
         })
+        return result.data
+    },
+    setDefaultContact:async(id) => {
+        const result = await axiosClient.patch(`/user/contact?id=${id}`);
         return result.data
     }
 }

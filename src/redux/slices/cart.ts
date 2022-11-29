@@ -5,12 +5,12 @@ import { ActionTypes } from "@mui/base";
 
 export interface userState {
   carts: Cart[];
-  checkout:CartDetail[]
+  checkout: CartDetail[];
 }
 
 const initialState: userState = {
   carts: [],
-  checkout:[]
+  checkout: [],
 };
 
 export const CartSlice = createSlice({
@@ -20,8 +20,8 @@ export const CartSlice = createSlice({
     setCarts: (state, action) => {
       state.carts = action.payload;
     },
-    setCheckout:(state,action) => {
-        state.checkout = action.payload
+    setCheckout: (state, action) => {
+      state.checkout = action.payload;
     },
     deleteCartDetail: (state, action) => {
       const currentCart = [...state.carts];
@@ -31,15 +31,15 @@ export const CartSlice = createSlice({
           item.cartDetails = item.cartDetails.filter(
             (element: CartDetail) => element.id !== action.payload.id
           );
-          if(item.cartDetails.length === 0){
+          if (item.cartDetails.length === 0) {
             cartId = item.id;
           }
         }
       });
 
-      if(cartId){
-        state.carts = currentCart.filter(item => item.id !== cartId);
-      }else{
+      if (cartId) {
+        state.carts = currentCart.filter((item) => item.id !== cartId);
+      } else {
         state.carts = currentCart;
       }
     },
@@ -56,8 +56,10 @@ export const CartSlice = createSlice({
       });
     },
     addCartDetail: (state, action) => {
-      const isExist = state.carts.some(item => item.id === action.payload.cartId);
-      if(isExist){
+      const isExist = state.carts.some(
+        (item) => item.id === action.payload.cartId
+      );
+      if (isExist) {
         state.carts.forEach((item: Cart) => {
           if (item.id === action.payload.cartId) {
             const isExist = item.cartDetails.some(
@@ -75,16 +77,31 @@ export const CartSlice = createSlice({
             }
           }
         });
-      }else{
-        state.carts = [...state.carts, {id:action.payload.cartId,cartDetails:[action.payload]}]
+      } else {
+        state.carts = [
+          ...state.carts,
+          { id: action.payload.cartId, cartDetails: [action.payload] },
+        ];
       }
-     
+    },
+    updateCheckoutQuantity: (state, action) => {
+      state.checkout = state.checkout.map((item) => {
+        if ((item.id = action.payload.id)) {
+          return { ...item, qty: action.payload.qty };
+        }
+        return item;
+      });
     },
   },
 });
 
-// Action creators are generated for each case reducer function
-export const { setCarts, deleteCartDetail, updateCartDetail, addCartDetail,setCheckout } =
-  CartSlice.actions;
+export const {
+  setCarts,
+  deleteCartDetail,
+  updateCartDetail,
+  addCartDetail,
+  setCheckout,
+  updateCheckoutQuantity,
+} = CartSlice.actions;
 
 export default CartSlice.reducer;

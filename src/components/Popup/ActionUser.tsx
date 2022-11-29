@@ -7,6 +7,7 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { logOut } from "../../redux/slices/user";
 import { createAvatar } from "../../utils";
+import generateAvatar from "../../utils/generateAvatar";
 
 const ActionUser = () => {
   const { user } = useAppSelector((state) => state.user);
@@ -18,6 +19,7 @@ const ActionUser = () => {
     dispatch(logOut());
     deleteCookie("token");
     signOut();
+    router.push('/')
   };
 
   return (
@@ -28,11 +30,7 @@ const ActionUser = () => {
           //   ? createAvatar(user.email.slice(0, user.email.indexOf("@")))
           //   : createAvatar(user.phone)
 
-          createAvatar(
-            user.email
-              ? user.email.slice(0, user.email.indexOf("@"))
-              : user.phone
-          )
+          user?.image || generateAvatar(user?.name || user?.email || user?.phone)
         }
         style={{ width: 20, height: 20, borderRadius: "50%" }}
       />
@@ -49,7 +47,7 @@ const ActionUser = () => {
             Tài khoản của tôi
           </li>
         </Link>
-        <Link href={"/cart"}>
+        <Link href={"/user/purchase"}>
           <li className="py-2 px-2 text-[15px] transition-all hover:cursor-pointer hover:text-primary ">
             Đơn mua
           </li>

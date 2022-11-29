@@ -1,4 +1,5 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import AuthLayout from "../components/Layouts/AuthLayout";
 import MainLayout from "../components/Layouts/MainLayout";
 import WidthLayout from "../components/Layouts/WidthLayout";
 import Meta from "../components/Meta";
@@ -10,12 +11,12 @@ import CategoryApi from "../services/category";
 import SearchApi from "../services/search";
 
 type SearchProps = {
-  categories:CategoryModel[],
-  products:Products
-  
+  categories: CategoryModel[],
+  products: Products
+
 }
 
-const Search:React.FC<SearchProps> = ({categories,products }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Search: React.FC<SearchProps> = ({ categories, products }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
     <>
       <Meta
@@ -23,14 +24,16 @@ const Search:React.FC<SearchProps> = ({categories,products }: InferGetServerSide
         description="Shopee Việt Nam | Mua và Bán Trên Ứng Dụng Di Động Hoặc Website"
         title="Shopee Việt Nam | Mua và Bán Trên Ứng Dụng Di Động Hoặc Website"
       />
-      <MainLayout>
-        <WidthLayout>
-          <div className="mx-auto flex max-w-[calc(100%-16px)] pt-6 pb-6">
-            <SearchTool categories={categories} />
-            <ResultSearch data={products} />
-          </div>
-        </WidthLayout>
-      </MainLayout>
+      <AuthLayout>
+        <MainLayout>
+          <WidthLayout>
+            <div className="mx-auto flex max-w-[calc(100%-16px)] pt-6 pb-6">
+              <SearchTool categories={categories} />
+              <ResultSearch data={products} />
+            </div>
+          </WidthLayout>
+        </MainLayout>
+      </AuthLayout>
     </>
   );
 };
@@ -43,8 +46,8 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 
   return {
     props: {
-      categories:data[0],
-      products:data[1]
+      categories: data[0],
+      products: data[1]
     },
   };
 };

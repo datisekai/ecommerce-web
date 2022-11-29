@@ -1,19 +1,22 @@
-import React, { FC, useCallback } from "react";
+import { FC } from "react";
 import { Contact } from "../../models/contact.model";
 import Button from "../Button";
 
 interface AddressCardProps extends Contact {
   handleChangeTab?: (tab: number) => void;
   handleShow?: any;
-};
+  onChange: (id: string | number) => void
+}
 
-const AddressCard: FC<AddressCardProps> = ({ handleChangeTab, handleShow, address, id, name, phone, userId, active }) => {
+const AddressCard: FC<AddressCardProps> = ({ handleChangeTab, handleShow, address, id, name, phone, userId, active, onChange }) => {
+
   return (
     <div className="flex items-center justify-between border-b py-4 first:border-t last:border-none">
       <div className="flex items-center">
         <input
           type="radio"
           name="defaultAddress"
+          onChange={() => onChange(id)}
           checked={active}
           id="defaultAddress"
           className="h-4 w-4 text-primary"

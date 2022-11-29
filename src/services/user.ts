@@ -9,6 +9,14 @@ const userApi = {
       console.log(error);
     }
   },
+  update: async (data: any) => {
+    const result = await axiosClient.put("/user/info", data);
+    return result.data;
+  },
+  changePassword: async (data: { password: string; newPassword: string }) => {
+    const result = await axiosClient.patch("/user/info", data);
+    return result.data;
+  },
 };
 
 export default userApi;

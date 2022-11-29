@@ -29,7 +29,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import AuthLayout from "../components/Layouts/AuthLayout";
 import toast from "react-hot-toast";
 import { Cart, CartDetail } from "../models/cart.model";
-import { addCartDetail, setCarts } from "../redux/slices/cart";
+import { addCartDetail, setCarts, setCheckout } from "../redux/slices/cart";
 
 type DetailSkuProps = {
   product: ProductDetail;
@@ -37,9 +37,9 @@ type DetailSkuProps = {
 };
 
 const DetailSku: FC<DetailSkuProps> = ({
-          product,
-          slug,
-        }: InferGetStaticPropsType<typeof getStaticProps>) => {
+  product,
+  slug,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
   const images = useMemo(() => {
     return {
       main: product.image,
@@ -161,7 +161,6 @@ const DetailSku: FC<DetailSkuProps> = ({
 
   const { mutate: addToCart } = useMutation(CartApi.addToCart, {
     onSuccess: (data) => {
- console.log(data)
       dispatch(addCartDetail(data));
 
       toast.success("Đã thêm vào giỏ hàng");
@@ -171,10 +170,19 @@ const DetailSku: FC<DetailSkuProps> = ({
     },
   });
 
+  const { mutate: buyNow } = useMutation(CartApi.addToCart, {
+    onSuccess: (data) => {
+      dispatch(addCartDetail(data));
+      dispatch(setCheckout([data]))
+
+    },
+    onError: (error) => {
+      toast.error("Vui lòng thử lại");
+    },
+  });
+
   const handleAddToCart = async () => {
-    // if(!user){
-    //   return router.push(`/login?redirect=${product.slug}`)
-    // }
+
     if (user) {
       const data: DataAddCart = {
         qty: quantity,
@@ -182,8 +190,24 @@ const DetailSku: FC<DetailSkuProps> = ({
         skuId: currentSku.id,
       };
       addToCart(data);
+    } else {
+      router.push(`/login?redirect=${product.slug}`)
     }
   };
+
+  const handleBuyNow = async () => {
+    if (user) {
+      const data: DataAddCart = {
+        qty: quantity,
+        sellerId: product.sellerId,
+        skuId: currentSku.id,
+      };
+      buyNow(data)
+      router.push('/cart')
+    } else {
+      router.push(`/login?redirect=${product.slug}`)
+    }
+  }
 
   return (
     <>
@@ -332,6 +356,7 @@ const DetailSku: FC<DetailSkuProps> = ({
                       className="rounded-sm border border-primary bg-[rgba(255,197,178,.181)] px-6 py-3 text-[17px] capitalize text-primary shadow-sm transition-all hover:opacity-90"
                     />
                     <Button
+                      onClick={handleBuyNow}
                       text="Mua ngay"
                       className="ml-2 rounded-sm border border-primary bg-primary px-6 py-3 text-[17px] capitalize text-white shadow-sm transition-all hover:opacity-90"
                     />

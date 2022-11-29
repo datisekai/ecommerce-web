@@ -1,15 +1,13 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import swal from "sweetalert";
-import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
-import { Cart, CartDetail } from "../../models/cart.model";
+import { useAppDispatch } from "../../hooks/reduxHooks";
+import { CartDetail } from "../../models/cart.model";
 import {
-  deleteCartDetail,
-  setCarts,
-  updateCartDetail,
+  deleteCartDetail, updateCartDetail, updateCheckoutQuantity
 } from "../../redux/slices/cart";
 import CartApi from "../../services/cart";
 import { formatPrices } from "../../utils";
@@ -17,7 +15,7 @@ import { formatPrices } from "../../utils";
 interface ProductCartCardProps extends CartDetail {
   sellerId: string;
   onChangeSku: (sku: CartDetail) => void;
-  skuCheckout:CartDetail[]
+  skuCheckout: CartDetail[]
 }
 
 const ProductCartCard: React.FC<ProductCartCardProps> = ({
@@ -37,6 +35,10 @@ const ProductCartCard: React.FC<ProductCartCardProps> = ({
   const { mutate: updateCart, isLoading } = useMutation(CartApi.updateToCart, {
     onSuccess: (data: CartDetail) => {
       dispatch(updateCartDetail(data));
+      dispatch(updateCheckoutQuantity({
+        id: data.id,
+        qty: data.qty
+      }))
     },
     onError: (error) => {
       toast.error("Vui lòng thử lại");
@@ -82,7 +84,6 @@ const ProductCartCard: React.FC<ProductCartCardProps> = ({
     });
   };
 
-  console.log(sku)
 
   return (
     <div className="flex items-center border-b py-5 px-10 last:border-none ">
@@ -103,7 +104,7 @@ const ProductCartCard: React.FC<ProductCartCardProps> = ({
           <h3 className=" px-4 text-[16px] line-clamp-2">{sku.product.name}</h3>
         </div>
         <span className="text-[16px] text-[#666] ">
-          Phân loại hàng: {sku.skuValues.map(item => <span className="ml-2 first:ml-0">{item.variant.name} {item.variantOption.name}</span>)}
+          Phân loại hàng: {sku.skuValues.map(item => <span key={item.id} className="ml-2 first:ml-0">{item.variant.name} {item.variantOption.name}</span>)}
         </span>
       </div>
       <div className="flex flex-1 items-center justify-between ">

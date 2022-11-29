@@ -4,6 +4,7 @@ import { NextApiRequest } from "next";
 import isLogin from "../../../../middlewares/isLogin";
 import { prisma } from "../../../server/db/client";
 import INextApiRequest from "../../../models/NextApiRequest";
+import missing from "../../../utils/missing";
 
 const contactUser = async (req: INextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
@@ -51,7 +52,7 @@ const contactUser = async (req: INextApiRequest, res: NextApiResponse) => {
     try {
       const updateContact = await prisma?.contactUser.update({
         where: {
-          id: Number(data.id),
+          id: Number(id),
         },
         data,
       });
@@ -70,6 +71,44 @@ const contactUser = async (req: INextApiRequest, res: NextApiResponse) => {
       return res.json(contacts)
     } catch (error) {
       return logError(res, error)
+    }
+  }else if(req.method === "PATCH"){
+    const {id} = req.query;
+    if(!id){
+      return missing(res);
+    }
+
+    try {
+      const currentActive = await prisma.contactUser.findFirst({
+        where:{
+          active:true
+        }
+      })
+
+      if(currentActive){
+        await prisma.contactUser.update({
+          where:{
+            id:Number(currentActive.id)
+          },
+          data:{
+            active:false
+          }
+        })
+      }
+
+      const newActive = await prisma.contactUser.update({
+        where:{
+          id:Number(id),
+        },
+        data:{
+          active:true
+        }
+      })
+
+      return res.json(newActive);
+
+    } catch (error) {
+      return logError(res, error);
     }
   }
 };

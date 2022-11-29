@@ -7,10 +7,12 @@ import { prisma } from "../../../server/db/client";
 
 const handler = async (req: INextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
-    const { skus, sellerId } = req.body;
-    if (!skus || !sellerId) {
+    const { skus, cartId, description } = req.body;
+    if (!skus || !cartId) {
       return missing(res);
     }
+
+    const feeTransport = 20000;
 
     try {
       const total = skus.reduce(
@@ -19,13 +21,20 @@ const handler = async (req: INextApiRequest, res: NextApiResponse) => {
         0
       );
 
+      const currentCart = await prisma.cart.findFirst({
+        where: {
+          id: Number(cartId),
+        },
+      });
+
       const newOrder = await prisma?.order.create({
         data: {
-          sellerId,
+          sellerId: currentCart.sellerId,
           userId: req.userId as string,
-          total,
+          total: total + feeTransport,
           isPay: false,
           statusId: 1,
+          description,
         },
       });
 

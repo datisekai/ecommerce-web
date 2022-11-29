@@ -8,6 +8,8 @@ import Link from "next/link";
 import { FaUserAlt } from "react-icons/fa";
 import { BiNotepad } from "react-icons/bi";
 import { useRouter } from "next/router";
+import { useAppSelector } from "../../hooks/reduxHooks";
+import generateAvatar from "../../utils/generateAvatar";
 
 type UserLayoutProps = {
   children: React.ReactNode;
@@ -20,6 +22,7 @@ const UserLayout: FC<UserLayoutProps> = ({
 }) => {
   const router = useRouter();
   const [showMenuUser, setShowMenuUser] = useState(true);
+  const { user } = useAppSelector(state => state.user);
 
   return (
     <MainLayout>
@@ -29,11 +32,11 @@ const UserLayout: FC<UserLayoutProps> = ({
             <div className="w-[200px] px-2">
               <div className="flex items-center border-b py-2">
                 <LazyLoadImage
-                  src="https://source.unsplash.com/random"
+                  src={user?.image || generateAvatar(user?.name || user?.email || user?.phone)}
                   className="aspect-[1/1] w-[48px] rounded-full"
                 />
                 <div className="ml-2 ">
-                  <h2>bedat115</h2>
+                  <h2>{user?.name || user?.email || user?.phone}</h2>
                   <Link href={"/user"}>
                     <Button
                       startIcon={MdEdit}
@@ -58,9 +61,8 @@ const UserLayout: FC<UserLayoutProps> = ({
                     </p>
                   </div>
                   <ul
-                    className={`max-h-0 w-full overflow-hidden pl-7 ${
-                      showMenuUser && "max-h-[500px]"
-                    }`}
+                    className={`max-h-0 w-full overflow-hidden pl-7 ${showMenuUser && "max-h-[500px]"
+                      }`}
                     style={{
                       transition: showMenuUser
                         ? "max-height ease-in 1s"
@@ -69,27 +71,24 @@ const UserLayout: FC<UserLayoutProps> = ({
                   >
                     <Link href={"/user"}>
                       <li
-                        className={`py-2 capitalize hover:cursor-pointer hover:text-primary ${
-                          router.asPath === "/user" && "text-primary"
-                        }`}
+                        className={`py-2 capitalize hover:cursor-pointer hover:text-primary ${router.asPath === "/user" && "text-primary"
+                          }`}
                       >
                         Hồ sơ
                       </li>
                     </Link>
                     <Link href={"/user/address"}>
                       <li
-                        className={`py-2 capitalize hover:cursor-pointer hover:text-primary ${
-                          router.asPath === "/user/address" && "text-primary"
-                        }`}
+                        className={`py-2 capitalize hover:cursor-pointer hover:text-primary ${router.asPath === "/user/address" && "text-primary"
+                          }`}
                       >
                         Địa chỉ
                       </li>
                     </Link>
                     <Link href={"/user/auth"}>
                       <li
-                        className={`py-2 capitalize hover:cursor-pointer hover:text-primary ${
-                          router.asPath === "/user/auth" && "text-primary"
-                        }`}
+                        className={`py-2 capitalize hover:cursor-pointer hover:text-primary ${router.asPath === "/user/auth" && "text-primary"
+                          }`}
                       >
                         Đổi mật khẩu
                       </li>
@@ -103,10 +102,9 @@ const UserLayout: FC<UserLayoutProps> = ({
                   >
                     <BiNotepad className="text-[20px] text-blue-500" />
                     <p
-                      className={`ml-2 capitalize line-clamp-1 ${
-                        router.asPath.indexOf("/user/purchase") !== -1 &&
+                      className={`ml-2 capitalize line-clamp-1 ${router.asPath.indexOf("/user/purchase") !== -1 &&
                         "text-primary"
-                      }`}
+                        }`}
                     >
                       Đơn mua
                     </p>

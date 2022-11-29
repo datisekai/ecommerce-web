@@ -24,10 +24,27 @@ export const userSlice = createSlice({
       state.user = undefined;
       state.token = null;
     },
+    setContacts: (state, action) => {
+      state.user.contacts = action.payload;
+    },
+    updateUser: (state, action) => {
+      state.user = {
+        ...state.user,
+        date: action.payload.date,
+        email: action.payload.email,
+        gender: action.payload.gender,
+        id: action.payload.id,
+        image: action.payload.image,
+        isActive: action.payload.isActive,
+        name: action.payload.name,
+        nameShop: action.payload.nameShop,
+        phone: action.payload.phone,
+      };
+    },
   },
 });
 
-// Action creators are generated for each case reducer function
-export const { setUser, setToken, logOut } = userSlice.actions;
+export const { setUser, setToken, logOut, setContacts, updateUser } =
+  userSlice.actions;
 
 export default userSlice.reducer;
