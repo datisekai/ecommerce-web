@@ -11,6 +11,7 @@ type DataCreate = {
 type OrderApiProps = {
   create: (data: DataCreate) => Promise<OrderReponse>;
   getOrder: (type: number | string, token: string) => Promise<Order[]>;
+  delivered: (orderId: number | string) => Promise<Order>;
 };
 
 const OrderApi: OrderApiProps = {
@@ -28,6 +29,10 @@ const OrderApi: OrderApiProps = {
         Authorization: `Bearer ${token}`,
       },
     });
+    return result.data;
+  },
+  delivered: async (orderId) => {
+    const result = await axiosClient.get(`/order/delivered?orderId=${orderId}`);
     return result.data;
   },
 };

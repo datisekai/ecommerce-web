@@ -1,7 +1,7 @@
 import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import OrderCard from "../../components/Cards/OrderCard";
 import AuthLayout from "../../components/Layouts/AuthLayout";
 import UserLayout from "../../components/Layouts/UserLayout";
@@ -38,29 +38,12 @@ interface PurchaseProps {
 
 const Purchase: NextPage<PurchaseProps> = ({ orders }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter();
-
+  const [openRefund, setOpenRefund] = useState(false)
   const { type = 0 } = router.query;
 
   console.log(orders);
 
-  // const orderList = useMemo(() => {
-  //   const groupBySellerId = orders.reduce((group, order) => {
-  //     const { sellerId } = order;
-  //     group[sellerId] = group[sellerId] ?? [];
-  //     group[sellerId].push(order);
-  //     return group;
 
-
-  //   }, {});
-  //   const ordersReturn = []
-  //   for (const key in groupBySellerId) {
-  //     ordersReturn.push(groupBySellerId[key])
-  //   }
-
-  //   return ordersReturn
-  // }, [orders])
-
-  // console.log(orderList)
   return (
     <>
       <Meta
@@ -90,7 +73,7 @@ const Purchase: NextPage<PurchaseProps> = ({ orders }: InferGetServerSidePropsTy
           </div>
 
           <div className="mt-4 ">
-            {orders.map(item => <OrderCard key={item.id} {...item} />)}
+            {orders.map(item => <OrderCard handleOpen={() => setOpenRefund(true)} handleHide={()} key={item.id} {...item} />)}
           </div>
         </UserLayout>
       </AuthLayout>

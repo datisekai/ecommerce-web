@@ -6,9 +6,10 @@ import { logError } from "../../../utils/logError";
 
 const handler = async (req: INextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {
+    console.log(12333);
     const { statusId } = req.query;
 
-    const data: any = {};
+    const data: any = { userId: req.userId };
 
     if (statusId && Number(statusId) != 0) {
       data.statusId = Number(statusId);
@@ -17,7 +18,6 @@ const handler = async (req: INextApiRequest, res: NextApiResponse) => {
     try {
       const orderList = await prisma.order.findMany({
         where: {
-          userId: req.userId,
           ...data,
         },
         include: {
@@ -48,6 +48,9 @@ const handler = async (req: INextApiRequest, res: NextApiResponse) => {
               createdAt: true,
             },
           },
+        },
+        orderBy: {
+          id: "desc",
         },
       });
       console.log(orderList);
