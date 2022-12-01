@@ -1,4 +1,8 @@
-import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from "next";
+import {
+  GetServerSideProps,
+  InferGetServerSidePropsType,
+  NextPage,
+} from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useMemo, useState } from "react";
@@ -8,6 +12,9 @@ import UserLayout from "../../components/Layouts/UserLayout";
 import Meta from "../../components/Meta";
 import { Order } from "../../models/order.model";
 import OrderApi from "../../services/order";
+import ModalRefund from "../../components/Popup/ModalRefund";
+import ViewReport from "../../components/Popup/ViewReport";
+import ModalComment from "../../components/Popup/ModalComment";
 
 const data = [
   {
@@ -33,16 +40,20 @@ const data = [
 ];
 
 interface PurchaseProps {
-  orders: Order[]
+  orders: Order[];
 }
 
-const Purchase: NextPage<PurchaseProps> = ({ orders }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Purchase: NextPage<PurchaseProps> = ({
+  orders,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter();
-  const [openRefund, setOpenRefund] = useState(false)
+  const [openRefund, setOpenRefund] = useState(false);
+  const [openReport, setOpenReport] = useState(false);
+  const [openComment, setOpenComment] = useState(false);
   const { type = 0 } = router.query;
+  const [currentOrder, setCurrentOrder] = useState<Order>();
 
   console.log(orders);
-
 
   return (
     <>
@@ -59,10 +70,11 @@ const Purchase: NextPage<PurchaseProps> = ({ orders }: InferGetServerSidePropsTy
                 <li className="mr-2" key={item.id}>
                   <Link href={`/user/purchase?type=${item.id}`}>
                     <a
-                      className={`${item.id == type
-                        ? "active inline-block rounded-t-lg border-b-2 border-primary p-4 text-primary dark:border-blue-500 dark:text-blue-500"
-                        : "inline-block rounded-t-lg border-b-2 border-transparent p-4 hover:border-gray-300 hover:text-gray-600 dark:hover:text-gray-300"
-                        }`}
+                      className={`${
+                        item.id == type
+                          ? "active inline-block rounded-t-lg border-b-2 border-primary p-4 text-primary dark:border-blue-500 dark:text-blue-500"
+                          : "inline-block rounded-t-lg border-b-2 border-transparent p-4 hover:border-gray-300 hover:text-gray-600 dark:hover:text-gray-300"
+                      }`}
                     >
                       {item.name}
                     </a>
@@ -73,8 +85,49 @@ const Purchase: NextPage<PurchaseProps> = ({ orders }: InferGetServerSidePropsTy
           </div>
 
           <div className="mt-4 ">
-            {orders.map(item => <OrderCard handleOpen={() => setOpenRefund(true)} handleHide={()} key={item.id} {...item} />)}
+            {orders.map((item) => (
+              <OrderCard
+                handleOpen={() => {
+                  setCurrentOrder(item);
+                  setOpenRefund(true);
+                }}
+                handleOpenReport={() => {
+                  setCurrentOrder(item);
+                  setOpenReport(true);
+                }}
+                handleOpenComment={() => {
+                  setCurrentOrder(item);
+                  setOpenComment(true);
+                }}
+                key={item.id}
+                {...item}
+              />
+            ))}
           </div>
+          <ModalRefund
+            open={openRefund}
+            handleHide={() => {
+              setCurrentOrder(undefined);
+              setOpenRefund(false);
+            }}
+            order={currentOrder}
+          />
+          <ViewReport
+            open={openReport}
+            handleHide={() => {
+              setCurrentOrder(undefined);
+              setOpenReport(false);
+            }}
+            order={currentOrder}
+          />
+          <ModalComment
+            open={openComment}
+            handleHide={() => {
+              setCurrentOrder(undefined);
+              setOpenComment(false);
+            }}
+            order={currentOrder}
+          />
         </UserLayout>
       </AuthLayout>
     </>
@@ -83,22 +136,23 @@ const Purchase: NextPage<PurchaseProps> = ({ orders }: InferGetServerSidePropsTy
 
 export default Purchase;
 
-export const getServerSideProps: GetServerSideProps = async ({ query, req }) => {
+export const getServerSideProps: GetServerSideProps = async ({
+  query,
+  req,
+}) => {
   const { type = 0 } = query;
   const token = req.cookies["token"];
   if (token) {
     const orders = await OrderApi.getOrder(type as string, token);
 
-
     return {
       props: {
-        orders
+        orders,
       },
     };
   }
 
   return {
-    notFound: true
-  }
-
+    notFound: true,
+  };
 };

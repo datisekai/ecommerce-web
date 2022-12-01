@@ -48,6 +48,11 @@ const handler = async (req: INextApiRequest, res: NextApiResponse) => {
               createdAt: true,
             },
           },
+          orderReports:{
+            include:{
+              orderReportImages:true
+            }
+          }
         },
         orderBy: {
           id: "desc",

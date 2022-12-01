@@ -51,28 +51,7 @@ const Checkout = (props) => {
 
   const { mutate, isLoading } = useMutation(OrderApi.create, {
     onSuccess: (data, variable) => {
-      // let newCarts = [...carts]
-
-      // let flag = false;
-
-
-      // newCarts.forEach(cart => {
-      //   if (cart.id == variable.cartId) {
-      //     if (cart.cartDetails.length === variable.skus.length) {
-      //       flag = true;
-      //     } else {
-      //       variable.skus.forEach(sku => {
-      //         cart.cartDetails = cart.cartDetails.filter(cdt => cdt.skuId != sku.id)
-      //       })
-      //     }
-      //   }
-      // })
-
-      // if (flag) {
-      //   newCarts = newCarts.filter(item => item.id !== variable.cartId)
-      // }
-
-      // dispatch(setCarts(newCarts))
+    
       dispatch(setCheckout([]))
       toast.success("Tạo đơn hàng thành công");
       router.push('/user/purchase')
@@ -80,15 +59,15 @@ const Checkout = (props) => {
     },
     onError: (error: any) => {
       console.log(error);
-      error && error.message && toast.error("Something went wrong")
+      error && error.message && toast.error("Vui lòng thử lại")
     }
   })
 
   const handleOrder = () => {
     swal({
-      title: "Are you sure?",
+      title: "Bạn có chắc chắn muốn đặt hàng?",
       icon: "warning",
-      buttons: ["Cancel", "OK"],
+      buttons: ["Hủy", "OK"],
       dangerMode: true,
     })
       .then((willDelete) => {

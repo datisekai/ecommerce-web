@@ -93,6 +93,20 @@ export interface Seller {
   createdAt: Date;
 }
 
+export interface OrderReportImage{
+  id:number,
+  image:string,
+  orderReportId:number
+}
+
+export interface OrderReport{
+  id:number,
+  description:string,
+  isDone:boolean,
+  orderId:number,
+  orderReportImages:OrderReportImage[] | null
+}
+
 export interface Order {
   id: number;
   userId: string;
@@ -106,4 +120,5 @@ export interface Order {
   status: Status;
   orderDetails: OrderDetail[];
   seller: Seller;
+  orderReports:OrderReport
 }
