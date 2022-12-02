@@ -7,6 +7,8 @@ module.exports = {
         primary: "#f53d2d",
         secondary: "#f63",
         bgPrimary: "#f5f5f5",
+        hoverBgPri: "#8805056e",
+        hoverBgSec: "#afafaf7f",
       },
     },
   },
