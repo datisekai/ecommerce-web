@@ -73,13 +73,15 @@ const LayoutContentBill = () => {
         </div>
       </div>
       {/* ************************************** */}
-      <TableLayout
-        columnTable={columnTable}
-        rowTables={rowTables}
-        isAction={false}
-        isUpdate={false}
-        isDelete={false}
-      />
+      <div className="p-4">
+        <TableLayout
+          columnTable={columnTable}
+          rowTables={rowTables}
+          isAction={false}
+          isUpdate={false}
+          isDelete={false}
+        />
+      </div>
     </>
   );
 };

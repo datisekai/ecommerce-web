@@ -5,7 +5,7 @@ import { IDataColumnTable } from "../data/columnTable";
 import { IDataRowTable } from "../data/rowTable";
 type TableProps = {
   columnTable: IDataColumnTable[];
-  rowTables: IDataRowTable[];
+  rowTables: object[];
   isAction: true | false;
   isUpdate: true | false;
   isDelete: true | false;
@@ -18,13 +18,17 @@ const TableLayout: React.FC<TableProps> = ({
   isDelete,
 }) => {
   return (
-    <div className=" m-4 h-[360px] overflow-x-auto overflow-y-auto rounded-[4px] border-[1px] border-solid border-[#E5E5E5]">
+    <div className=" h-[360px] overflow-x-auto overflow-y-auto rounded-[4px] border-[1px] border-solid border-[#E5E5E5]">
       <table className=" w-[100%] ">
         <thead>
           <tr className=" sticky top-0 h-10 bg-[#F6F6F6] text-[#999999]">
             {columnTable.map((item: any, index: any) => {
-              if (isAction == false && item.id == "Action") {
-                return;
+              if (isAction == true) {
+                return (
+                  <th className={`w-[200px] pl-2 text-left`} key={index}>
+                    Thao tác
+                  </th>
+                );
               } else {
                 return (
                   <th

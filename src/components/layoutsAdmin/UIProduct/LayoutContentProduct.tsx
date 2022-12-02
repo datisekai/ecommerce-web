@@ -64,13 +64,15 @@ const LayoutContentProduct = () => {
         </div>
       </div>
       {/* ************************************** */}
-      <TableLayout
-        columnTable={columnTable}
-        rowTables={rowTables}
-        isAction={true}
-        isUpdate={true}
-        isDelete={true}
-      />
+      <div className="p-4">
+        <TableLayout
+          columnTable={columnTable}
+          rowTables={rowTables}
+          isAction={true}
+          isUpdate={true}
+          isDelete={true}
+        />
+      </div>
     </>
   );
 };
