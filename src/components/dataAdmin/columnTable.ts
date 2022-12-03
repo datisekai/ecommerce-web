@@ -29,6 +29,11 @@ const columnTable: IDataColumnTable[] = [
     name: "Số lượng",
     width: "100px",
   },
+  {
+    id: "Action",
+    name: "Thao tác",
+    width: "200px",
+  },
 ];
 
 export default columnTable;

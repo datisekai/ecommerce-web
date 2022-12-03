@@ -2,18 +2,18 @@ import { IDataColumnTable } from "../../../data/columnTable";
 const dataColumn: IDataColumnTable[] = [
   {
     id: "id",
-    name: "ID",
+    name: "ID Đánh giá",
     width: "75px",
   },
   {
-    id: "name",
-    name: "Tên Danh Mục",
+    id: "ProductInformation",
+    name: "Thông tin sản phẩm",
     width: "300px",
   },
   {
-    id: "product",
-    name: "Sản phẩm",
-    width: "75px",
+    id: "comment",
+    name: "Đánh giá của người mua",
+    width: "300px",
   },
 ];
 
