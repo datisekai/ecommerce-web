@@ -1,21 +1,19 @@
 import React from "react";
 import HeaderAdmin from "../Headers/HeaderAdmin";
-import MenuLeft from "../MenuLeft/MenuLeft";
-
-type SellerLayoutProps = {
+import MenuLeftAdmin from "../MenuleftAdmin/MenuLeftAdmin";
+type AdminLayoutProps = {
   children: React.ReactNode;
 };
-
-const SellerLayout: React.FC<SellerLayoutProps> = ({ children }) => {
+const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   return (
     <div className=" bg-[#f6f6f6]">
-      <HeaderAdmin name={"Kênh người bán"} isSeller={true} />
+      <HeaderAdmin name={"ADMIN"} isSeller={false} />
       <div className="min-h-screen pt-14">
-        <MenuLeft />
+        <MenuLeftAdmin />
         <div>{children}</div>
       </div>
     </div>
   );
 };
 
-export default SellerLayout;
+export default AdminLayout;

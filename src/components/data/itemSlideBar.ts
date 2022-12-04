@@ -45,13 +45,13 @@ const itemSidebarData: IItemSidebarData[] = [
     id: 7,
     name: "Mã Giảm Giá Của Tôi",
     idSlideBar: 3,
-    url: "/seller/product/new",
+    url: "/seller/portal/vouchers",
   },
   {
     id: 8,
     name: "Tạo Mã Giảm Giá",
     idSlideBar: 3,
-    url: "/seller/product/new",
+    url: "/seller/portal/addVoucher",
   },
   {
     id: 9,
