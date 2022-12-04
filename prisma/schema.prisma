@@ -51,7 +51,7 @@ model User {
   nameShop      String?
   gender        String?
   createdAt     DateTime      @default(now()) @db.Timestamp()
-  date          DateTime?     @db.Timestamp()
+  date          DateTime?
   perId         Int?          @default(1)
   permission    Permission?   @relation(fields: [perId], references: [id])
   contacts      ContactUser[]

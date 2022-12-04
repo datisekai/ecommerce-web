@@ -37,6 +37,7 @@ const withProtected = (handler: any) => {
 
           req.actions = actions;
           req.userId = myUser.id;
+          req.perId = myUser.perId;
 
           return handler(req, res);
         }

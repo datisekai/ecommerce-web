@@ -17,17 +17,13 @@ import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { Cart, CartDetail } from "../models/cart.model";
 import { setCheckout } from "../redux/slices/cart";
 
-type CartProps = {};
-
-const Cart: NextPage<CartProps> = () => {
+const Cart = () => {
   const [showModalVoucher, setShowModalVoucher] = useState(false);
   // const { data: carts, isLoading } = useQuery(["cart"], CartApi.view);
   const { carts, checkout } = useAppSelector((state) => state.cart);
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
   const total = useMemo(() => {
-
-
     return checkout.reduce(
       (pre, cur) =>
         pre + ((cur.sku.price * (100 - cur.sku.discount)) / 100) * cur.qty,
@@ -54,16 +50,16 @@ const Cart: NextPage<CartProps> = () => {
     if (checkout.length === 0) {
       dispatch(setCheckout([sku]));
     } else {
-      const isExistCart = checkout.some(
-        (item) => item.cartId === sku.cartId
-      );
+      const isExistCart = checkout.some((item) => item.cartId === sku.cartId);
 
       if (isExistCart) {
         const isExistSku = checkout.some((item) => item.skuId === sku.skuId);
         if (isExistSku) {
-        dispatch(setCheckout( checkout.filter((item) => item.skuId !== sku.skuId)))
+          dispatch(
+            setCheckout(checkout.filter((item) => item.skuId !== sku.skuId))
+          );
         } else {
-          dispatch(setCheckout([...checkout, sku]))
+          dispatch(setCheckout([...checkout, sku]));
         }
       } else {
         return toast.error(
@@ -72,8 +68,6 @@ const Cart: NextPage<CartProps> = () => {
       }
     }
   };
-
-
 
   return (
     <>

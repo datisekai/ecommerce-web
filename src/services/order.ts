@@ -9,16 +9,17 @@ type DataCreate = {
 };
 
 type DataReport = {
-  orderId:number,
-  images:String[],
-  description:string
-}
+  orderId: number;
+  images: string[];
+  description: string;
+};
 
 type OrderApiProps = {
   create: (data: DataCreate) => Promise<OrderReponse>;
   getOrder: (type: number | string, token: string) => Promise<Order[]>;
   delivered: (orderId: number | string) => Promise<Order>;
-  report:(data:DataReport) => Promise<any>
+  report: (data: DataReport) => Promise<any>;
+  getSeller: (statusId: number) => Promise<Order[]>;
 };
 
 const OrderApi: OrderApiProps = {
@@ -42,10 +43,14 @@ const OrderApi: OrderApiProps = {
     const result = await axiosClient.get(`/order/delivered?orderId=${orderId}`);
     return result.data;
   },
-  report:async(data) => {
-    const result = await axiosClient.post('/order/report',data);
+  report: async (data) => {
+    const result = await axiosClient.post("/order/report", data);
     return result.data;
-  }
+  },
+  getSeller: async (statusId) => {
+    const result = await axiosClient.get(`/order/seller?statusId=${statusId}`);
+    return result.data;
+  },
 };
 
 export default OrderApi;

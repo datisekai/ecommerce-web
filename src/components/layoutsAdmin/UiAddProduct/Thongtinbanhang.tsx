@@ -1,24 +1,70 @@
-import Link from "next/link";
-import React, { useState, useEffect } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/router";
+import React, { useEffect, useMemo, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { ImBin } from "react-icons/im";
-import { Danhsachphanloaihang } from "./Danhsachphanloaihang";
-const Thongtinbanhang = () => {
-  const [_group1, _setGroup1] = useState<string[]>([]);
-  const [_group2, _setGroup2] = useState<string[]>([]);
+import swal from "sweetalert";
+import { v4 as uuidv4 } from "uuid";
+import { InfoBasic, Sku } from "../../../pages/seller/product/new";
+import ProductApi from "../../../services/product";
+import { uploadImg } from "../../../utils";
+import Button from "../../Button";
+import TableInfo from "./TableInfo";
+
+type variantOption = {
+  name: string;
+  variantId: string;
+};
+
+type variant = {
+  name: string;
+  id: string;
+};
+
+interface ThongTinBanHang {
+  _textGroup1: variant;
+  _textGroup2: variant;
+  setTextGroup1: (data: variant) => void;
+  setTextGroup2: (data: variant) => void;
+  handleChangeSku: (data: Sku[]) => void;
+  skus: Sku[];
+  info: InfoBasic;
+}
+
+const Thongtinbanhang: React.FC<ThongTinBanHang> = ({
+  _textGroup1,
+  _textGroup2,
+  setTextGroup1,
+  setTextGroup2,
+  handleChangeSku,
+  skus,
+  info,
+}) => {
+  const [_group1, _setGroup1] = useState<variantOption[]>([]);
+  const [_group2, _setGroup2] = useState<variantOption[]>([]);
   const [_textArray1, setTextArray1] = useState("");
   const [_textArray2, setTextArray2] = useState("");
-  const [_textGroup1, setTextGroup1] = useState("");
-  const [_textGroup2, setTextGroup2] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
   const [isDelete1, setIsDelete1] = useState(false);
   const [isDelete2, setIsDelete2] = useState(false);
   const [vitri1, setVitri1] = useState(-1);
   const [vitri2, setVitri2] = useState(-1);
   const [_displayGroupCategory, _setDisplayGroupCategory] = useState(false);
   const [_displayGroupCategory2, _setDisplayGroupCategory2] = useState(false);
-  const [textGroupPrices, setTextGroupPrices] = useState("");
-  const [textGroupQuantity, setTextGroupQuantity] = useState("");
-  const [textGroupSKU, setTextGroupSKU] = useState("");
+
+  const router = useRouter();
+
+  const { mutate } = useMutation(ProductApi.addProduct, {
+    onSuccess: (data) => {
+      swal("Thông báo", "Thêm sản phẩm thành công", "success");
+      router.push("/seller/product");
+    },
+    onError: (error: any) => {
+      console.log(error);
+    },
+  });
+
   const handleChange = () => {
     _setDisplayGroupCategory(true);
   };
@@ -26,12 +72,18 @@ const Thongtinbanhang = () => {
     _setDisplayGroupCategory2(true);
   };
   useEffect(() => {
-    let arr = [..._group1];
-    const test = arr.map((item, index) => {
+    const arr = [..._group1];
+    const test: variantOption[] = arr.map((item, index) => {
       if (vitri1 === index) {
-        return _textArray1;
+        return {
+          name: _textArray1,
+          variantId: _textGroup1.id,
+        };
       }
-      return item;
+      return {
+        name: item.name,
+        variantId: _textGroup1.id,
+      };
     });
     _setGroup1(test);
     if (vitri1 === arr.length - 1) {
@@ -41,39 +93,60 @@ const Thongtinbanhang = () => {
         }
         return item;
       });
-      _setGroup1([...test, ""]);
+      _setGroup1([
+        ...(test as variantOption[]),
+        {
+          name: "",
+          variantId: _textGroup1.id,
+        },
+      ]);
     }
   }, [_textArray1]);
+
   useEffect(() => {
-    let arr = [..._group2];
+    const arr = [..._group2];
     const test = arr.map((item, index) => {
       if (vitri2 === index) {
-        return _textArray2;
+        return {
+          name: _textArray2,
+          variantId: _textGroup2.id,
+        };
       }
       return item;
     });
     _setGroup2(test);
     if (vitri2 === arr.length - 1) {
-      const test = arr.map((item, index) => {
+      const test: variantOption[] = arr.map((item, index) => {
         if (vitri2 === index) {
-          return _textArray2;
+          return {
+            name: _textArray2,
+            variantId: _textGroup2.id,
+          };
         }
         return item;
       });
-      _setGroup2([...test, ""]);
+      _setGroup2([
+        ...(test as variantOption[]),
+        {
+          name: "",
+          variantId: _textGroup1.id,
+        },
+      ]);
     }
   }, [_textArray2]);
+
   useEffect(() => {
     if (isDelete1) {
-      let arr = [..._group1];
+      const arr = [..._group1];
       const test2 = arr.filter((item, index) => index !== vitri1);
       _setGroup1(test2);
       setIsDelete1(false);
     }
   }, [isDelete1]);
+
   useEffect(() => {
     if (isDelete2) {
-      let arr = [..._group2];
+      const arr = [..._group2];
       const test2 = arr.filter((item, index) => index !== vitri2);
       _setGroup2(test2);
       setIsDelete2(false);
@@ -89,7 +162,127 @@ const Thongtinbanhang = () => {
       setIsDelete2(true);
     }
   };
-  const SaveProduct = () => {};
+
+  const isExistElement = (array) => {
+    if (array.length > 1 && array[0].name != "") {
+      return true;
+    }
+
+    return false;
+  };
+
+  const dataTables = useMemo(() => {
+    const data = [];
+    _group1.forEach((item) => {
+      if (item.name != "") {
+        if (!isExistElement(_group2)) {
+          data.push([item]);
+        } else {
+          _group2.forEach((element) => {
+            if (element.name != "") {
+              data.push([item, element]);
+            }
+          });
+        }
+      }
+    });
+
+    handleChangeSku(
+      data.map(() => ({
+        price: "",
+        discount: "",
+        quantity: "",
+        preview: "",
+        file: null,
+      }))
+    );
+
+    return data;
+  }, [_group1, _group2]);
+
+  const isEmptySku = () => {
+    skus.forEach((item) => {
+      if (
+        !item.discount ||
+        !item.preview ||
+        !item.file ||
+        !item.price ||
+        !item.quantity
+      ) {
+        return false;
+      }
+    });
+    return true;
+  };
+
+  const handleSubmit = async () => {
+    if (
+      !info.name ||
+      !info.description ||
+      !info.categoryId ||
+      !info.file ||
+      !isEmptySku()
+    ) {
+      swal("Thông báo", "Vui lòng kiểm tra và nhập đầy đủ", "warning");
+      return;
+    }
+    setIsLoading(true);
+    const newProduct = {
+      categoryId: Number(info.categoryId),
+      name: info.name,
+      description: info.description,
+      variants: [],
+      image: "",
+      skuValue: [],
+    };
+
+    if (_textGroup1.name != "") {
+      newProduct.variants.push(_textGroup1);
+    }
+
+    if (_textGroup2.name != "") {
+      newProduct.variants.push(_textGroup2);
+    }
+
+    newProduct.image = await uploadImg(info.file);
+
+    if (!newProduct.image) {
+      swal("Thông báo", "Vui lòng kiểm tra và nhập đầy đủ", "warning");
+      return;
+    }
+    const imagesChild = await Promise.all(
+      skus.map((item) => uploadImg(item.file))
+    );
+
+    if (imagesChild.length == 0) {
+      swal("Thông báo", "Vui lòng kiểm tra và nhập đầy đủ", "warning");
+      return;
+    }
+
+    dataTables.forEach((item, index) => {
+      newProduct.skuValue.push({
+        variantOptions: item,
+        quantity: Number(skus[index].quantity),
+        discount: Number(skus[index].discount),
+        price: Number(skus[index].price),
+        image: imagesChild[index],
+      });
+    });
+
+    mutate(newProduct);
+
+    setIsLoading(false);
+  };
+
+  const handleChangeAllSku = (key, value) => {
+    handleChangeSku(
+      skus.map((item) => ({
+        ...item,
+        [key]: value,
+      }))
+    );
+  };
+
   return (
     <div className=" p-4">
       <div className="mb-6 text-xl">
@@ -118,7 +311,12 @@ const Thongtinbanhang = () => {
                     type="text"
                     className="w-[150px] rounded-[4px] border  border-solid border-[#E5E5E5] py-2 px-2"
                     placeholder="ví dụ: màu sắc v.v"
-                    onChange={(e) => setTextGroup1(e.target.value)}
+                    onChange={(e) =>
+                      setTextGroup1({
+                        name: e.target.value,
+                        id: uuidv4(),
+                      })
+                    }
                   />
                   <div className="flex flex-1 justify-end hover:cursor-pointer">
                     <AiOutlineClose
@@ -127,13 +325,29 @@ const Thongtinbanhang = () => {
                         _displayGroupCategory2 == true
                           ? () => {
                               _setDisplayGroupCategory2(false);
-                              _setGroup2([""]);
-                              setTextGroup2("");
+                              _setGroup2([
+                                {
+                                  name: "",
+                                  variantId: _textGroup1.id,
+                                },
+                              ]);
+                              setTextGroup2({
+                                name: "",
+                                id: uuidv4(),
+                              });
                             }
                           : () => {
                               _setDisplayGroupCategory(false);
-                              _setGroup1([""]);
-                              setTextGroup1("");
+                              _setGroup1([
+                                {
+                                  name: "",
+                                  variantId: _textGroup1.id,
+                                },
+                              ]);
+                              setTextGroup1({
+                                name: "",
+                                id: uuidv4(),
+                              });
                             }
                       }
                     />
@@ -146,7 +360,7 @@ const Thongtinbanhang = () => {
                       return (
                         <div className="mb-4 flex items-center" key={index}>
                           <input
-                            defaultValue={item}
+                            defaultValue={item.name}
                             type="text"
                             className=" w-[150px] rounded-[4px] border  border-solid border-[#E5E5E5] py-2 px-2"
                             placeholder="ví dụ: Trắng, Đỏ v.v"
@@ -188,15 +402,28 @@ const Thongtinbanhang = () => {
                         type="text"
                         className="w-[150px] rounded-[4px] border  border-solid border-[#E5E5E5] py-2 px-2"
                         placeholder="ví dụ: Size v.v"
-                        onChange={(e) => setTextGroup2(e.target.value)}
+                        onChange={(e) =>
+                          setTextGroup2({
+                            name: e.target.value,
+                            id: uuidv4(),
+                          })
+                        }
                       />
                       <div className="flex flex-1 justify-end hover:cursor-pointer">
                         <AiOutlineClose
                           className="text-[20px]"
                           onClick={() => {
                             _setDisplayGroupCategory2(false);
-                            _setGroup2([""]);
-                            setTextGroup2("");
+                            _setGroup2([
+                              {
+                                name: "",
+                                variantId: _textGroup2.id,
+                              },
+                            ]);
+                            setTextGroup2({
+                              name: "",
+                              id: uuidv4(),
+                            });
                           }}
                         />
                       </div>
@@ -212,7 +439,7 @@ const Thongtinbanhang = () => {
                           <div className="mb-4 flex items-center" key={index}>
                             <input
                               key={index}
-                              defaultValue={item}
+                              defaultValue={item.name}
                               type="text"
                               className="w-[150px] rounded-[4px] border  border-solid border-[#E5E5E5] py-2 px-2"
                               placeholder="ví dụ: S, M, v.v"
@@ -246,54 +473,44 @@ const Thongtinbanhang = () => {
                 <div className="flex h-[35px] w-[180px] items-center  rounded-l border-y border-l border-solid border-[#E5E5E5] py-2 px-2 transition-all hover:border-r hover:border-[#666]">
                   <div className="border-r-2 pr-2 text-gray-400">đ</div>
                   <input
-                    type="number"
+                    type="text"
                     placeholder="Giá"
-                    onChange={(e) => {
-                      setTextGroupPrices(e.target.value);
-                    }}
+                    onChange={(e) =>
+                      handleChangeAllSku("price", e.target.value)
+                    }
                     className="ml-4 w-[130px]  outline-none"
                   />
                 </div>
                 <input
-                  type="number"
+                  type="text"
                   placeholder="Số lượng"
-                  onChange={(e) => {
-                    setTextGroupQuantity(e.target.value);
-                  }}
+                  onChange={(e) =>
+                    handleChangeAllSku("quantity", e.target.value)
+                  }
                   className="flex h-[35px] w-[180px] items-center border-y border-l border-solid border-[#E5E5E5] py-2 px-2 outline-none transition-all hover:border-r hover:border-[#666]"
                 />
                 <input
                   type="text"
-                  placeholder="SKU phân loại"
-                  onChange={(e) => {
-                    setTextGroupSKU(e.target.value);
-                  }}
+                  placeholder="% giảm"
+                  onChange={(e) =>
+                    handleChangeAllSku("discount", e.target.value)
+                  }
                   className="flex h-[35px] w-[180px] items-center  rounded-r border-y border-x border-solid border-[#E5E5E5] py-2 px-2 outline-none transition-all hover:border-r hover:border-[#666]"
                 />
               </div>
-              <Danhsachphanloaihang
-                NameNPL1={_textGroup1} /*Tên thuộc tính 1 vidu: Màu*/
-                NameNPL2={_textGroup2} /*Tên thuộc tính 2 vidu: Size*/
-                rowNPL1={
-                  _group1
-                } /*các thuộc tính bên trong của thuộc tính 1 vd: đỏ, xanh*/
-                rowNPL2={
-                  _group2
-                } /*các thuộc tính bên trong của thuộc tính 2 vd: M, L*/
-                isADDNPL2={
-                  _displayGroupCategory2 == true ? true : false
-                } /*cột Thuộc tính 2 có hay là không*/
-                textAllPrices={textGroupPrices} /*cho all giá  (có sẵn)*/
-                textAllQuantity={
-                  textGroupQuantity
-                } /*cho all số lượng (có sẵn)*/
-                textAllSku={textGroupSKU} /*cho all sku phân loại (có sẵn)*/
+              <TableInfo
+                colName1={_textGroup1}
+                colName2={_textGroup2}
+                isColName2={_displayGroupCategory2 == true ? true : false}
+                dataTables={dataTables}
+                handleChangeSku={handleChangeSku}
+                skus={skus}
               />
               {/* ************************************* */}
             </div>
           )}
         </div>
-        {_displayGroupCategory == false ? (
+        {/* {_displayGroupCategory == false ? (
           <div>
             <div className="mb-6 flex items-center">
               <div className="w-[160px]">Giá</div>
@@ -320,14 +537,14 @@ const Thongtinbanhang = () => {
           </div>
         ) : (
           ""
-        )}
+        )} */}
         <div className="flex justify-end">
-          <div
-            onClick={SaveProduct}
-            className="hover: mr-10 cursor-pointer rounded-[4px] bg-primary py-3 px-6 text-[#fff] hover:bg-[rgba(255,112,112,0.58)]"
-          >
-            Lưu
-          </div>
+          <Button
+            onClick={handleSubmit}
+            disabled={isLoading}
+            text="Lưu"
+            className="flex w-[150px] items-center justify-center rounded-sm bg-primary px-4 py-2 text-lg text-white"
+          />
         </div>
       </div>
     </div>

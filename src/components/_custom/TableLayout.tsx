@@ -6,16 +6,16 @@ import { IDataRowTable } from "../data/rowTable";
 type TableProps = {
   columnTable: IDataColumnTable[];
   rowTables: object[];
-  isAction: true | false;
-  isUpdate: true | false;
-  isDelete: true | false;
+  isAction?: true | false;
+  isUpdate?: true | false;
+  isDelete?: true | false;
 };
 const TableLayout: React.FC<TableProps> = ({
   columnTable,
   rowTables,
-  isAction,
-  isUpdate,
-  isDelete,
+  isAction = false,
+  isUpdate = false,
+  isDelete = false,
 }) => {
   return (
     <div className=" h-[360px] overflow-x-auto overflow-y-auto rounded-[4px] border-[1px] border-solid border-[#E5E5E5]">
@@ -26,7 +26,7 @@ const TableLayout: React.FC<TableProps> = ({
               if (isAction == true) {
                 return (
                   <th className={`w-[200px] pl-2 text-left`} key={index}>
-                    Thao tác
+                    {item.name}
                   </th>
                 );
               } else {
@@ -48,6 +48,7 @@ const TableLayout: React.FC<TableProps> = ({
               <tr
                 key={index}
                 className={`${index % 2 != 0 && "bg-[#f6f6f6]"} h-20`}
+                style={{ verticalAlign: "middle" }}
               >
                 {columnTable.map((element: any, index: number) =>
                   element.id === "Action" ? (
@@ -64,6 +65,13 @@ const TableLayout: React.FC<TableProps> = ({
                           />
                         )}
                       </div>
+                    </td>
+                  ) : element.id === "name" ? (
+                    <td
+                      key={index}
+                      className={` translate-y-[75%] pl-2 line-clamp-2`}
+                    >
+                      {item[element.id]}
                     </td>
                   ) : (
                     <td key={index} className={` pl-2`}>

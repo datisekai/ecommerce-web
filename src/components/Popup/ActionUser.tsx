@@ -19,7 +19,7 @@ const ActionUser = () => {
     dispatch(logOut());
     deleteCookie("token");
     signOut();
-    router.push('/')
+    router.push("/");
   };
 
   return (
@@ -30,7 +30,8 @@ const ActionUser = () => {
           //   ? createAvatar(user.email.slice(0, user.email.indexOf("@")))
           //   : createAvatar(user.phone)
 
-          user?.image || generateAvatar(user?.name || user?.email || user?.phone)
+          user?.image ||
+          generateAvatar(user?.name || user?.email || user?.phone)
         }
         style={{ width: 20, height: 20, borderRadius: "50%" }}
       />

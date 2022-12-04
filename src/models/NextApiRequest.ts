@@ -11,4 +11,5 @@ export default interface INextApiRequest extends NextApiRequest {
       }[]
     | any;
   userId?: string;
+  perId?: number;
 }

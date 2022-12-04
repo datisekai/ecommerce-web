@@ -18,7 +18,10 @@ const handler = async (req: INextApiRequest, res: NextApiResponse) => {
         where: {
           id: req.userId,
         },
-        data,
+        data: {
+          ...data,
+          date: new Date(data.date),
+        },
         select: {
           date: true,
           email: true,

@@ -21,12 +21,11 @@ const TopHeader = () => {
   return (
     <div className="mx-auto flex w-[calc(100%-16px)] items-center justify-between py-2  ">
       <div className="flex items-center">
-        <a
-          href="#"
-          className="mr-2 text-[15px]  capitalize  text-white hover:opacity-80"
-        >
-          Kênh người bán
-        </a>
+        <Link href="/seller">
+          <a className="mr-2 text-[15px]  capitalize  text-white hover:opacity-80">
+            Kênh người bán
+          </a>
+        </Link>
         <div className="divider relative ml-2 mr-2">
           <a href="#" className=" ml-2 text-[15px] text-white hover:opacity-80">
             Trở thành Người bán Shopee

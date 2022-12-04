@@ -44,8 +44,8 @@ interface PurchaseProps {
 }
 
 const Purchase: NextPage<PurchaseProps> = ({
-  orders,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+      orders,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter();
   const [openRefund, setOpenRefund] = useState(false);
   const [openReport, setOpenReport] = useState(false);

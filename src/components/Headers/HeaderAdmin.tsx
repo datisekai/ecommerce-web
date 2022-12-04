@@ -1,6 +1,9 @@
 import React from "react";
 import { CgMenuGridR } from "react-icons/cg";
+import { useAppSelector } from "../../hooks/reduxHooks";
+import generateAvatar from "../../utils/generateAvatar";
 const HeaderAdmin = () => {
+  const { user } = useAppSelector((state) => state.user);
   return (
     <div className="min-h-14 fixed z-50 flex max-h-14 w-[100%] bg-[#fff]">
       <svg viewBox="0 0 420 134" className="ml-4 mb-2 w-24 cursor-pointer">
@@ -20,10 +23,15 @@ const HeaderAdmin = () => {
         <div className="flex cursor-pointer items-center py-1 pl-1 pr-4 hover:rounded-t-3xl hover:rounded-b-3xl hover:bg-[#d1d1d173]">
           <img
             className="mr-2 h-8 w-8 rounded-[50%]"
-            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAMAAAAKE/YAAAABJlBMVEXP2NxgfYtjf412j5uMoavO19uis7vG0dVxi5fBzNJyjJhjgI56kp5hfoxxi5h5kZ2ouL9ohJGInaipucCHnah3kJyxv8bL1NnM1dlphJGXqrN4kZzM1tqUp7Gnt76InqlkgY6wvsWGnKdrhpOnuL+xwMZ8lJ+3xMvAzNGCmaTFz9Sdr7fN1trN19tlgY5qhZJkgI6/y9COoqzL1dlphJJ0jZp7k566x8y7x81ng5CywMegsrp4kZ14kJyhs7uJn6nH0dZlgY+Fm6bG0daWqrO2xMqzwcfF0NXBzdK3xcu0wsh7k5+qusG0wsmzwchuiJVviZaYq7S7yM2Kn6m8yM6/y9GInqiWqbKNoqxzjJmjtLyqucGfsbmdr7iwv8WKoKpuiZVif42PQ9RwAAABzUlEQVR4Xu3YVZLjShBA0UyBmZmamXuYmZmZ3tv/Jua3Y8JWTdsKKR1zzwruR1aVlDIdAAAAAAAAAAAAAAAAAADyN1t+3fPqfiOTl7kQ1qp6QqkZinmdnP6hcFVs6wY6RtATwx75OlY7K2ZlczpBzmx194ZONOyKTbc0QiAmrWikFTHoIKeRKgdiz7o6LIo919XhophzRp3yYs01dcqINavqtCTWXFAnX6y5ok7nxZqyOhWJNjAeHERzVx6Py7Y6PRZzqnP4wSQ1dajN4U9AIRSDOhqpIyYFGuGs2HRuqBMNR/O3rKlYXjG1dazhbTGsF4yd557YtlFwrHpNCpslPeHZ81DmQj7T8OvFYt9vfM3LPwkAgOzDzMLdUqV/qHqnXymtLmRe3hPD9h/s7RzpGEc7e1v7Yk+4dX/zWCMsbw6eiClPgzV107XPL8SI3cEr/Wuv3+xK+t4ueXoq3rv3kq4PrbKeWvnjtqRn9MnTqXiDkaTkUkGn9uWypKK5rDM4/CYp+K4z+iGJW9SZrSc+z57OzEt6rtsag6ok6qfGYkOS1NJY/JIk/aexyEmS/tdYHEuSNCbzGU000UQTTTQAAAAAAAAAAAAAAAAAAL8BwZgl987F+p8AAAAASUVORK5CYII="
+            src={
+              user?.image ||
+              generateAvatar(user?.name || user?.email || user?.phone)
+            }
             alt=""
           />
-          <span className="min-w-16 text-[#333]">Tên chủ shop</span>
+          <span className="min-w-16 text-[#333]">
+            {user?.name || user?.email || user?.phone}
+          </span>
         </div>
       </div>
       <div className=" mr-2 py-2">

@@ -14,10 +14,10 @@ import LoginApi from "../services/handle-login";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 import { setCookie } from "cookies-next";
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { GiConfirmed } from "react-icons/gi";
 
-const SignUp = () => {
+const SignUp = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const [step, setStep] = useState(1); //1->sdt, 2->password
 
   const router = useRouter();
@@ -36,7 +36,7 @@ const SignUp = () => {
       matchPassword: "",
     },
   });
-  let pwd = watch("password");
+  const pwd = watch("password");
 
   const { mutate: signUp, isLoading } = useMutation(LoginApi.signUp, {
     onSuccess: (data: string) => {

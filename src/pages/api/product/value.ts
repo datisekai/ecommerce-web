@@ -91,7 +91,7 @@ const handler = async (req: INextApiRequest, res: NextApiResponse) => {
         )
       );
 
-      let dataSkuValues: any = [];
+      const dataSkuValues: any = [];
 
       newSkus.forEach((item: any, index: number) => {
         skuValues[index].values.forEach((element: any) => {
