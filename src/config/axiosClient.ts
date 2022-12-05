@@ -17,7 +17,7 @@ axiosClient.interceptors.request.use((config) => {
     );
   }
 
-  const token = getCookie('token');
+  const token = getCookie("token");
 
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
@@ -32,14 +32,14 @@ axiosClient.interceptors.response.use(
   },
   (error) => {
     console.log(error);
-    if (error.response.status === 401) {
+    if (error?.response?.status === 401) {
       deleteCookie("token");
-      setCookie('token','')
-     if(typeof window !== "undefined"){
-      window.location.href = "/login";
-     }
+      setCookie("token", "");
+      if (typeof window !== "undefined") {
+        window.location.href = "/login";
+      }
     }
-    return Promise.reject(error.response.data);
+    return Promise.reject(error?.response?.data);
   }
 );
 

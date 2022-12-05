@@ -9,7 +9,9 @@ import { useMutation } from "@tanstack/react-query";
 import userApi from "../../services/user";
 import toast from "react-hot-toast";
 
-const ChangePassword = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const ChangePassword = (
+  props: InferGetServerSidePropsType<typeof getServerSideProps>
+) => {
   const {
     control,
     formState: { errors },
@@ -23,23 +25,23 @@ const ChangePassword = (props: InferGetServerSidePropsType<typeof getServerSideP
     },
   });
 
-  let pwd = watch("currentPassword");
+  const pwd = watch("newPassword");
 
   const { mutate, isLoading } = useMutation(userApi.changePassword, {
     onSuccess: (data) => {
-      toast.success("Đổi mật khẩu thành công")
+      toast.success("Đổi mật khẩu thành công");
     },
     onError: (error: any) => {
-      console.log(error)
-      toast.error("Vui lòng thử lại")
-    }
-  })
+      console.log(error);
+      toast.error("Vui lòng thử lại");
+    },
+  });
 
   const handleChangePassword = (data: any) => {
     mutate({
       password: data.password,
-      newPassword: data.newPassword
-    })
+      newPassword: data.newPassword,
+    });
   };
 
   return (
@@ -174,16 +176,16 @@ export default ChangePassword;
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const token = req.cookies["token"];
   if (token) {
-
-
     return {
-      props: {
-      },
+      props: {},
     };
   }
 
   return {
-    notFound: true
-  }
-
+    props: {},
+    redirect: {
+      permanent: false,
+      destination: "/",
+    },
+  };
 };

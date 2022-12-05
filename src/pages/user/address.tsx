@@ -14,39 +14,44 @@ import { Contact } from "../../models/contact.model";
 import ContactApi from "../../services/contact";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 
-const Address = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Address = (
+  props: InferGetServerSidePropsType<typeof getServerSideProps>
+) => {
   const [openAddress, setOpenAddress] = useState(false);
   const [data, setData] = useState<Contact | undefined>();
   const dispatch = useAppDispatch();
   const router = useRouter();
 
-
-  const { data: address } = useQuery(['address'], ContactApi.getAllContact);
+  const { data: address, refetch } = useQuery(
+    ["address"],
+    ContactApi.getAllContact
+  );
 
   const queryClient = useQueryClient();
   const { mutate, isLoading } = useMutation(ContactApi.setDefaultContact, {
     onSuccess: (data) => {
-      const newAddress = address.map(item => {
+      const newAddress = address.map((item) => {
         if (item.id == data.id) {
           item.active = true;
         } else {
-          item.active = false
+          item.active = false;
         }
         return item;
-      })
-      queryClient.setQueryData(['address'], newAddress)
+      });
+      queryClient.setQueryData(["address"], newAddress);
+      refetch();
     },
     onError: (error: any) => {
       console.log(error);
-    }
-  })
+    },
+  });
 
   const handleOnChecked = (id: string | number) => {
     mutate(id);
-  }
+  };
 
   if (isLoading) {
-    return <ShadowLoading />
+    return <ShadowLoading />;
   }
 
   const { redirect } = router.query;
@@ -64,33 +69,46 @@ const Address = (props: InferGetServerSidePropsType<typeof getServerSideProps>) 
             <div className="flex items-center justify-between border-b pb-4">
               <h1 className="text-[17px]">Địa chỉ của tôi</h1>
               <div className="flex items-center">
-                {redirect && <Button
-                  text="Trở lại thanh toán"
-                  onClick={() => router.push(`/${redirect}`)}
-                  className="flex items-center rounded-sm bg-[#666] px-6 py-2 text-white"
-                  startIcon={AiFillBackward}
-                  classNameStarIcon="text-white text-[20px] mr-2"
-                />}
+                {redirect && (
+                  <Button
+                    text="Trở lại thanh toán"
+                    onClick={() => router.push(`/${redirect}`)}
+                    className="flex items-center rounded-sm bg-[#666] px-6 py-2 text-white"
+                    startIcon={AiFillBackward}
+                    classNameStarIcon="text-white text-[20px] mr-2"
+                  />
+                )}
                 <Button
                   text="Thêm địa chỉ mới"
                   onClick={() => setOpenAddress(true)}
-                  className="flex items-center rounded-sm bg-primary px-6 py-2 text-white ml-1"
+                  className="ml-1 flex items-center rounded-sm bg-primary px-6 py-2 text-white"
                   startIcon={AiOutlinePlus}
                   classNameStarIcon="text-white text-[20px] mr-2"
                 />
               </div>
             </div>
             <div>
-              {address?.map(item => <AddressCard handleShow={() => {
-                setData(item)
-                setOpenAddress(true)
-              }} {...item} key={item.id} onChange={handleOnChecked} />)}
+              {address?.map((item) => (
+                <AddressCard
+                  handleShow={() => {
+                    setData(item);
+                    setOpenAddress(true);
+                  }}
+                  {...item}
+                  key={item.id}
+                  onChange={handleOnChecked}
+                />
+              ))}
             </div>
           </div>
-          <ModalAddress currentAddress={data} open={openAddress} onHide={() => {
-            setData(undefined)
-            setOpenAddress(false)
-          }} />
+          <ModalAddress
+            currentAddress={data}
+            open={openAddress}
+            onHide={() => {
+              setData(undefined);
+              setOpenAddress(false);
+            }}
+          />
         </UserLayout>
       </AuthLayout>
     </>
@@ -102,16 +120,16 @@ export default Address;
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const token = req.cookies["token"];
   if (token) {
-
-
     return {
-      props: {
-      },
+      props: {},
     };
   }
 
   return {
-    notFound: true
-  }
-
+    props: {},
+    redirect: {
+      permanent: false,
+      destination: "/",
+    },
+  };
 };

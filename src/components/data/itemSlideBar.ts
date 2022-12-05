@@ -45,13 +45,13 @@ const itemSidebarData: IItemSidebarData[] = [
     id: 7,
     name: "Mã Giảm Giá Của Tôi",
     idSlideBar: 3,
-    url: "/seller/product/new",
+    url: "/seller/portal/vouchers",
   },
   {
     id: 8,
     name: "Tạo Mã Giảm Giá",
     idSlideBar: 3,
-    url: "/seller/product/new",
+    url: "/seller/portal/addVoucher",
   },
   {
     id: 9,
@@ -69,7 +69,7 @@ const itemSidebarData: IItemSidebarData[] = [
     id: 11,
     name: "Đánh Giá Shop",
     idSlideBar: 5,
-    url: "/seller/product/new",
+    url: "/seller/portal/rating",
   },
   {
     id: 12,
@@ -81,7 +81,7 @@ const itemSidebarData: IItemSidebarData[] = [
     id: 14,
     name: "Danh Mục Của Shop",
     idSlideBar: 5,
-    url: "/seller/product/new",
+    url: "/seller/portal/category",
   },
   {
     id: 15,

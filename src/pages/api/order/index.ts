@@ -6,7 +6,6 @@ import { logError } from "../../../utils/logError";
 
 const handler = async (req: INextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {
-    console.log(12333);
     const { statusId } = req.query;
 
     const data: any = { userId: req.userId };
@@ -48,17 +47,16 @@ const handler = async (req: INextApiRequest, res: NextApiResponse) => {
               createdAt: true,
             },
           },
-          orderReports:{
-            include:{
-              orderReportImages:true
-            }
-          }
+          orderReports: {
+            include: {
+              orderReportImages: true,
+            },
+          },
         },
         orderBy: {
           id: "desc",
         },
       });
-      console.log(orderList);
       return res.json(orderList);
     } catch (error) {
       return logError(res, error);

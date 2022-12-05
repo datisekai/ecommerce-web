@@ -9,7 +9,7 @@ type SellerLayoutProps = {
 const SellerLayout: React.FC<SellerLayoutProps> = ({ children }) => {
   return (
     <div className=" bg-[#f6f6f6]">
-      <HeaderAdmin />
+      <HeaderAdmin name={"Kênh người bán"} isSeller={true} />
       <div className="min-h-screen pt-14">
         <MenuLeft />
         <div>{children}</div>

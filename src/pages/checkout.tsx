@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/router";
-import { useState, useMemo } from "react";
+import { useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import { GiPositionMarker } from "react-icons/gi";
 import { IoNewspaperOutline } from "react-icons/io5";
@@ -12,26 +12,25 @@ import AuthLayout from "../components/Layouts/AuthLayout";
 import MainLayout from "../components/Layouts/MainLayout";
 import WidthLayout from "../components/Layouts/WidthLayout";
 import Meta from "../components/Meta";
-import AddressModal from "../components/Popup/AddressModal";
 import VoucherModal from "../components/Popup/VoucherModal";
 import { useAppSelector } from "../hooks/reduxHooks";
 import { Contact } from "../models/contact.model";
-import { setCarts, setCheckout } from "../redux/slices/cart";
+import { setCheckout } from "../redux/slices/cart";
 import OrderApi from "../services/order";
 import { formatPrices } from "../utils";
 
 const Checkout = (props) => {
   const [open, setOpen] = useState(false);
 
-  const { checkout, carts } = useAppSelector(state => state.cart)
+  const { checkout, carts } = useAppSelector((state) => state.cart);
 
-  const [description, setDescription] = useState('')
-  const { user } = useAppSelector(state => state.user);
+  const [description, setDescription] = useState("");
+  const { user } = useAppSelector((state) => state.user);
 
   const dispatch = useDispatch();
   const defaultAddress: Contact | undefined = useMemo(() => {
     return user?.contacts?.find((item: Contact) => item.active === true);
-  }, [user])
+  }, [user]);
 
   const feeTransport = 20000;
 
@@ -41,27 +40,25 @@ const Checkout = (props) => {
         pre + ((cur.sku.price * (100 - cur.sku.discount)) / 100) * cur.qty,
       0
     );
-  }, [checkout])
+  }, [checkout]);
 
   const totalAll = useMemo(() => {
-    return total + feeTransport
-  }, [total, feeTransport])
+    return total + feeTransport;
+  }, [total, feeTransport]);
 
   const router = useRouter();
 
   const { mutate, isLoading } = useMutation(OrderApi.create, {
     onSuccess: (data, variable) => {
-    
-      dispatch(setCheckout([]))
+      dispatch(setCheckout([]));
       toast.success("Tạo đơn hàng thành công");
-      router.push('/user/purchase')
-
+      router.push("/user/purchase");
     },
     onError: (error: any) => {
       console.log(error);
-      error && error.message && toast.error("Vui lòng thử lại")
-    }
-  })
+      error && error.message && toast.error("Vui lòng thử lại");
+    },
+  });
 
   const handleOrder = () => {
     swal({
@@ -69,26 +66,25 @@ const Checkout = (props) => {
       icon: "warning",
       buttons: ["Hủy", "OK"],
       dangerMode: true,
-    })
-      .then((willDelete) => {
-        if (willDelete) {
-          mutate({
-            skus: checkout.map(item => {
-              return {
-                price: item.sku.price,
-                qty: item.qty,
-                discount: item.sku.discount,
-                id: item.skuId
-              }
-            }),
-            cartId: checkout[0].cartId,
-            description
-          })
-        }
-      });
-  }
+    }).then((willDelete) => {
+      if (willDelete) {
+        mutate({
+          skus: checkout.map((item) => {
+            return {
+              price: item.sku.price,
+              qty: item.qty,
+              discount: item.sku.discount,
+              id: item.skuId,
+            };
+          }),
+          cartId: checkout[0].cartId,
+          description,
+        });
+      }
+    });
+  };
 
-  console.log(checkout)
+  console.log(checkout);
 
   return (
     <>
@@ -111,7 +107,10 @@ const Checkout = (props) => {
                 <div className="flex items-center justify-between">
                   <div className="mt-4 flex items-center">
                     <h2 className="text-[17px] font-semibold">
-                      {defaultAddress?.name} <span className="text-primary">{defaultAddress?.phone}</span>
+                      {defaultAddress?.name}{" "}
+                      <span className="text-primary">
+                        {defaultAddress?.phone}
+                      </span>
                     </h2>
                     <p className="ml-4 text-[17px] line-clamp-1">
                       {defaultAddress?.address}
@@ -121,7 +120,9 @@ const Checkout = (props) => {
                     </span>
                   </div>
                   <Button
-                    onClick={() => router.push('/user/address?redirect=checkout')}
+                    onClick={() =>
+                      router.push("/user/address?redirect=checkout")
+                    }
                     text="Thay đổi"
                     className="text-[15px] capitalize text-blue-500"
                   />
@@ -137,7 +138,9 @@ const Checkout = (props) => {
                   </div>
                 </div>
                 <div className="mt-2">
-                  {checkout?.map(item => <CheckoutCard key={item.id} {...item} />)}
+                  {checkout?.map((item) => (
+                    <CheckoutCard key={item.id} {...item} />
+                  ))}
                 </div>
                 <div className="flex items-center justify-end border-t border-dotted py-4">
                   <div className="flex w-[50%] items-center">
@@ -201,8 +204,8 @@ const Checkout = (props) => {
                 </div>
                 <div className="flex items-center justify-between border-t pt-4">
                   <p>
-                    Nhấn &quot;Đặt hàng&quot; đồng nghĩa với việc bạn đồng ý tuân theo Điều
-                    khoản Shopee
+                    Nhấn &quot;Đặt hàng&quot; đồng nghĩa với việc bạn đồng ý
+                    tuân theo Điều khoản Shopee
                   </p>
                   <Button
                     text="Đặt hàng"

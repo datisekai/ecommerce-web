@@ -9,7 +9,7 @@ type ButtonProps = {
   className?: string;
   startIcon?: any;
   classNameStarIcon?: string;
-  disabled?: boolean
+  disabled?: boolean;
 };
 
 const Button: FC<ButtonProps> = ({
@@ -21,7 +21,7 @@ const Button: FC<ButtonProps> = ({
   className,
   startIcon,
   classNameStarIcon,
-  disabled = false
+  disabled = false,
 }) => {
   const Icon = icon;
   const StartIcon = startIcon;
@@ -29,10 +29,10 @@ const Button: FC<ButtonProps> = ({
     <button
       onClick={onClick}
       disabled={disabled}
-      className={`flex cursor-pointer block items-center ${className} rounded-sm`}
+      className={`block flex cursor-pointer items-center ${className} rounded-sm`}
     >
       {startIcon && <StartIcon className={classNameStarIcon} />}
-      <span className={classNameText}>{text}</span>
+      <span className={classNameText}>{disabled ? "Loading..." : text}</span>
       {icon && <Icon className={classNameIcon} />}
     </button>
   );

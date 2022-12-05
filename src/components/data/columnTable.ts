@@ -1,7 +1,7 @@
 export type IDataColumnTable = {
   id: string;
   name: string;
-  width: string;
+  width?: string;
 };
 const columnTable: IDataColumnTable[] = [
   {
@@ -28,11 +28,6 @@ const columnTable: IDataColumnTable[] = [
     id: "soluong",
     name: "Số lượng",
     width: "100px",
-  },
-  {
-    id: "Action",
-    name: "Thao tác",
-    width: "200px",
   },
 ];
 

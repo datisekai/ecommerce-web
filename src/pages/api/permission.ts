@@ -6,6 +6,7 @@ import { prisma } from "../../server/db/client";
 import { logError } from "../../utils/logError";
 
 const Permission = async (req: INextApiRequest, res: NextApiResponse) => {
+  console.log(req.method);
   if (req.method === "POST") {
     if (
       !req.actions?.some((item: any) => item.code === "admin:permission:add")
@@ -39,6 +40,9 @@ const Permission = async (req: INextApiRequest, res: NextApiResponse) => {
       const permissions = await prisma.permission.findMany({
         include: {
           actions: true,
+        },
+        orderBy: {
+          id: "desc",
         },
       });
       return res.json(permissions);
