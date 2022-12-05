@@ -25,5 +25,5 @@
     "src/pages/docs.tsx",
     "src/components/_custom/ButtonAction.tsx"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules",".next"]
 }

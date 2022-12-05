@@ -39,14 +39,6 @@ const LayoutContentProduct: React.FC<LayoutContentProductProps> = ({
           qty: item.qty,
           discount: `${item.discount}%`,
           type: type.join(", "),
-          Action: {
-            handleUpdate: () => {
-              console.log("datisekai");
-            },
-            handleDelete: () => {
-              console.log("ac");
-            },
-          },
         };
       }) || []
     );
@@ -82,11 +74,6 @@ const LayoutContentProduct: React.FC<LayoutContentProductProps> = ({
       id: "discount",
       name: "% Giảm",
       width: "75px",
-    },
-    {
-      id: "Action",
-      name: "Thao tác",
-      width: "200px",
     },
   ];
 

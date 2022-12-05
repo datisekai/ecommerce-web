@@ -31,8 +31,9 @@ export default Seller;
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const token = req.cookies["token"];
+  const perId = req.cookies["perId"];
 
-  if (token) {
+  if (token && perId === "2") {
     return {
       props: {
         token,
@@ -41,6 +42,10 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   }
 
   return {
-    notFound: true,
+    props: {},
+    redirect: {
+      permanent: false,
+      destination: "/",
+    },
   };
 };

@@ -69,16 +69,19 @@ const LayoutPermission = () => {
       {/* ************************************** */}
       <div className="mx-4">
         <div className="grid grid-cols-3">
-          {listPermission.map((item) => {
+          {listPermission.map((item: any, index: number) => {
             return (
-              <div className="mx-4 mb-8 h-[280px] overflow-x-hidden overflow-y-hidden border hover:overflow-y-auto">
+              <div
+                key={index}
+                className="mx-4 mb-8 h-[280px] overflow-x-hidden overflow-y-hidden border hover:overflow-y-auto"
+              >
                 <div className="flex justify-center p-2 text-lg">
                   <strong> {item.name}</strong>
                 </div>
                 <div className="mx-4 mt-4">
-                  {item.privilege.map((item1) => {
+                  {item.privilege.map((item1: any, index: number) => {
                     return (
-                      <div className="mb-2 flex py-2 pl-4 ">
+                      <div key={index} className="mb-2 flex py-2 pl-4 ">
                         <input
                           type="checkbox"
                           name=""

@@ -21,7 +21,7 @@ const LayoutContentBill: FC<LayoutContentBillProps> = ({
         id: item.id,
         createdAt: dayjs(item.createdAt).format("DD/MM/YYYY"),
         total: item.total,
-        description: item.description,
+        description: item.description || "Không có",
         status: item.status.name,
       })) || []
     );
@@ -31,27 +31,26 @@ const LayoutContentBill: FC<LayoutContentBillProps> = ({
     {
       id: "id",
       name: "ID",
-      width: "75px",
     },
     {
       id: "createdAt",
       name: "Ngày tạo",
-      width: "200px",
     },
     {
       id: "total",
       name: "Tổng tiền",
-      width: "150px",
     },
     {
       id: "description",
       name: "Lưu ý",
-      width: "75px",
     },
     {
       id: "status",
       name: "Trạng thái",
-      width: "75px",
+    },
+    {
+      id: "action",
+      name: "Thao tác",
     },
   ];
 
@@ -140,13 +139,65 @@ const LayoutContentBill: FC<LayoutContentBillProps> = ({
       </div>
       {/* ************************************** */}
       <div className="p-4">
-        <TableLayout
+        {/* <TableLayout
           columnTable={col}
           rowTables={dataTables}
           isAction={false}
           isUpdate={false}
           isDelete={false}
-        />
+        /> */}
+        <div className=" h-[360px] overflow-x-auto overflow-y-auto rounded-[4px] border-[1px] border-solid border-[#E5E5E5]">
+          <table className=" w-[100%] ">
+            <thead>
+              <tr className=" sticky top-0 z-30 h-10 bg-[#F6F6F6] text-[#999999]">
+                {col.map((item: any, index: any) => {
+                  return (
+                    <th
+                      className={` pl-2 text-left`}
+                      style={{ width: item?.width || `${100 / col.length}%` }}
+                      key={index}
+                    >
+                      {item.name}
+                    </th>
+                  );
+                })}
+              </tr>
+            </thead>
+            <tbody className="h-80">
+              {dataTables.map((item: any, index: number) => {
+                return (
+                  <tr
+                    key={index}
+                    className={`${index % 2 != 0 && "bg-[#f6f6f6]"} h-20`}
+                    style={{ verticalAlign: "middle" }}
+                  >
+                    {col.map((element: any, index: number) =>
+                      element.id === "name" ? (
+                        <td
+                          key={index}
+                          className={` translate-y-[75%] pl-2 line-clamp-2`}
+                        >
+                          {item[element.id]}
+                        </td>
+                      ) : element.id === "action" ? (
+                        <td key={index} className={` pl-2`}>
+                          <select name="" id="" className="border px-4 py-2">
+                            <option value="1">Chờ xác nhận</option>
+                            <option value="2">Đã xác nhận</option>
+                          </select>
+                        </td>
+                      ) : (
+                        <td key={index} className={` pl-2`}>
+                          {item[element.id]}
+                        </td>
+                      )
+                    )}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
     </>
   );

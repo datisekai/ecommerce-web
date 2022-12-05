@@ -55,15 +55,15 @@ const itemSidebarDataAdmin: IItemSidebarData[] = [
   },
   {
     id: 16,
-    name: "Phân quyền",
-    idSlideBar: 7,
-    url: "/admin/permission/privilege",
-  },
-  {
-    id: 17,
     name: "Thêm nhóm quyền",
     idSlideBar: 7,
     url: "/admin/permission/addprivilegegroup",
+  },
+  {
+    id: 17,
+    name: "Phân quyền",
+    idSlideBar: 7,
+    url: "/admin/permission/privilege",
   },
 ];
 export default itemSidebarDataAdmin;

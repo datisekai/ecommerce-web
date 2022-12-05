@@ -90,7 +90,12 @@ const Actions = async (req: INextApiRequest, res: NextApiResponse) => {
     }
 
     try {
-      const actions = await prisma.privilege.findMany();
+      const actions = await prisma.privilege.findMany({
+        include: {
+          perList: true,
+          Action: true,
+        },
+      });
       return res.json(actions);
     } catch (error) {
       return logError(res, error);

@@ -1,6 +1,8 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { FC } from "react";
 import { IoNewspaperOutline } from "react-icons/io5";
+import swal from "sweetalert";
 import { formatPrices } from "../../utils";
 import Button from "../Button";
 import WidthLayout from "../Layouts/WidthLayout";
@@ -16,6 +18,17 @@ const PaymentCart: FC<PaymentCartProps> = ({
   total,
   length,
 }) => {
+  const router = useRouter();
+
+  const handleNavigate = () => {
+    if (length <= 0) {
+      swal("Thông báo", "Vui lòng chọn sản phẩm thanh toán", "warning");
+      return;
+    }
+
+    router.push("/checkout");
+  };
+
   return (
     <div className="sticky bottom-0 right-0 left-0 mt-3">
       <WidthLayout>
@@ -45,12 +58,11 @@ const PaymentCart: FC<PaymentCartProps> = ({
                 </span>
               </div>
             </div>
-            <Link href={"/checkout"}>
-              <Button
-                className="rounded-sm bg-primary px-10 py-3 text-white transition-all hover:opacity-90"
-                text="Mua Hàng"
-              />
-            </Link>
+            <Button
+              onClick={handleNavigate}
+              className="rounded-sm bg-primary px-10 py-3 text-white transition-all hover:opacity-90"
+              text="Mua Hàng"
+            />
           </div>
         </div>
       </WidthLayout>

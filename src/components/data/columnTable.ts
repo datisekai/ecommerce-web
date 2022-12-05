@@ -1,7 +1,7 @@
 export type IDataColumnTable = {
   id: string;
   name: string;
-  width: string;
+  width?: string;
 };
 const columnTable: IDataColumnTable[] = [
   {

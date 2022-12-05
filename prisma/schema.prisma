@@ -28,7 +28,7 @@ model Privilege {
   name      String
   perListId Int
   perList   PermissionList @relation(fields: [perListId], references: [id])
-  actions   Action[]
+  Action    Action[]
 }
 
 model Action {

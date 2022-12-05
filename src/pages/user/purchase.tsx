@@ -153,6 +153,10 @@ export const getServerSideProps: GetServerSideProps = async ({
   }
 
   return {
-    notFound: true,
+    props: {},
+    redirect: {
+      permanent: false,
+      destination: "/",
+    },
   };
 };

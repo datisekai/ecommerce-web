@@ -26,7 +26,7 @@ const Thongtinbanhang = () => {
     _setDisplayGroupCategory2(true);
   };
   useEffect(() => {
-    let arr = [..._group1];
+    const arr = [..._group1];
     const test = arr.map((item, index) => {
       if (vitri1 === index) {
         return _textArray1;
@@ -45,7 +45,7 @@ const Thongtinbanhang = () => {
     }
   }, [_textArray1]);
   useEffect(() => {
-    let arr = [..._group2];
+    const arr = [..._group2];
     const test = arr.map((item, index) => {
       if (vitri2 === index) {
         return _textArray2;
@@ -65,7 +65,7 @@ const Thongtinbanhang = () => {
   }, [_textArray2]);
   useEffect(() => {
     if (isDelete1) {
-      let arr = [..._group1];
+      const arr = [..._group1];
       const test2 = arr.filter((item, index) => index !== vitri1);
       _setGroup1(test2);
       setIsDelete1(false);
@@ -73,7 +73,7 @@ const Thongtinbanhang = () => {
   }, [isDelete1]);
   useEffect(() => {
     if (isDelete2) {
-      let arr = [..._group2];
+      const arr = [..._group2];
       const test2 = arr.filter((item, index) => index !== vitri2);
       _setGroup2(test2);
       setIsDelete2(false);
@@ -89,7 +89,6 @@ const Thongtinbanhang = () => {
       setIsDelete2(true);
     }
   };
-  const SaveProduct = () => {};
   return (
     <div className=" p-4">
       <div className="mb-6 text-xl">
@@ -322,10 +321,7 @@ const Thongtinbanhang = () => {
           ""
         )}
         <div className="flex justify-end">
-          <div
-            onClick={SaveProduct}
-            className="hover: mr-10 cursor-pointer rounded-[4px] bg-primary py-3 px-6 text-[#fff] hover:bg-[rgba(255,112,112,0.58)]"
-          >
+          <div className="hover: mr-10 cursor-pointer rounded-[4px] bg-primary py-3 px-6 text-[#fff] hover:bg-[rgba(255,112,112,0.58)]">
             Lưu
           </div>
         </div>

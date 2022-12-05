@@ -173,8 +173,7 @@ const DetailSku: FC<DetailSkuProps> = ({
   const { mutate: buyNow } = useMutation(CartApi.addToCart, {
     onSuccess: (data) => {
       dispatch(addCartDetail(data));
-      dispatch(setCheckout([data]))
-
+      dispatch(setCheckout([data]));
     },
     onError: (error) => {
       toast.error("Vui lòng thử lại");
@@ -182,7 +181,6 @@ const DetailSku: FC<DetailSkuProps> = ({
   });
 
   const handleAddToCart = async () => {
-
     if (user) {
       const data: DataAddCart = {
         qty: quantity,
@@ -191,7 +189,7 @@ const DetailSku: FC<DetailSkuProps> = ({
       };
       addToCart(data);
     } else {
-      router.push(`/login?redirect=${product.slug}`)
+      router.push(`/login?redirect=${product.slug}`);
     }
   };
 
@@ -202,12 +200,12 @@ const DetailSku: FC<DetailSkuProps> = ({
         sellerId: product.sellerId,
         skuId: currentSku.id,
       };
-      buyNow(data)
-      router.push('/cart')
+      buyNow(data);
+      router.push("/cart");
     } else {
-      router.push(`/login?redirect=${product.slug}`)
+      router.push(`/login?redirect=${product.slug}`);
     }
-  }
+  };
 
   return (
     <>
@@ -275,6 +273,9 @@ const DetailSku: FC<DetailSkuProps> = ({
                       <span className="ml-4 text-[25px] text-primary lg:text-[30px]">
                         {formatPrices(price.current)}
                       </span>
+                      <span className="ml-4 rounded-sm bg-primary px-1 py-[2px] text-[15px] font-bold text-white">{`${
+                        currentSku?.discount || 0
+                      }% Giảm`}</span>
                     </div>
                   </div>
 

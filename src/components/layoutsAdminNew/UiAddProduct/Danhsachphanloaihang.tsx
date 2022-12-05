@@ -26,7 +26,6 @@ export const Danhsachphanloaihang: React.FC<DanhSachProps> = ({
       IsNotNull = true;
     }
   });
-  const saveProduct = () => {};
 
   const column = [
     {
@@ -275,10 +274,7 @@ export const Danhsachphanloaihang: React.FC<DanhSachProps> = ({
         </div>
       </div>
       <div className="flex justify-end">
-        <div
-          onClick={saveProduct}
-          className="hover: mr-10 cursor-pointer rounded-[4px] bg-primary py-3 px-6 text-[#fff] hover:bg-[rgba(255,112,112,0.58)]"
-        >
+        <div className="hover: mr-10 cursor-pointer rounded-[4px] bg-primary py-3 px-6 text-[#fff] hover:bg-[rgba(255,112,112,0.58)]">
           Lưu
         </div>
       </div>

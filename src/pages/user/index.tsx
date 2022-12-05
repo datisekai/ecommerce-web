@@ -255,6 +255,10 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   }
 
   return {
-    notFound: true,
+    props: {},
+    redirect: {
+      permanent: false,
+      destination: "/",
+    },
   };
 };

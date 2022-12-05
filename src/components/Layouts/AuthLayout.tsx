@@ -1,4 +1,4 @@
-import { getCookie, setCookie } from "cookies-next";
+import { getCookie, setCookie, setCookies } from "cookies-next";
 import React, { FC, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import Children from "../../models/Children";
@@ -17,6 +17,11 @@ const AuthLayout: FC<AuthLayoutProps> = ({ children, token }) => {
   useEffect(() => {
     const getMyInfo = async () => {
       const user = await userApi.me();
+      setCookies("perId", user.perId);
+      setCookies(
+        "actions",
+        JSON.stringify(user.actions.map((item: any) => item.code))
+      );
       dispatch(setUser(user));
     };
 

@@ -48,6 +48,13 @@ const ActionUser = () => {
             Tài khoản của tôi
           </li>
         </Link>
+        {user.perId > 2 && (
+          <Link href={"/admin"}>
+            <li className="py-2 px-2 text-[15px] transition-all hover:cursor-pointer hover:text-primary ">
+              Dashboard
+            </li>
+          </Link>
+        )}
         <Link href={"/user/purchase"}>
           <li className="py-2 px-2 text-[15px] transition-all hover:cursor-pointer hover:text-primary ">
             Đơn mua
